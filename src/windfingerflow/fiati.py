@@ -14,7 +14,7 @@ FONTS_DIR = Path(__file__).resolve().parents[2] / "fonts"
 
 # Verovio ignores the font size of <words>; diagrams are enlarged by this factor when the
 # SVG is post-processed (a chart is drawn small at the normal text size).
-DIAGRAM_SCALE = 3.5
+DIAGRAM_SCALE = 2.4
 
 SAX_CHART = 0xE280
 SAX_BARITONE_LOW_A_OPEN = 0xE281
