@@ -21,6 +21,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--level", choices=[lv.value for lv in Level], default="beginner")
     ap.add_argument("--exclude", action="append", default=[], help="fingering id to exclude")
     ap.add_argument("--unavailable", action="append", default=[], help="finger, e.g. R2")
+    ap.add_argument(
+        "--allow-unconfirmed", action="store_true", help="also suggest unverified fingerings"
+    )
     ap.add_argument("--lang", default="en", choices=["en", "fr"])
     ap.add_argument("--all-notes", action="store_true", help="annotate standard fingerings too")
     args = ap.parse_args(argv)
@@ -29,6 +32,7 @@ def main(argv: list[str] | None = None) -> int:
         level=Level(args.level),
         excluded_fingerings=set(args.exclude),
         unavailable_fingers={Finger(f) for f in args.unavailable},
+        allow_unconfirmed=args.allow_unconfirmed,
     )
     result = run(
         args.score,

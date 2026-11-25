@@ -70,6 +70,7 @@ def process(
     unavailable: Annotated[list[str] | None, Form()] = None,
     exclude: str = Form(""),
     all_notes: bool = Form(False),
+    allow_unconfirmed: bool = Form(False),
 ):
     t = pick(request.headers.get("accept-language"))
 
@@ -101,6 +102,7 @@ def process(
         level=Level(level),
         excluded_fingerings={x.strip() for x in exclude.split(",") if x.strip()},
         unavailable_fingers={Finger(f) for f in unavailable or []},
+        allow_unconfirmed=allow_unconfirmed,
     )
     try:
         result = run(

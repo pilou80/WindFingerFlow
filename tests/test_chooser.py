@@ -33,7 +33,9 @@ def test_exclusion_changes_choice(db):
 
 
 def test_unavailable_r2_forces_alternate_fs(db):
-    chosen = choose(db, steps("F#4", "F#4"), Profile(unavailable_fingers={Finger.R2}))
+    chosen = choose(
+        db, steps("F#4", "F#4"), Profile(unavailable_fingers={Finger.R2}, allow_unconfirmed=True)
+    )
     assert ids(chosen) == ["fs.alt", "fs.alt"]
 
 

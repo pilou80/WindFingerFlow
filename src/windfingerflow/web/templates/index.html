@@ -44,6 +44,7 @@
   <label for="exclude">{{ t.exclude }}</label>
   <input type="text" id="exclude" name="exclude" placeholder="bb.bis, fs.alt">
   <label><input type="checkbox" name="all_notes" value="true"> {{ t.all_notes }}</label>
+  <label><input type="checkbox" name="allow_unconfirmed" value="true"> {{ t.allow_unconfirmed }}</label>
   <button type="submit">{{ t.go }}</button><span id="busy" class="htmx-indicator">{{ t.working }}</span>
 </form>
 <div id="result" aria-live="polite" hidden></div>

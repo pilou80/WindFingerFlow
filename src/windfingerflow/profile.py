@@ -15,3 +15,5 @@ class Profile:
     excluded_fingerings: set[str] = field(default_factory=set)
     unavailable_fingers: set[Finger] = field(default_factory=set)
     limited_fingers: set[Finger] = field(default_factory=set)
+    # Fingerings flagged needs_confirmation are only suggested when this is True.
+    allow_unconfirmed: bool = False

@@ -37,6 +37,8 @@ def candidates(db: Database, pitch: str, profile: Profile) -> list[Fingering]:
     for f in db.candidates(pitch):
         if f.id in profile.excluded_fingerings:
             continue
+        if f.needs_confirmation and not profile.allow_unconfirmed:
+            continue
         if LEVEL_ORDER[f.level] > LEVEL_ORDER[profile.level]:
             continue
         fingers = {db.keys[k].finger for k in effective_keys(f, pitch)}

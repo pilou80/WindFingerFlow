@@ -25,7 +25,7 @@ def test_index_in_french(client):
 
 def test_process_and_download(client, xml_bytes):
     r = client.post("/process", files={"file": ("a.musicxml", xml_bytes)}, data={"lang": "fr"})
-    assert r.status_code == 200 and "/download/" in r.text and "Fa# alternatif" in r.text
+    assert r.status_code == 200 and "/download/" in r.text and "Sib 1+1" in r.text
     job = r.text.split("/download/")[1].split("/")[0]
     pdf = client.get(f"/download/{job}/pdf")
     assert pdf.status_code == 200 and pdf.content.startswith(b"%PDF")
