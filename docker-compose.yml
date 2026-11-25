@@ -2,9 +2,10 @@ services:
   windfingerflow:
     build: .
     restart: unless-stopped
-    # Bound to localhost: expose it on the tailnet with `tailscale serve`, never publicly.
+    # Bound to localhost and to the Tailscale address only, never to the LAN or the internet.
     ports:
       - "127.0.0.1:8087:8000"
+      - "100.117.66.85:8087:8000"  # tailnet address of pilou-nas
     volumes:
       - wff-work:/work
 volumes:
