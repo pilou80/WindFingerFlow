@@ -2,10 +2,11 @@ services:
   windfingerflow:
     build: .
     restart: unless-stopped
-    # Bound to localhost and to the Tailscale address only, never to the LAN or the internet.
+    # Bound to localhost and the Tailscale and LAN addresses of the NAS, never to the internet.
     ports:
       - "127.0.0.1:8087:8000"
       - "100.117.66.85:8087:8000"  # tailnet address of pilou-nas
+      - "192.168.1.22:8087:8000"  # LAN address of pilou-nas (static DHCP lease)
     volumes:
       - wff-work:/work
 volumes:
