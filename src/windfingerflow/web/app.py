@@ -16,10 +16,12 @@ from fastapi import FastAPI, Form, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
 
+from windfingerflow.fiati import FONTS_DIR
 from windfingerflow.instrument import SAX_OFFSET
 from windfingerflow.models import Finger, Level
 from windfingerflow.pipeline import run
 from windfingerflow.profile import Profile
+from windfingerflow.render import render_preview_pages
 from windfingerflow.score import load_score
 from windfingerflow.score_parts import default_part, list_parts
 from windfingerflow.web.strings import pick
@@ -128,16 +130,19 @@ def process(
         return error("err_parse")
     finally:
         source.unlink(missing_ok=True)
-    rows = [
-        (e.pitch, f.name.fr if lang == "fr" and f.name.fr else f.name.en if f else "-")
-        for e, f in zip(result.events, result.chosen, strict=True)
-        if f
-    ]
+    try:
+        previews = []
+        for n, (svg, w, h) in enumerate(render_preview_pages(folder / "annotated.musicxml"), 1):
+            (folder / f"preview-{n}.svg").write_text(svg, encoding="utf-8")
+            previews.append((n, round(w), round(h)))
+    except Exception:
+        log.exception("preview failed")
+        previews = []
     return _page(
         request,
         "result.html",
         job=job,
-        rows=rows,
+        previews=previews,
         notes=len(result.events),
         annotations=result.annotations,
         warnings=result.warnings,
@@ -168,6 +173,26 @@ def parts(request: Request, file: UploadFile):
     finally:
         shutil.rmtree(folder, ignore_errors=True)
     return _page(request, "parts.html", parts=info, default=default_part(info))
+
+
+PREVIEW_HEADERS = {
+    # The SVG is built from user-supplied scores: no script, no external loads, fonts from us only.
+    "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; font-src 'self'",
+    "X-Content-Type-Options": "nosniff",
+}
+
+
+@app.get("/preview/{job}/{page}")
+def preview(job: str, page: int):
+    path = WORKDIR / job / f"preview-{page}.svg"
+    if not _ID_RE.match(job) or not path.is_file():
+        raise HTTPException(404)
+    return FileResponse(path, media_type="image/svg+xml", headers=PREVIEW_HEADERS)
+
+
+@app.get("/fonts/fiati-regular.ttf")
+def fiati_font():
+    return FileResponse(FONTS_DIR / "fiati-regular.ttf", media_type="font/ttf")
 
 
 @app.get("/download/{job}/{kind}")

@@ -11,10 +11,8 @@
 <h3>{{ t.warnings }}</h3>
 <ul>{% for w in warnings %}<li>{{ w }}</li>{% endfor %}</ul>
 {% endif %}
-{% if rows %}
-<table>
-  <tr><th>{{ t.pitch }}</th><th>{{ t.fingering }}</th></tr>
-  {% for pitch, name in rows %}<tr><td>{{ pitch }}</td><td>{{ name }}</td></tr>{% endfor %}
-</table>
-{% endif %}
+{% for n, w, h in previews %}
+<p><a class="dl" href="/preview/{{ job }}/{{ n }}" target="_blank" rel="noopener">{{ t.preview }} {{ n }}/{{ previews|length }} - {{ t.open_tab }}</a></p>
+<iframe src="/preview/{{ job }}/{{ n }}" title="{{ t.preview }} {{ n }}" loading="lazy" style="width:100%;aspect-ratio:{{ w }}/{{ h }};border:1px solid var(--line);background:#fff"></iframe>
+{% endfor %}
 {% endif %}

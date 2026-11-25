@@ -64,10 +64,37 @@ def _tag_fiati(svg: str) -> str:
     return _PUA_TSPAN.sub(fix, svg)
 
 
-def render_svg_pages(musicxml: str | Path) -> list[str]:
+PREVIEW_OPTIONS = {**PAGE_OPTIONS, "adjustPageHeight": True}
+_SVG_ROOT = re.compile(r'<svg width="([\d.]+)px" height="([\d.]+)px"')
+_PREVIEW_STYLE = (
+    "<style>@font-face{font-family:Fiati;src:url(/fonts/fiati-regular.ttf)}"
+    "svg{background:#fff}</style>"
+)
+
+
+def render_preview_pages(musicxml: str | Path) -> list[tuple[str, float, float]]:
+    """Responsive SVG pages for the browser, as (svg, width, height).
+
+    The root size is replaced by a viewBox so the page scales to its container, and the Fiati
+    font is loaded through @font-face (the SVG is shown in an iframe, never inlined).
+    """
+    out = []
+    for svg in render_svg_pages(musicxml, PREVIEW_OPTIONS):
+        m = _SVG_ROOT.search(svg)
+        if not m:
+            raise ValueError("unexpected SVG root from Verovio")
+        w, h = float(m.group(1)), float(m.group(2))
+        svg = svg[: m.start()] + f'<svg viewBox="0 0 {w:g} {h:g}"' + svg[m.end() :]
+        end_of_root = svg.index(">", m.start())
+        svg = svg[: end_of_root + 1] + _PREVIEW_STYLE + svg[end_of_root + 1 :]
+        out.append((svg, w, h))
+    return out
+
+
+def render_svg_pages(musicxml: str | Path, options: dict | None = None) -> list[str]:
     tk = verovio.toolkit()
     tk.setResourcePath(RESOURCE_PATH)
-    tk.setOptions(PAGE_OPTIONS)
+    tk.setOptions(options or PAGE_OPTIONS)
     if not tk.loadFile(str(musicxml)):
         raise ValueError(f"Verovio could not read {musicxml}")
     return [_tag_fiati(tk.renderToSVG(page)) for page in range(1, tk.getPageCount() + 1)]
