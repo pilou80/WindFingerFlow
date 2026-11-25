@@ -1,0 +1,31 @@
+# Bb / A# alternates (written pitches, lower register; octave key added by register rules).
+# Draft from design notes §12, rewritten in our own words. Intonation still to measure.
+instrument_family: saxophone
+fingerings:
+  - id: bb.bis
+    name: { en: "Bis Bb", fr: "Sib bis" }
+    pitches: [Bb4, Bb5]
+    keys: [lh.b, lh.bis, lh.a]
+    category: standard
+    level: beginner
+    use: "Flat keys, when no B natural is nearby."
+    avoid: "B to Bb movements, where the index finger must roll between two keys."
+    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
+  - id: bb.one_one
+    name: { en: "1 and 1 Bb", fr: "Sib 1+1" }
+    pitches: [Bb4, Bb5]
+    keys: [lh.b, lh.a, rh.f]
+    category: alternate
+    level: beginner
+    use: "Versatile; the right hand is already in place."
+    avoid: "Fast passages where R1 has to move quickly."
+    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
+  - id: bb.side
+    name: { en: "Side Bb", fr: "Sib de côté" }
+    pitches: [Bb4, Bb5]
+    keys: [lh.b, lh.a, rh.side_bb]
+    category: alternate
+    level: beginner
+    use: "Chromatic B-Bb-B passages, A-Bb trills."
+    avoid: "Very flat keys when a simpler option exists."
+    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]

@@ -1,0 +1,22 @@
+# F# / Gb alternates. Draft from design notes §12, rewritten in our own words.
+instrument_family: saxophone
+fingerings:
+  - id: fs.std
+    name: { en: "Standard F#", fr: "Fa# standard" }
+    pitches: [F#4, F#5]
+    keys: [lh.b, lh.a, lh.g, rh.e]
+    category: standard
+    level: beginner
+    intonation: reference
+    use: "General case."
+    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
+  - id: fs.alt
+    name: { en: "Alternate F#", fr: "Fa# alternatif" }
+    pitches: [F#4, F#5]
+    keys: [lh.b, lh.a, lh.g, rh.f, rh.alt_fs]
+    category: alternate
+    level: beginner
+    use: "F to F# movements, F-F# trills, chromatic E-F-F# lines."
+    avoid: "Slow exposed notes until intonation has been checked."
+    needs_confirmation: true
+    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
