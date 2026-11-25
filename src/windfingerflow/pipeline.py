@@ -34,6 +34,7 @@ def run(
     profile: Profile | None = None,
     lang: str = "en",
     all_notes: bool = False,
+    style: str = "text",
     musicxml_out: str | Path | None = None,
     pdf_out: str | Path | None = None,
 ) -> Result:
@@ -46,7 +47,7 @@ def run(
     chosen = choose(db, [Step(e.pitch, e.duration) for e in events], profile)
     result = Result(events, chosen, range_warnings(events), score=score)
     if musicxml_out or pdf_out:
-        result.annotations = annotate(events, chosen, lang, all_notes)
+        result.annotations = annotate(events, chosen, lang, all_notes, style)
         xml = Path(musicxml_out) if musicxml_out else Path(str(pdf_out) + ".musicxml")
         score.write("musicxml", fp=str(xml))
         if pdf_out:

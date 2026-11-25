@@ -27,9 +27,11 @@
 <p class="tag">{{ t.tagline }}</p>
 <form hx-post="/process" hx-target="#result" hx-encoding="multipart/form-data" hx-indicator="#busy">
   <label for="file">{{ t.file }}</label>
-  <input type="file" id="file" name="file" accept=".musicxml,.xml,.mxl,.mei,.krn,.abc,.mid,.midi" required>
-  <label for="part">{{ t.part }}</label>
-  <input type="number" id="part" name="part" min="0" value="0">
+  <input type="file" id="file" name="file" hx-post="/parts" hx-trigger="change" hx-target="#parts" hx-encoding="multipart/form-data" hx-include="this" hx-indicator="#busy" accept=".musicxml,.xml,.mxl,.mei,.krn,.abc,.mid,.midi" required>
+  <div id="parts">
+    <label for="part">{{ t.part }}</label>
+    <input type="number" id="part" name="part" min="0" value="0">
+  </div>
   <label for="sax">{{ t.sax }}</label>
   <select id="sax" name="sax">
     <option value="">{{ t.sax_written }}</option>
@@ -37,6 +39,8 @@
   </select>
   <label for="level">{{ t.level }}</label>
   <select id="level" name="level">{% for l in levels %}<option value="{{ l }}">{{ l }}</option>{% endfor %}</select>
+  <label for="style">{{ t.style }}</label>
+  <select id="style" name="style"><option value="text">{{ t.style_text }}</option><option value="diagram">{{ t.style_diagram }}</option><option value="both">{{ t.style_both }}</option></select>
   <label for="lang">{{ t.annot_lang }}</label>
   <select id="lang" name="lang"><option value="en">English</option><option value="fr">Français</option></select>
   <label>{{ t.unavailable }}</label>

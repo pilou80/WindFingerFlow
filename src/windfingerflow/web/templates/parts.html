@@ -1,0 +1,12 @@
+{% if parts %}
+<label for="part">{{ t.part }}</label>
+<select id="part" name="part">
+  {% for p in parts %}
+  <option value="{{ p.index }}" {% if p.index == default %}selected{% endif %}>{{ p.index }} - {{ p.name }} ({{ p.notes }} {{ t.notes }}{% if p.is_sax %}, sax{% endif %})</option>
+  {% endfor %}
+</select>
+{% else %}
+{% if error %}<p class="err">{{ error }}</p>{% endif %}
+<label for="part">{{ t.part }}</label>
+<input type="number" id="part" name="part" min="0" value="0">
+{% endif %}

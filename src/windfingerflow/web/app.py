@@ -20,6 +20,8 @@ from windfingerflow.instrument import SAX_OFFSET
 from windfingerflow.models import Finger, Level
 from windfingerflow.pipeline import run
 from windfingerflow.profile import Profile
+from windfingerflow.score import load_score
+from windfingerflow.score_parts import default_part, list_parts
 from windfingerflow.web.strings import pick
 
 log = logging.getLogger("windfingerflow.web")
@@ -71,6 +73,7 @@ def process(
     exclude: str = Form(""),
     all_notes: bool = Form(False),
     allow_unconfirmed: bool = Form(False),
+    style: str = Form("text"),
 ):
     t = pick(request.headers.get("accept-language"))
 
@@ -88,6 +91,7 @@ def process(
         and sax != ""
         or level not in {lv.value for lv in Level}
         or lang not in {"en", "fr"}
+        or style not in {"text", "diagram", "both"}
         or any(f not in {x.value for x in Finger} for f in unavailable or [])
     ):
         return error("err_parse")
@@ -112,6 +116,7 @@ def process(
             profile=profile,
             lang=lang,
             all_notes=all_notes,
+            style=style,
             musicxml_out=folder / "annotated.musicxml",
             pdf_out=folder / "annotated.pdf",
         )
@@ -136,6 +141,31 @@ def process(
         warnings=result.warnings,
         midi=suffix in {".mid", ".midi"},
     )
+
+
+@app.post("/parts", response_class=HTMLResponse)
+def parts(request: Request, file: UploadFile):
+    """HTMX fragment: the part selector for an uploaded score."""
+    t = pick(request.headers.get("accept-language"))
+    suffix = Path(file.filename or "").suffix.lower()
+    if suffix not in ALLOWED_SUFFIXES:
+        return _page(request, "parts.html", error=t["err_ext"])
+    data = file.file.read(MAX_UPLOAD_BYTES + 1)
+    if len(data) > MAX_UPLOAD_BYTES:
+        return _page(request, "parts.html", error=t["err_size"])
+    _cleanup()
+    folder = WORKDIR / uuid.uuid4().hex
+    folder.mkdir(parents=True)
+    try:
+        source = folder / f"input{suffix}"
+        source.write_bytes(data)
+        info = list_parts(load_score(source))
+    except Exception:
+        log.exception("part listing failed")
+        return _page(request, "parts.html", error=t["err_parse"])
+    finally:
+        shutil.rmtree(folder, ignore_errors=True)
+    return _page(request, "parts.html", parts=info, default=default_part(info))
 
 
 @app.get("/download/{job}/{kind}")
