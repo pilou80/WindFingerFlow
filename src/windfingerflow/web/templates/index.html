@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ t.title }}</title>
+<script src="https://unpkg.com/htmx.org@2.0.4"></script>
+<style>
+  :root { --bg:#fafaf7; --fg:#1d1d1b; --muted:#6b6b66; --accent:#1f5f8b; --card:#fff; --line:#ddd; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#17181a; --fg:#ececea; --muted:#9a9a95; --accent:#7db7e0; --card:#212326; --line:#3a3c40; } }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.5 system-ui, sans-serif; }
+  main { max-width:42rem; margin:0 auto; padding:1.5rem 16px 3rem; }
+  h1 { margin:0 0 .25rem; } p.tag { color:var(--muted); margin-top:0; }
+  form, #result { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:1rem; margin-top:1rem; }
+  label { display:block; margin:.75rem 0 .25rem; font-weight:600; }
+  input[type=text], input[type=number], input[type=file], select { width:100%; box-sizing:border-box; padding:.4rem; font:inherit; background:var(--bg); color:var(--fg); border:1px solid var(--line); border-radius:4px; }
+  .fingers label { display:inline-block; font-weight:400; margin:.1rem .6rem .1rem 0; }
+  button { margin-top:1rem; padding:.55rem 1.2rem; font:inherit; background:var(--accent); color:var(--bg); border:0; border-radius:4px; cursor:pointer; }
+  .htmx-indicator { display:none; margin-left:.6rem; color:var(--muted); } .htmx-request .htmx-indicator { display:inline; }
+  table { border-collapse:collapse; width:100%; } td, th { text-align:left; padding:.2rem .5rem; border-bottom:1px solid var(--line); }
+  .err { color:#c0392b; } a.dl { margin-right:1rem; color:var(--accent); }
+</style>
+</head>
+<body>
+<main>
+<h1>{{ t.title }}</h1>
+<p class="tag">{{ t.tagline }}</p>
+<form hx-post="/process" hx-target="#result" hx-encoding="multipart/form-data" hx-indicator="#busy">
+  <label for="file">{{ t.file }}</label>
+  <input type="file" id="file" name="file" accept=".musicxml,.xml,.mxl,.mei,.krn,.abc,.mid,.midi" required>
+  <label for="part">{{ t.part }}</label>
+  <input type="number" id="part" name="part" min="0" value="0">
+  <label for="sax">{{ t.sax }}</label>
+  <select id="sax" name="sax">
+    <option value="">{{ t.sax_written }}</option>
+    {% for s in saxes %}<option value="{{ s }}">{{ s }}</option>{% endfor %}
+  </select>
+  <label for="level">{{ t.level }}</label>
+  <select id="level" name="level">{% for l in levels %}<option value="{{ l }}">{{ l }}</option>{% endfor %}</select>
+  <label for="lang">{{ t.annot_lang }}</label>
+  <select id="lang" name="lang"><option value="en">English</option><option value="fr">Français</option></select>
+  <label>{{ t.unavailable }}</label>
+  <div class="fingers">{% for f in fingers %}<label><input type="checkbox" name="unavailable" value="{{ f }}"> {{ f }}</label>{% endfor %}</div>
+  <label for="exclude">{{ t.exclude }}</label>
+  <input type="text" id="exclude" name="exclude" placeholder="bb.bis, fs.alt">
+  <label><input type="checkbox" name="all_notes" value="true"> {{ t.all_notes }}</label>
+  <button type="submit">{{ t.go }}</button><span id="busy" class="htmx-indicator">{{ t.working }}</span>
+</form>
+<div id="result" aria-live="polite" hidden></div>
+</main>
+<script>document.body.addEventListener("htmx:afterSwap", e => { if (e.target.id === "result") e.target.hidden = false; });</script>
+</body>
+</html>

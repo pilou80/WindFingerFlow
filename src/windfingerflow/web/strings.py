@@ -1,0 +1,61 @@
+"""UI strings (EN + FR). A gettext catalogue will replace this when more languages arrive."""
+
+STRINGS = {
+    "en": {
+        "title": "WindFingerFlow",
+        "tagline": "Alternate saxophone fingerings for your score.",
+        "file": "Score (MusicXML, MEI, kern, ABC, MIDI)",
+        "part": "Part number (0 = first)",
+        "sax": "Saxophone",
+        "sax_written": "Keep the part as written",
+        "level": "Level",
+        "annot_lang": "Annotation language",
+        "unavailable": "Fingers you cannot use",
+        "exclude": "Fingerings to exclude (ids, comma separated)",
+        "all_notes": "Annotate every note, not only non-standard fingerings",
+        "go": "Analyse",
+        "working": "Working...",
+        "pdf": "Download PDF",
+        "musicxml": "Download MusicXML",
+        "notes": "notes",
+        "annotated": "annotation(s)",
+        "warnings": "Warnings",
+        "pitch": "Pitch",
+        "fingering": "Fingering",
+        "err_ext": "Unsupported file type.",
+        "err_size": "File too large.",
+        "err_parse": "The score could not be read or processed.",
+        "mxl_note": "Midi files lose slurs and articulations.",
+    },
+    "fr": {
+        "title": "WindFingerFlow",
+        "tagline": "Doigtés alternatifs de saxophone pour votre partition.",
+        "file": "Partition (MusicXML, MEI, kern, ABC, MIDI)",
+        "part": "Numéro de partie (0 = première)",
+        "sax": "Saxophone",
+        "sax_written": "Garder la partie telle qu'écrite",
+        "level": "Niveau",
+        "annot_lang": "Langue des annotations",
+        "unavailable": "Doigts inutilisables",
+        "exclude": "Doigtés à exclure (identifiants, séparés par des virgules)",
+        "all_notes": "Annoter toutes les notes, pas seulement les doigtés non standard",
+        "go": "Analyser",
+        "working": "Traitement...",
+        "pdf": "Télécharger le PDF",
+        "musicxml": "Télécharger le MusicXML",
+        "notes": "notes",
+        "annotated": "annotation(s)",
+        "warnings": "Avertissements",
+        "pitch": "Note",
+        "fingering": "Doigté",
+        "err_ext": "Type de fichier non pris en charge.",
+        "err_size": "Fichier trop volumineux.",
+        "err_parse": "La partition n'a pas pu être lue ou traitée.",
+        "mxl_note": "Les fichiers MIDI perdent les liaisons et les articulations.",
+    },
+}
+
+
+def pick(accept_language: str | None) -> dict[str, str]:
+    prefix = (accept_language or "").strip().lower()[:2]
+    return STRINGS["fr" if prefix == "fr" else "en"]

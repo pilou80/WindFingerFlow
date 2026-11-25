@@ -9,6 +9,9 @@ import cairosvg
 import verovio
 from pypdf import PdfWriter
 
+# The resource path is only right on the importing thread; capture it once and reuse it.
+RESOURCE_PATH = verovio.toolkit().getResourcePath()
+
 PAGE_OPTIONS = {
     "pageWidth": 2100,
     "pageHeight": 2970,
@@ -25,6 +28,7 @@ PAGE_OPTIONS = {
 def render_pdf(musicxml: str | Path, pdf: str | Path) -> int:
     """Write ``pdf`` from ``musicxml``; returns the number of pages."""
     tk = verovio.toolkit()
+    tk.setResourcePath(RESOURCE_PATH)
     tk.setOptions(PAGE_OPTIONS)
     if not tk.loadFile(str(musicxml)):
         raise ValueError(f"Verovio could not read {musicxml}")

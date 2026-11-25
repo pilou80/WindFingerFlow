@@ -1,0 +1,20 @@
+{% if error %}
+<p class="err">{{ error }}</p>
+{% else %}
+<p>
+  <a class="dl" href="/download/{{ job }}/pdf">{{ t.pdf }}</a>
+  <a class="dl" href="/download/{{ job }}/musicxml">{{ t.musicxml }}</a>
+</p>
+<p>{{ notes }} {{ t.notes }}, {{ annotations }} {{ t.annotated }}</p>
+{% if midi %}<p>{{ t.mxl_note }}</p>{% endif %}
+{% if warnings %}
+<h3>{{ t.warnings }}</h3>
+<ul>{% for w in warnings %}<li>{{ w }}</li>{% endfor %}</ul>
+{% endif %}
+{% if rows %}
+<table>
+  <tr><th>{{ t.pitch }}</th><th>{{ t.fingering }}</th></tr>
+  {% for pitch, name in rows %}<tr><td>{{ pitch }}</td><td>{{ name }}</td></tr>{% endfor %}
+</table>
+{% endif %}
+{% endif %}

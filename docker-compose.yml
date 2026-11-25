@@ -1,0 +1,11 @@
+services:
+  windfingerflow:
+    build: .
+    restart: unless-stopped
+    # Bound to localhost: expose it on the tailnet with `tailscale serve`, never publicly.
+    ports:
+      - "127.0.0.1:8087:8000"
+    volumes:
+      - wff-work:/work
+volumes:
+  wff-work:
