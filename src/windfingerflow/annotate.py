@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from music21 import expressions
+from music21 import expressions, stream
 
 from windfingerflow.models import Category, Fingering
 from windfingerflow.score import NoteEvent
@@ -22,6 +22,11 @@ def annotate(
         if not all_notes and fingering.category == Category.STANDARD:
             continue
         text = getattr(fingering.name, lang, None) or fingering.name.en
-        event.element.activeSite.insert(event.element.offset, expressions.TextExpression(text))
+        # Insert into the real container (the measure), not the flattened view.
+        container = event.element.getContextByClass(stream.Measure) or event.element.activeSite
+        offset = event.element.getOffsetBySite(container)
+        expression = expressions.TextExpression(text)
+        expression.placement = "above"
+        container.insert(offset, expression)
         count += 1
     return count

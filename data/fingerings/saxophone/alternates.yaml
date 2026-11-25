@@ -1,0 +1,24 @@
+# More alternates (design notes §12 "Additional alternates"), in our own words.
+# Only entries whose keys exist in the catalogue and are clear enough are included.
+# Palm-key and venting alternates still need exact keys and sources.
+instrument_family: saxophone
+fingerings:
+  - id: c.side
+    name: { en: "Side C", fr: "Do latéral" }
+    pitches: [C5, C6]
+    keys: [lh.b, rh.side_c]
+    category: alternate
+    level: advanced
+    intonation: flat
+    use: "Fast passages around B and C, where it avoids moving both hands."
+    avoid: "Slow exposed notes: it is often flatter than the standard fingering."
+    sources: [{ name: "Dawkes, saxophone fingerings: a complete guide to alternatives", url: "https://www.dawkes.co.uk/sound-room/saxophone-fingerings-a-complete-guide-to-alternatives/" }]
+  - id: d.long
+    name: { en: "Long D", fr: "Ré long" }
+    pitches: [D5]
+    keys: [lh.a, lh.palm_d]
+    category: alternate
+    level: advanced
+    use: "Moves between C and D with few fingers changing."
+    needs_confirmation: true
+    sources: [{ name: "Dawkes, saxophone fingerings: a complete guide to alternatives", url: "https://www.dawkes.co.uk/sound-room/saxophone-fingerings-a-complete-guide-to-alternatives/" }]
