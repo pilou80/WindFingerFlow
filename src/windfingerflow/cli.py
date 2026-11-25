@@ -8,9 +8,10 @@ import sys
 from windfingerflow.annotate import annotate
 from windfingerflow.chooser import Step, choose
 from windfingerflow.database import load_database
+from windfingerflow.instrument import SAX_OFFSET
 from windfingerflow.models import Finger, Level
 from windfingerflow.profile import Profile
-from windfingerflow.score import extract_line, load_score
+from windfingerflow.score import extract_line, load_score, range_warnings
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -21,6 +22,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--level", choices=[lv.value for lv in Level], default="beginner")
     ap.add_argument("--exclude", action="append", default=[], help="fingering id to exclude")
     ap.add_argument("--unavailable", action="append", default=[], help="finger, e.g. R2")
+    ap.add_argument("--sax", choices=sorted(SAX_OFFSET), help="convert sounding pitch to this sax")
     ap.add_argument("--lang", default="en", choices=["en", "fr"])
     ap.add_argument("--all-notes", action="store_true", help="annotate standard fingerings too")
     args = ap.parse_args(argv)
@@ -32,8 +34,10 @@ def main(argv: list[str] | None = None) -> int:
         unavailable_fingers={Finger(f) for f in args.unavailable},
     )
     score = load_score(args.score)
-    events = extract_line(score, args.part)
+    events = extract_line(score, args.part, args.sax)
     chosen = choose(db, [Step(e.pitch, e.duration) for e in events], profile)
+    for w in range_warnings(events):
+        print(f"warning: {w}", file=sys.stderr)
     for e, f in zip(events, chosen, strict=True):
         label = f.id if f else "-"
         print(f"{e.pitch:5} {e.duration:5.2f}  {label}")

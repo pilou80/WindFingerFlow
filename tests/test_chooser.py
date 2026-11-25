@@ -43,7 +43,7 @@ def test_fs_bb_fs_avoids_bis(db):
 
 
 def test_note_without_data_breaks_chain(db):
-    assert ids(choose(db, steps("C4", "Bb4"))) == [None, "bb.bis"]
+    assert ids(choose(db, steps("A6", "Bb4"))) == [None, "bb.bis"]
 
 
 def test_tinynotation_end_to_end(db):
