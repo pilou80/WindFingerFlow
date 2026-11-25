@@ -17,6 +17,7 @@ class NoteEvent:
     duration: float  # quarter lengths
     midi: int
     is_chord: bool = False
+    measure: int | None = None
 
 
 def load_score(path: str | Path) -> stream.Score:
@@ -51,7 +52,14 @@ def extract_line(
         sounding = top.midi + to_sounding
         written = sounding + SAX_OFFSET[target_sax] if target_sax else sounding - transposition
         events.append(
-            NoteEvent(el, midi_to_name(written), float(el.quarterLength), written, el.isChord)
+            NoteEvent(
+                el,
+                midi_to_name(written),
+                float(el.quarterLength),
+                written,
+                el.isChord,
+                el.measureNumber,
+            )
         )
     return events
 

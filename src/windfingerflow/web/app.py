@@ -74,6 +74,7 @@ def process(
     all_notes: bool = Form(False),
     allow_unconfirmed: bool = Form(False),
     style: str = Form("text"),
+    appendix: bool = Form(False),
 ):
     t = pick(request.headers.get("accept-language"))
 
@@ -117,6 +118,7 @@ def process(
             lang=lang,
             all_notes=all_notes,
             style=style,
+            appendix=appendix,
             musicxml_out=folder / "annotated.musicxml",
             pdf_out=folder / "annotated.pdf",
         )

@@ -25,6 +25,7 @@ def main(argv: list[str] | None = None) -> int:
         "--allow-unconfirmed", action="store_true", help="also suggest unverified fingerings"
     )
     ap.add_argument("--style", choices=["text", "diagram", "both"], default="text")
+    ap.add_argument("--appendix", action="store_true", help="add detailed pages to the PDF")
     ap.add_argument("--lang", default="en", choices=["en", "fr"])
     ap.add_argument("--all-notes", action="store_true", help="annotate standard fingerings too")
     args = ap.parse_args(argv)
@@ -43,6 +44,7 @@ def main(argv: list[str] | None = None) -> int:
         lang=args.lang,
         all_notes=args.all_notes,
         style=args.style,
+        appendix=args.appendix,
         musicxml_out=args.output,
         pdf_out=args.pdf,
     )

@@ -73,11 +73,13 @@ def render_svg_pages(musicxml: str | Path) -> list[str]:
     return [_tag_fiati(tk.renderToSVG(page)) for page in range(1, tk.getPageCount() + 1)]
 
 
-def render_pdf(musicxml: str | Path, pdf: str | Path) -> int:
+def render_pdf(
+    musicxml: str | Path, pdf: str | Path, extra_svg_pages: list[str] | None = None
+) -> int:
     """Write ``pdf`` from ``musicxml``; returns the number of pages."""
     pages = render_svg_pages(musicxml)
     writer = PdfWriter()
-    for svg in pages:
+    for svg in [*pages, *(extra_svg_pages or [])]:
         buf = io.BytesIO()
         cairosvg.svg2pdf(bytestring=svg.encode("utf-8"), write_to=buf)
         buf.seek(0)

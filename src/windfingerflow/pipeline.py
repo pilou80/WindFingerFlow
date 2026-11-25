@@ -8,6 +8,7 @@ from pathlib import Path
 from music21 import stream
 
 from windfingerflow.annotate import annotate
+from windfingerflow.appendix import appendix_svg_pages, collect_entries
 from windfingerflow.chooser import Step, choose
 from windfingerflow.database import load_database
 from windfingerflow.models import Fingering
@@ -35,6 +36,7 @@ def run(
     lang: str = "en",
     all_notes: bool = False,
     style: str = "text",
+    appendix: bool = False,
     musicxml_out: str | Path | None = None,
     pdf_out: str | Path | None = None,
 ) -> Result:
@@ -51,7 +53,10 @@ def run(
         xml = Path(musicxml_out) if musicxml_out else Path(str(pdf_out) + ".musicxml")
         score.write("musicxml", fp=str(xml))
         if pdf_out:
-            result.pages = render_pdf(xml, pdf_out)
+            extra = []
+            if appendix:
+                extra = appendix_svg_pages(collect_entries(events, chosen), lang)
+            result.pages = render_pdf(xml, pdf_out, extra)
             if not musicxml_out:
                 xml.unlink(missing_ok=True)
     return result
