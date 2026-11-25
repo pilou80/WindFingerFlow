@@ -1,0 +1,18 @@
+# WindFingerFlow
+
+Reads a score (MusicXML first), analyses the melodic line and **suggests alternate woodwind
+fingerings**, then returns an **annotated PDF** and an annotated MusicXML.
+
+Starts with the saxophone; the instrument is a data definition so other woodwinds can follow.
+
+> Status: pre-development. See [docs/design-notes.md](docs/design-notes.md).
+
+## Licenses
+
+- Code: AGPL-3.0 (see `LICENSE`)
+- Data (fingering and instrument databases in `data/`): CC BY-SA 4.0
+- Fonts in `fonts/` keep their own licenses (Fiati: OFL 1.1)
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). Contributions use the DCO (`Signed-off-by`), no CLA.
