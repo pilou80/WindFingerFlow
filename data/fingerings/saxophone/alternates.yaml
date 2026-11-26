@@ -18,7 +18,7 @@ fingerings:
     pitches: [D5]
     keys: [lh.a, lh.palm_d]
     category: alternate
-    level: advanced
+    level: expert  # pilou cannot play it yet, which does not make it wrong (2026-11-26)
     use: "Moves between C and D with few fingers changing."
     needs_confirmation: true
     sources: [{ name: "Dawkes, saxophone fingerings: a complete guide to alternatives", url: "https://www.dawkes.co.uk/sound-room/saxophone-fingerings-a-complete-guide-to-alternatives/" }]

@@ -41,7 +41,7 @@ def test_unavailable_side_finger_falls_back_to_the_fork():
     db = load_database()
     # the palm-key E needs the side E key (right index); the fork E does not
     chosen = choose(
-        db, [Step("E6", 1.0)], Profile(level=Level.ADVANCED, unavailable_fingers={Finger.R1})
+        db, [Step("E6", 1.0)], Profile(level=Level.EXPERT, unavailable_fingers={Finger.R1})
     )
     assert chosen[0].id == "e6.fork"
 

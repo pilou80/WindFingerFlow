@@ -54,7 +54,7 @@ fingerings:
     pitches: [E6]
     keys: [lh.front_f, lh.a, lh.g]
     category: alternate
-    level: advanced
+    level: expert  # pilou cannot play it yet, which does not make it wrong (2026-11-26)
     use: "Without the palm keys. Works on soprano, alto and tenor; on baritone and some tenors add the E key (R2) to bring it in tune."
     sources: [{ name: "Sax Gourmet, Using the High F# Key (P. Coats)", url: "https://www.saxgourmet.com/?p=177" }]
   - id: f6.front
