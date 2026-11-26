@@ -15,4 +15,4 @@ Starts with the saxophone; the instrument is a data definition so other woodwind
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). Contributions use the DCO (`Signed-off-by`), no CLA.
+See [CONTRIBUTING.md](CONTRIBUTING.md). Coding agents (LLMs): start with [AGENTS.md](AGENTS.md). Contributions use the DCO (`Signed-off-by`), no CLA.
