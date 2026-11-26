@@ -19,8 +19,8 @@ def test_bb_candidates(db):
 
 
 def test_derived_fingers(db):
-    assert db.fingers_for(db.fingerings["bb.bis"]) == {Finger.L1, Finger.L2}
-    assert db.fingers_for(db.fingerings["bb.side"]) == {Finger.L1, Finger.L2, Finger.R1}
+    assert db.fingers_for(db.fingerings["bb.bis"]) == {Finger.L1}  # B + bis key, both by the index
+    assert db.fingers_for(db.fingerings["bb.side"]) == {Finger.L1, Finger.R1}
     assert db.fingers_for(db.fingerings["fs.std"]) == {
         Finger.L1,
         Finger.L2,
