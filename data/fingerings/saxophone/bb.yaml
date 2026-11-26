@@ -11,7 +11,7 @@ fingerings:
     validated: true
     use: "Flat keys, when no B natural is nearby."
     avoid: "B to Bb movements, where the index finger must roll between two keys."
-    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Corrected by the saxophonist (pilou), 2026-11-26: no A key" }]
+    sources: [{ name: "Dawkes, Saxophone fingerings ultimate guide (A. Penman)", url: "https://www.dawkes.co.uk/sound-room/saxophone-fingerings-ultimate-guide/" }, { name: "Corrected by the saxophonist (pilou), 2026-11-26: no A key" }]
   - id: bb.one_one
     name: { en: "1 and 1 Bb", fr: "Sib 1+1" }
     pitches: [Bb4, Bb5]
@@ -20,7 +20,7 @@ fingerings:
     level: experimental  # judged not reliable by the saxophonist (pilou, 2026-11-26)
     use: "Versatile; the right hand is already in place."
     avoid: "Fast passages where R1 has to move quickly."
-    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
+    sources: [{ name: "UNVERIFIED: kept from the early design-notes draft; no page read describes a 1 and 1 Bb key list" }, { name: "To check: Dawkes complete guide, section 1 Middle Bb (flute-style Bb)", url: "https://www.dawkes.co.uk/sound-room/saxophone-fingerings-a-complete-guide-to-alternatives/" }, { name: "To check: Woodwind Fingering Guide, first octave chart, entry 1Bb (image only)", url: "https://www.wfg.woodwind.org/sax/sax_alt_1.html" }]
   - id: bb.side
     name: { en: "Side Bb", fr: "Sib de côté" }
     pitches: [Bb4, Bb5]
@@ -30,4 +30,4 @@ fingerings:
     validated: true
     use: "Chromatic B-Bb-B passages, A-Bb trills."
     avoid: "Very flat keys when a simpler option exists."
-    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Validated by the saxophonist (pilou), 2026-11-26: with the A key" }]
+    sources: [{ name: "Dawkes, Saxophone fingerings ultimate guide (A. Penman)", url: "https://www.dawkes.co.uk/sound-room/saxophone-fingerings-ultimate-guide/" }, { name: "Validated by the saxophonist (pilou), 2026-11-26: with the A key" }]
