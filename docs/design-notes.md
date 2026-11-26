@@ -522,6 +522,10 @@ Listed from memory and NOT in the data yet: no key combination is written until 
 
 ---
 
+### To do: photos of the keys on the keys page (asked 2026-11-26)
+
+Show a photo of each key on the "Saxophone keys and their names" page. Either find freely licensed images (CC0, public domain or CC BY; avoid NonCommercial / NoDerivs, and check share-alike against the project licence) or have the saxophonist take the photos. Store the author and licence of each image next to it.
+
 ## 15. References
 - music21 — https://github.com/cuthbertLab/music21 · https://www.music21.org/music21docs/
 - partitura — https://github.com/CPJKU/partitura
