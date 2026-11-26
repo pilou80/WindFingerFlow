@@ -4,22 +4,17 @@
 instrument_family: saxophone
 fingerings:
   - id: c.side
-    name: { en: "Side C", fr: "Do latéral" }
     pitches: [C5, C6]
     keys: [lh.b, rh.side_c]
     category: alternate
     level: advanced
     validated: true
     intonation: flat
-    use: "Fast passages around B and C, where it avoids moving both hands."
-    avoid: "Slow exposed notes: it is often flatter than the standard fingering."
     sources: [{ name: "Dawkes, saxophone fingerings: a complete guide to alternatives", url: "https://www.dawkes.co.uk/sound-room/saxophone-fingerings-a-complete-guide-to-alternatives/" }]
   - id: d.long
-    name: { en: "Long D", fr: "Ré long" }
     pitches: [D5]
     keys: [lh.a, lh.palm_d]
     category: alternate
     level: expert  # pilou cannot play it yet, which does not make it wrong (2026-11-26)
-    use: "Moves between C and D with few fingers changing."
     needs_confirmation: true
     sources: [{ name: "Dawkes, saxophone fingerings: a complete guide to alternatives", url: "https://www.dawkes.co.uk/sound-room/saxophone-fingerings-a-complete-guide-to-alternatives/" }]

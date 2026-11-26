@@ -22,6 +22,7 @@ from windfingerflow.chart import PAGE_W as CHART_W
 from windfingerflow.chart import chart_svg_pages
 from windfingerflow.database import load_database
 from windfingerflow.fiati import FONTS_DIR
+from windfingerflow.i18n import language_names, languages, pick_language
 from windfingerflow.instrument import SAX_OFFSET
 from windfingerflow.keyschart import PAGE_H as KEYS_H
 from windfingerflow.keyschart import PAGE_W as KEYS_W
@@ -57,7 +58,9 @@ def _cleanup() -> None:
 
 def _page(request: Request, name: str, **context):
     t = pick(request.headers.get("accept-language"))
-    return templates.TemplateResponse(request, name, {"t": t, **context})
+    return templates.TemplateResponse(
+        request, name, {"t": t, "languages": language_names(), **context}
+    )
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -68,6 +71,7 @@ def index(request: Request):
         saxes=list(SAX_OFFSET),
         levels=[lv.value for lv in Level],
         fingers=[f.value for f in Finger],
+        lang_default=pick_language(request.headers.get("accept-language")),
     )
 
 
@@ -102,7 +106,7 @@ def process(
         sax not in SAX_OFFSET
         and sax != ""
         or level not in {lv.value for lv in Level}
-        or lang not in {"en", "fr"}
+        or lang not in languages()
         or style not in {"text", "diagram", "both"}
         or any(f not in {x.value for x in Finger} for f in unavailable or [])
     ):
@@ -214,7 +218,7 @@ def font(name: str):
 
 @app.get("/chart", response_class=HTMLResponse)
 def chart_form(request: Request):
-    lang = "fr" if (request.headers.get("accept-language") or "").lower().startswith("fr") else "en"
+    lang = pick_language(request.headers.get("accept-language"))
     return _page(request, "chart.html", levels=[lv.value for lv in Level], lang_default=lang)
 
 
@@ -232,7 +236,7 @@ def chart_make(
     if (
         naming not in {"letters", "solfege", "both"}
         or level not in {lv.value for lv in Level}
-        or lang not in {"en", "fr"}
+        or lang not in languages()
     ):
         return _page(request, "chart_result.html", error=t["err_parse"])
     _cleanup()
@@ -270,14 +274,14 @@ def chart_make(
 
 @app.get("/keys", response_class=HTMLResponse)
 def keys_form(request: Request):
-    lang = "fr" if (request.headers.get("accept-language") or "").lower().startswith("fr") else "en"
+    lang = pick_language(request.headers.get("accept-language"))
     return _page(request, "keys.html", lang_default=lang)
 
 
 @app.post("/keys", response_class=HTMLResponse)
 def keys_make(request: Request, lang: str = Form("en")):
     t = pick(request.headers.get("accept-language"))
-    if lang not in {"en", "fr"}:
+    if lang not in languages():
         return _page(request, "chart_result.html", error=t["err_parse"])
     _cleanup()
     job = uuid.uuid4().hex

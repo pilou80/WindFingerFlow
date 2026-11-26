@@ -61,10 +61,16 @@ class Strict(BaseModel):
 
 
 class I18n(Strict):
-    """Translatable text. English is mandatory, other languages are optional."""
+    """Translatable text: one string per language code, English as the fallback."""
 
-    en: str
-    fr: str | None = None
+    texts: dict[str, str] = Field(default_factory=dict)
+
+    def get(self, lang: str) -> str:
+        return self.texts.get(lang) or self.texts.get("en") or ""
+
+    @property
+    def en(self) -> str:
+        return self.texts.get("en", "")
 
 
 class LilyPondKey(Strict):
@@ -74,14 +80,15 @@ class LilyPondKey(Strict):
 
 class Key(Strict):
     id: KeyId
-    name: I18n
-    abbr_fr: str | None = None  # short French notation (C1, C2, C3, Ta, Tc, Tf)
+    # Texts come from data/<instrument>/translations/<lang>.yaml, not from the key catalogue.
+    name: I18n = Field(default_factory=I18n)
+    abbr: I18n = Field(default_factory=I18n)  # short notation (French: C1, C2, C3, Ta, Tc, Tf)
     finger: Finger
     substitute_fingers: list[Finger] = Field(default_factory=list)
     group: KeyGroup
     lilypond: LilyPondKey | None = None
-    availability: str = "all"
-    description: str = ""
+    availability: I18n = Field(default_factory=I18n)
+    description: I18n = Field(default_factory=I18n)
     needs_confirmation: bool = False  # data still to verify (see design notes §13)
 
 
@@ -100,7 +107,7 @@ class Source(Strict):
 
 class Fingering(Strict):
     id: FingeringId
-    name: I18n
+    name: I18n = Field(default_factory=I18n)  # from the translation files
     pitches: list[Pitch] = Field(min_length=1)  # written pitches
     # Keys pressed in the lower register. The octave key is added by the
     # instrument's register rules, so it is not listed here.
@@ -109,9 +116,8 @@ class Fingering(Strict):
     level: Level
     intonation: Intonation = Intonation.UNKNOWN
     cents: float | None = None
-    tone: str = ""
-    use: str = ""
-    avoid: str = ""
+    use: I18n = Field(default_factory=I18n)  # from the translation files
+    avoid: I18n = Field(default_factory=I18n)
     needs_confirmation: bool = False
     validated: bool = False  # confirmed by the saxophonist (pilou)
     sources: list[Source] = Field(default_factory=list)

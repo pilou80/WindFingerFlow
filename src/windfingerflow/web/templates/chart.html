@@ -30,7 +30,7 @@
   <label for="level">{{ t.level }}</label>
   <select id="level" name="level">{% for l in levels %}<option value="{{ l }}">{{ l }}</option>{% endfor %}</select>
   <label for="lang">{{ t.annot_lang }}</label>
-  <select id="lang" name="lang"><option value="en" {% if t.title and lang_default == "en" %}selected{% endif %}>English</option><option value="fr" {% if lang_default == "fr" %}selected{% endif %}>Français</option></select>
+  <select id="lang" name="lang">{% for code, label in languages.items() %}<option value="{{ code }}"{% if code == lang_default %} selected{% endif %}>{{ label }}</option>{% endfor %}</select>
   <label><input type="checkbox" name="alternates" value="true"> {{ t.chart_alternates }}</label>
   <label><input type="checkbox" name="allow_unconfirmed" value="true"> {{ t.allow_unconfirmed }}</label>
   <label><input type="checkbox" name="altissimo" value="true"> {{ t.altissimo }}</label>

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from xml.sax.saxutils import escape
 
+from windfingerflow.i18n import ui
 from windfingerflow.models import Fingering, Level
 
 TO_TEST = "to_test"
@@ -14,24 +15,6 @@ COLORS = {
     Level.EXPERIMENTAL.value: "#7b1fa2",
     TO_TEST: "#ef6c00",
 }
-LABELS = {
-    "en": {
-        "beginner": "beginner",
-        "advanced": "advanced",
-        "expert": "expert",
-        "experimental": "experimental",
-        TO_TEST: "to test",
-        "title": "Alternate names:",
-    },
-    "fr": {
-        "beginner": "débutant",
-        "advanced": "avancé",
-        "expert": "expert",
-        "experimental": "expérimental",
-        TO_TEST: "à tester",
-        "title": "Noms des alternatives :",
-    },
-}
 
 
 def fingering_color(f: Fingering) -> str:
@@ -41,7 +24,7 @@ def fingering_color(f: Fingering) -> str:
 
 def legend_svg(x: float, y: float, lang: str, size: float = 9) -> str:
     """One line of coloured labels starting at (x, y)."""
-    t = LABELS[lang]
+    t = ui(lang, "legend")
     out = [
         f'<text x="{x:g}" y="{y:g}" font-size="{size:g}" fill="#444">{escape(t["title"])}</text>'
     ]

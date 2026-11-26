@@ -13,7 +13,7 @@ def test_every_catalogue_key_has_its_own_box_with_names():
     text = "".join(keys_svg_pages(db, lang="fr"))
     for key in db.keys.values():
         assert f">{key.id}<" in text
-        assert key.name.en in text and key.name.fr in text.replace("&apos;", "'")
+        assert key.name.en in text and key.name.get("fr") in text.replace("&apos;", "'")
 
 
 def test_each_diagram_shows_only_its_key():
@@ -57,11 +57,11 @@ def test_french_page_has_french_name_in_bold():
     from windfingerflow.database import load_database
     from windfingerflow.keyschart import key_lines
 
-    key = next(k for k in load_database().keys.values() if k.name.fr and k.name.fr != k.name.en)
+    key = next(k for k in load_database().keys.values() if k.name.get("fr") != k.name.en)
     fr = dict(key_lines(key, "fr"))
-    assert fr["name"] == key.name.fr and fr["name2"] == key.name.en
+    assert fr["name"] == key.name.get("fr") and fr["name2"] == key.name.en
     en = dict(key_lines(key, "en"))
-    assert en["name"] == key.name.en and en["name2"] == key.name.fr
+    assert en["name"] == key.name.en and en["name2"] == key.name.get("fr")
 
 
 def test_french_abbreviations_of_the_palm_and_side_keys():
@@ -79,6 +79,6 @@ def test_french_abbreviations_of_the_palm_and_side_keys():
     }
     for key_id, abbr in expected.items():
         key = db.keys[key_id]
-        assert key.abbr_fr == abbr
+        assert key.abbr.get("fr") == abbr
         assert dict(key_lines(key, "fr"))["name"].startswith(f"{abbr} - ")
         assert not dict(key_lines(key, "en"))["name"].startswith(abbr)

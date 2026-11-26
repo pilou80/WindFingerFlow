@@ -1,0 +1,95 @@
+# User interface texts in 'en': web pages, fingering chart, key page, appendix, legend.
+# One file per language; add a new language by adding a file with the same keys
+# (missing texts fall back to English).
+language_name: English
+web:
+  title: WindFingerFlow
+  tagline: Alternate saxophone fingerings for your score.
+  file: Score (MusicXML, MEI, kern, ABC, MIDI)
+  part: Part number (0 = first)
+  sax: Saxophone
+  sax_written: Keep the part as written
+  level: Level
+  annot_lang: Annotation language
+  unavailable: Fingers you cannot use
+  exclude: Fingerings to exclude (ids, comma separated)
+  all_notes: Annotate every note, not only non-standard fingerings
+  allow_unconfirmed: Also suggest fingerings still awaiting verification
+  altissimo: Include altissimo (G6 to C7, unverified fingerings)
+  style: Annotation style
+  style_text: Text
+  style_diagram: Fingering diagram
+  style_both: Text and diagram
+  appendix: Add detailed pages for the alternate fingerings used
+  preview: Preview
+  open_tab: Open full size
+  chart_link: Fingering chart for the whole range
+  chart_title: Fingering chart
+  chart_tagline: Every note natural, flat, sharp, double sharp and double flat, in written pitch. Notes that sound
+    the same share a cell.
+  naming: Note names
+  naming_letters: Letters (C D E...)
+  naming_solfege: Solfege (Do Ré Mi...)
+  naming_both: 'Both: Do Ré Mi, with C D E underneath'
+  chart_alternates: Also show the alternate fingerings
+  chart_go: Generate the chart
+  keys_link: Saxophone keys and their names
+  keys_title: Keys and their names
+  keys_tagline: Every key of the catalogue drawn alone on the diagram, with its identifier, names and finger.
+  keys_go: Generate the key page
+  go: Analyse
+  working: Working...
+  pdf: Download PDF
+  musicxml: Download MusicXML
+  notes: notes
+  annotated: annotation(s)
+  warnings: Warnings
+  pitch: Pitch
+  fingering: Fingering
+  err_ext: Unsupported file type.
+  err_size: File too large.
+  err_parse: The score could not be read or processed.
+  mxl_note: Midi files lose slurs and articulations.
+chart:
+  title: Saxophone fingering chart (written pitch)
+  nodata: no data
+  note: Notes that sound the same share a box. Altissimo (above F#6) only when asked. Alternates follow the standard
+    fingering, with their name.
+keys_page:
+  title: Saxophone keys and their names
+  finger: Finger
+  group: Group
+  availability: Available on
+  confirm: '! to confirm'
+  legend: 'Fingers: L1-L4 / R1-R4 = index to little finger, left / right hand; LT = left thumb. Each diagram shows
+    only the key named next to it.'
+  groups:
+    main: main
+    palm: palm
+    side: side
+    pinky: pinky
+    thumb: thumb
+    octave: octave
+appendix:
+  title: Alternate fingerings used
+  bars: Bars
+  level: Level
+  intonation: Intonation
+  use: Use
+  avoid: Avoid
+  unconfirmed: Awaiting verification
+  sharp: tends to be sharp
+  flat: tends to be flat
+  in_tune: in tune
+  reference: reference
+  beginner: beginner
+  advanced: advanced
+  expert: expert
+  experimental: experimental
+legend:
+  beginner: beginner
+  advanced: advanced
+  expert: expert
+  experimental: experimental
+  to_test: to test
+  title: 'Alternate names:'

@@ -8,6 +8,7 @@ from xml.sax.saxutils import escape
 from windfingerflow.buildinfo import add_watermark
 from windfingerflow.database import Database
 from windfingerflow.fiati import FONT_FAMILY, diagram_markup
+from windfingerflow.i18n import ui
 from windfingerflow.models import Key
 
 PAGE_W, PAGE_H = 1123, 794  # A4 landscape at 96 dpi
@@ -23,61 +24,22 @@ TEXT_X = 62  # text column, to the right of the diagram
 WRAP_CHARS = 44
 LINE_H = 14
 
-TEXT = {
-    "en": {
-        "title": "Saxophone keys and their names",
-        "finger": "Finger",
-        "group": "Group",
-        "availability": "Available on",
-        "confirm": "! to confirm",
-        "legend": "Fingers: L1-L4 / R1-R4 = index to little finger, left / right hand; LT = left thumb. "
-        "Each diagram shows only the key named next to it.",
-        "groups": {
-            "main": "main",
-            "palm": "palm",
-            "side": "side",
-            "pinky": "pinky",
-            "thumb": "thumb",
-            "octave": "octave",
-        },
-    },
-    "fr": {
-        "title": "Clés du saxophone et leur nom",
-        "finger": "Doigt",
-        "group": "Groupe",
-        "availability": "Présente sur",
-        "confirm": "! à confirmer",
-        "legend": "Doigts : L1-L4 / R1-R4 = index à auriculaire, main gauche / droite ; LT = pouce gauche. "
-        "Chaque diagramme montre seulement la clé nommée à côté.",
-        "groups": {
-            "main": "principale",
-            "palm": "paume",
-            "side": "latérale",
-            "pinky": "auriculaire",
-            "thumb": "pouce",
-            "octave": "octave",
-        },
-    },
-}
-
 
 def key_lines(key: Key, lang: str) -> list[tuple[str, str]]:
     """Text lines of a key box as (style, text); style is one of id, name, name2, info, small, flag."""
-    t = TEXT[lang]
-    # The name in the page language is the bold one, the other language follows in italics.
-    first, second = (
-        (key.name.fr or key.name.en, key.name.en)
-        if lang == "fr"
-        else (key.name.en, key.name.fr or "")
-    )
-    if lang == "fr" and key.abbr_fr:
-        first = f"{key.abbr_fr} - {first}"
+    t = ui(lang, "keys_page")
+    # The name in the page language is the bold one; the other language follows in italics.
+    first = key.name.get(lang)
+    second = key.name.get("fr") if lang == "en" else key.name.get("en")
+    abbr = key.abbr.get(lang)
+    if abbr:
+        first = f"{abbr} - {first}"
     lines = [("id", key.id), ("name", first), ("name2", second)]
     lines.append(
         ("info", f"{t['finger']} {key.finger.value} - {t['group']}: {t['groups'][key.group.value]}")
     )
-    lines.append(("info", f"{t['availability']}: {key.availability}"))
-    for part in textwrap.wrap(key.description, WRAP_CHARS):
+    lines.append(("info", f"{t['availability']}: {key.availability.get(lang)}"))
+    for part in textwrap.wrap(key.description.get(lang), WRAP_CHARS):
         lines.append(("small", part))
     if key.needs_confirmation:
         lines.append(("flag", t["confirm"]))
@@ -135,7 +97,7 @@ def _paginate(keys: list[Key], lang: str):
 def keys_svg_pages(
     db: Database, *, lang: str = "en", responsive: bool = False, watermark: str | None = None
 ) -> list[str]:
-    t = TEXT[lang]
+    t = ui(lang, "keys_page")
     pages = []
     for page_rows in _paginate(list(db.keys.values()), lang):
         body = [

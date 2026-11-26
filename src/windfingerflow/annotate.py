@@ -42,7 +42,7 @@ def annotate(
             diagram.style.fontFamily = FONT_FAMILY
             _add(event, diagram)
         if style in ("text", "both"):
-            text = getattr(fingering.name, lang, None) or fingering.name.en
+            text = fingering.name.get(lang)
             _add(event, expressions.TextExpression(text))
         count += 1
     return count

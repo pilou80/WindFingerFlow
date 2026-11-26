@@ -8,6 +8,7 @@ from xml.sax.saxutils import escape
 
 from windfingerflow.chooser import effective_keys
 from windfingerflow.fiati import FONT_FAMILY, diagram_markup
+from windfingerflow.i18n import ui
 from windfingerflow.legend import fingering_color, legend_svg
 from windfingerflow.models import Category, Fingering
 from windfingerflow.score import NoteEvent
@@ -17,43 +18,6 @@ BLOCK_H = 300
 BLOCKS_PER_PAGE = 3
 MARGIN = 60
 DIAGRAM_SIZE = 120
-
-LABELS = {
-    "en": {
-        "title": "Alternate fingerings used",
-        "bars": "Bars",
-        "level": "Level",
-        "intonation": "Intonation",
-        "use": "Use",
-        "avoid": "Avoid",
-        "unconfirmed": "Awaiting verification",
-        "sharp": "tends to be sharp",
-        "flat": "tends to be flat",
-        "in_tune": "in tune",
-        "reference": "reference",
-        "beginner": "beginner",
-        "advanced": "advanced",
-        "expert": "expert",
-        "experimental": "experimental",
-    },
-    "fr": {
-        "title": "Doigtés alternatifs utilisés",
-        "bars": "Mesures",
-        "level": "Niveau",
-        "intonation": "Intonation",
-        "use": "Usage",
-        "avoid": "À éviter",
-        "unconfirmed": "En attente de vérification",
-        "sharp": "tend à être haut",
-        "flat": "tend à être bas",
-        "in_tune": "juste",
-        "reference": "référence",
-        "beginner": "débutant",
-        "advanced": "avancé",
-        "expert": "expert",
-        "experimental": "expérimental",
-    },
-}
 
 
 @dataclass
@@ -95,9 +59,9 @@ def _lines(text: str, width: int = 52) -> list[str]:
 
 
 def _block(entry: Entry, top: int, lang: str) -> str:
-    t = LABELS[lang]
+    t = ui(lang, "appendix")
     f = entry.fingering
-    name = getattr(f.name, lang, None) or f.name.en
+    name = f.name.get(lang)
     glyphs = diagram_markup(effective_keys(f, entry.pitch))
     x_text = MARGIN + 200
     out = [
@@ -115,10 +79,10 @@ def _block(entry: Entry, top: int, lang: str) -> str:
         extra = f" ({f.cents:+g} cents)" if f.cents is not None else ""
         meta.append(f"{t['intonation']}: {t[f.intonation.value]}{extra}")
     lines = [" - ".join(meta)]
-    if f.use:
-        lines += _lines(f"{t['use']}: {f.use}")
-    if f.avoid:
-        lines += _lines(f"{t['avoid']}: {f.avoid}")
+    if f.use.get(lang):
+        lines += _lines(f"{t['use']}: {f.use.get(lang)}")
+    if f.avoid.get(lang):
+        lines += _lines(f"{t['avoid']}: {f.avoid.get(lang)}")
     lines += _lines(f"{t['bars']}: {format_bars(entry.bars)}")
     if f.needs_confirmation:
         lines.append(f"! {t['unconfirmed']}")
@@ -139,7 +103,7 @@ def appendix_svg_pages(entries: list[Entry], lang: str = "en") -> list[str]:
         body = [
             (
                 f'<text x="{MARGIN}" y="70" font-size="30" font-weight="bold">'
-                f"{escape(LABELS[lang]['title'])}</text>"
+                f"{escape(ui(lang, 'appendix')['title'])}</text>"
             )
         ]
         body.append(legend_svg(MARGIN, 92, lang, size=11))

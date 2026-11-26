@@ -6,56 +6,44 @@
 instrument_family: saxophone
 fingerings:
   - id: g6.alt
-    name: { en: "High G (front F + side Bb)", fr: "Sol aigu (Fa avant + Sib côté)" }
     pitches: [G6]
     keys: [lh.front_f, rh.side_bb]
     category: alternate
     level: experimental
     needs_confirmation: true
-    use: "Altissimo. To test: the response depends a lot on the instrument and the mouthpiece."
     sources: [{ name: "WFG altissimo chart, code T f---|Bb---", url: "https://www.wfg.woodwind.org/sax/sax_alt_4.html" }, { name: "UNVERIFIED: not tried by the saxophonist" }]
   - id: gs6.alt
-    name: { en: "High G# (B + G)", fr: "Sol# aigu (Si + Sol)" }
     pitches: [G#6, Ab6]
     keys: [lh.b, lh.g]
     category: alternate
     level: experimental
     needs_confirmation: true
-    use: "Altissimo. To test."
     sources: [{ name: "WFG altissimo chart, code T 1-3|---", url: "https://www.wfg.woodwind.org/sax/sax_alt_4.html" }, { name: "UNVERIFIED: not tried by the saxophonist" }]
   - id: a6.alt
-    name: { en: "High A (A + G)", fr: "La aigu (La + Sol)" }
     pitches: [A6]
     keys: [lh.a, lh.g]
     category: alternate
     level: experimental
     needs_confirmation: true
-    use: "Altissimo. To test."
     sources: [{ name: "WFG altissimo chart, code T -23|---", url: "https://www.wfg.woodwind.org/sax/sax_alt_4.html" }, { name: "UNVERIFIED: not tried by the saxophonist" }]
   - id: bb6.alt
-    name: { en: "High Bb (G)", fr: "Sib aigu (Sol)" }
     pitches: [Bb6, A#6]
     keys: [lh.g]
     category: alternate
     level: experimental
     needs_confirmation: true
-    use: "Altissimo. To test."
     sources: [{ name: "WFG altissimo chart, code T --3|---", url: "https://www.wfg.woodwind.org/sax/sax_alt_5.html" }, { name: "UNVERIFIED: not tried by the saxophonist" }]
   - id: b6.alt
-    name: { en: "High B (all six)", fr: "Si aigu (six doigts)" }
     pitches: [B6]
     keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d]
     category: alternate
     level: experimental
     needs_confirmation: true
-    use: "Altissimo. To test."
     sources: [{ name: "WFG altissimo chart, code T 123|123", url: "https://www.wfg.woodwind.org/sax/sax_alt_5.html" }, { name: "UNVERIFIED: not tried by the saxophonist" }]
   - id: c7.alt
-    name: { en: "High C (B + G, F + D)", fr: "Do aigu (Si+Sol, Fa+Ré)" }
     pitches: [C7]
     keys: [lh.b, lh.g, rh.f, rh.d]
     category: alternate
     level: experimental
     needs_confirmation: true
-    use: "Altissimo. To test."
     sources: [{ name: "WFG altissimo chart, code T 1-3|1-3", url: "https://www.wfg.woodwind.org/sax/sax_alt_5.html" }, { name: "UNVERIFIED: not tried by the saxophonist" }]

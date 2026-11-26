@@ -43,7 +43,7 @@
   <label for="style">{{ t.style }}</label>
   <select id="style" name="style"><option value="text">{{ t.style_text }}</option><option value="diagram">{{ t.style_diagram }}</option><option value="both">{{ t.style_both }}</option></select>
   <label for="lang">{{ t.annot_lang }}</label>
-  <select id="lang" name="lang"><option value="en">English</option><option value="fr">Français</option></select>
+  <select id="lang" name="lang">{% for code, label in languages.items() %}<option value="{{ code }}"{% if code == lang_default %} selected{% endif %}>{{ label }}</option>{% endfor %}</select>
   <label>{{ t.unavailable }}</label>
   <div class="fingers">{% for f in fingers %}<label><input type="checkbox" name="unavailable" value="{{ f }}"> {{ f }}</label>{% endfor %}</div>
   <label for="exclude">{{ t.exclude }}</label>

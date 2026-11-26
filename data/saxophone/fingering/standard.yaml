@@ -4,7 +4,6 @@
 instrument_family: saxophone
 fingerings:
   - id: bb.low
-    name: { en: "Low Bb", fr: "Sib grave" }
     pitches: [Bb3]
     keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d, lh.low_bb, rh.low_c]
     category: standard
@@ -12,7 +11,6 @@ fingerings:
     validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Validated by the saxophonist (pilou), 2026-11-26" }]
   - id: b.low
-    name: { en: "Low B", fr: "Si grave" }
     pitches: [B3]
     keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d, lh.low_b, rh.low_c]
     category: standard
@@ -20,7 +18,6 @@ fingerings:
     validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Validated by the saxophonist (pilou), 2026-11-26" }]
   - id: c.low
-    name: { en: "Low C", fr: "Do grave" }
     pitches: [C4]
     keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d, rh.low_c]
     category: standard
@@ -28,7 +25,6 @@ fingerings:
     validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Validated by the saxophonist (pilou), 2026-11-26" }]
   - id: cs.low
-    name: { en: "Low C#", fr: "Do# grave" }
     pitches: [C#4]
     keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d, lh.low_cs, rh.low_c]
     category: standard
@@ -36,7 +32,6 @@ fingerings:
     validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Validated by the saxophonist (pilou), 2026-11-26" }]
   - id: d.std
-    name: { en: "D", fr: "Ré" }
     pitches: [D4, D5]
     keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d]
     category: standard
@@ -44,7 +39,6 @@ fingerings:
     validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: eb.std
-    name: { en: "Eb", fr: "Mib" }
     pitches: [Eb4, Eb5]
     keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d, rh.low_eb]
     category: standard
@@ -52,7 +46,6 @@ fingerings:
     validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: e.std
-    name: { en: "E", fr: "Mi" }
     pitches: [E4, E5]
     keys: [lh.b, lh.a, lh.g, rh.f, rh.e]
     category: standard
@@ -60,7 +53,6 @@ fingerings:
     validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: f.std
-    name: { en: "F", fr: "Fa" }
     pitches: [F4, F5]
     keys: [lh.b, lh.a, lh.g, rh.f]
     category: standard
@@ -68,7 +60,6 @@ fingerings:
     validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: g.std
-    name: { en: "G", fr: "Sol" }
     pitches: [G4, G5]
     keys: [lh.b, lh.a, lh.g]
     category: standard
@@ -76,7 +67,6 @@ fingerings:
     validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: gs.std
-    name: { en: "G#", fr: "Sol#" }
     pitches: [G#4, G#5]
     keys: [lh.b, lh.a, lh.g, lh.gs]
     category: standard
@@ -84,7 +74,6 @@ fingerings:
     validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: a.std
-    name: { en: "A", fr: "La" }
     pitches: [A4, A5]
     keys: [lh.b, lh.a]
     category: standard
@@ -92,7 +81,6 @@ fingerings:
     validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: b.std
-    name: { en: "B", fr: "Si" }
     pitches: [B4, B5]
     keys: [lh.b]
     category: standard
@@ -100,7 +88,6 @@ fingerings:
     validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: c.std
-    name: { en: "C", fr: "Do" }
     pitches: [C5, C6]
     keys: [lh.a]
     category: standard
@@ -108,7 +95,6 @@ fingerings:
     validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: cs.std
-    name: { en: "C#", fr: "Do#" }
     pitches: [C#5, C#6]
     keys: []
     category: standard

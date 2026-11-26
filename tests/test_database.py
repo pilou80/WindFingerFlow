@@ -10,7 +10,7 @@ def db():
 
 
 def test_every_key_has_english_and_french_names(db):
-    assert all(k.name.en and k.name.fr for k in db.keys.values())
+    assert all(k.name.en and k.name.get("fr") for k in db.keys.values())
 
 
 def test_bb_candidates(db):

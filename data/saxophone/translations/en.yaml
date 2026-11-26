@@ -1,0 +1,182 @@
+# Texts of the saxophone data in 'en': names of the keys and fingerings, descriptions, use / avoid.
+# One file per language; add a new language by adding a file with the same ids.
+keys:
+  lh.octave:
+    name: Octave key
+    availability: all
+  lh.front_f:
+    name: Front F
+    availability: all (not some old models)
+  lh.palm_d:
+    name: Palm D
+    availability: all
+    description: Pressed with the index knuckle; the palm is a substitute.
+  lh.palm_eb:
+    name: Palm Eb
+    availability: all
+    description: Pressed with the first joint of the index.
+  lh.palm_f:
+    name: Palm F
+    availability: all
+    description: Pressed with the first joint of the middle finger.
+  lh.b:
+    name: B key
+    availability: all
+  lh.bis:
+    name: Bis key
+    availability: all
+    description: Pressed with the same finger as the B key.
+  lh.a:
+    name: A key
+    availability: all
+  lh.g:
+    name: G key
+    availability: all
+  lh.gs:
+    name: G# key
+    availability: all
+  lh.low_cs:
+    name: Low C#
+    availability: all
+  lh.low_b:
+    name: Low B
+    availability: all
+  lh.low_bb:
+    name: Low Bb
+    availability: all
+  lh.low_a:
+    name: Low A
+    availability: baritone only
+  rh.f:
+    name: F key
+    availability: all
+  rh.e:
+    name: E key
+    availability: all
+  rh.d:
+    name: D key
+    availability: all
+  rh.alt_fs:
+    name: Alternate F#
+    availability: all
+    description: Used for the alternate F#; fingering validated by pilou (2026-11-26).
+  rh.side_e:
+    name: Side E (high E)
+    availability: all
+  rh.side_c:
+    name: Side C
+    availability: all
+  rh.side_bb:
+    name: Side Bb
+    availability: all
+  rh.high_fs:
+    name: High F# (4th side key)
+    availability: most modern models
+  rh.low_eb:
+    name: Low Eb
+    availability: all
+    description: Upper pinky key of the right hand.
+  rh.low_c:
+    name: Low C
+    availability: all
+    description: Lower pinky key of the right hand. Also pressed for low Bb, B and C# (validated by pilou, 2026-11-26).
+fingerings:
+  c.side:
+    name: Side C
+    use: Fast passages around B and C, where it avoids moving both hands.
+    avoid: 'Slow exposed notes: it is often flatter than the standard fingering.'
+  d.long:
+    name: Long D
+    use: Moves between C and D with few fingers changing.
+  g6.alt:
+    name: High G (front F + side Bb)
+    use: 'Altissimo. To test: the response depends a lot on the instrument and the mouthpiece.'
+  gs6.alt:
+    name: High G# (B + G)
+    use: Altissimo. To test.
+  a6.alt:
+    name: High A (A + G)
+    use: Altissimo. To test.
+  bb6.alt:
+    name: High Bb (G)
+    use: Altissimo. To test.
+  b6.alt:
+    name: High B (all six)
+    use: Altissimo. To test.
+  c7.alt:
+    name: High C (B + G, F + D)
+    use: Altissimo. To test.
+  bb.bis:
+    name: Bis Bb
+    use: Flat keys, when no B natural is nearby.
+    avoid: B to Bb movements, where the index finger must roll between two keys.
+  bb.one_one:
+    name: 1 and 1 Bb
+    use: Versatile; the right hand is already in place.
+    avoid: Fast passages where R1 has to move quickly.
+  bb.side:
+    name: Side Bb
+    use: Chromatic B-Bb-B passages, A-Bb trills.
+    avoid: Very flat keys when a simpler option exists.
+  fs.std:
+    name: Standard F#
+    use: General case.
+  fs.alt:
+    name: Alternate F#
+    use: F to F# movements, F-F# trills, chromatic E-F-F# lines.
+    avoid: Slow exposed notes until intonation has been checked.
+  d6.palm:
+    name: High D (palm)
+    use: 'Palm-key register. Verify with a tuner: palm-key notes vary a lot between instruments.'
+  eb6.palm:
+    name: High Eb (palm)
+    use: 'Palm-key register. Verify with a tuner: palm-key notes vary a lot between instruments.'
+  e6.palm:
+    name: High E (palm)
+    use: 'Palm-key register. Verify with a tuner: palm-key notes vary a lot between instruments.'
+  f6.palm:
+    name: High F (palm)
+    use: 'Palm-key register. Verify with a tuner: palm-key notes vary a lot between instruments.'
+  fs6.palm:
+    name: High F# (palm)
+    use: 'Palm-key register. Verify with a tuner: palm-key notes vary a lot between instruments.'
+  e6.fork:
+    name: Fork E
+    use: Without the palm keys. Works on soprano, alto and tenor; on baritone and some tenors add the E key (R2) to bring
+      it in tune.
+  f6.front:
+    name: Front F
+    use: Alternative to the palm keys for high F.
+    avoid: 'Playable but demanding: it takes effort to produce (validated by pilou, 2026-11-26).'
+  fs6.fork:
+    name: Fork F#
+    use: Front F fingering with the high F# key added. Needs a high F# key (most modern models).
+    avoid: 'Playable but demanding: it takes effort to produce (validated by pilou, 2026-11-26).'
+  bb.low:
+    name: Low Bb
+  b.low:
+    name: Low B
+  c.low:
+    name: Low C
+  cs.low:
+    name: Low C#
+  d.std:
+    name: D
+  eb.std:
+    name: Eb
+  e.std:
+    name: E
+  f.std:
+    name: F
+  g.std:
+    name: G
+  gs.std:
+    name: G#
+  a.std:
+    name: A
+  b.std:
+    name: B
+  c.std:
+    name: C
+  cs.std:
+    name: C#

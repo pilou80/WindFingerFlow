@@ -26,7 +26,7 @@
 <p class="tag">{{ t.keys_tagline }}</p>
 <form hx-post="/keys" hx-target="#result" hx-indicator="#busy">
   <label for="lang">{{ t.annot_lang }}</label>
-  <select id="lang" name="lang"><option value="en" {% if lang_default == "en" %}selected{% endif %}>English</option><option value="fr" {% if lang_default == "fr" %}selected{% endif %}>Français</option></select>
+  <select id="lang" name="lang">{% for code, label in languages.items() %}<option value="{{ code }}"{% if code == lang_default %} selected{% endif %}>{{ label }}</option>{% endfor %}</select>
   <button type="submit">{{ t.keys_go }}</button><span id="busy" class="htmx-indicator">{{ t.working }}</span>
 </form>
 <div id="result" aria-live="polite" hidden></div>

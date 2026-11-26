@@ -23,8 +23,11 @@ Python 3.12+. Run the web app with `uvicorn windfingerflow.web.app:app`; CLI: `w
 
 ## Layout
 
-- `data/keys/saxophone.yaml`: the key catalogue (ids like `lh.b`, `rh.side_bb`, names EN/FR, finger, group).
-- `data/fingerings/saxophone/*.yaml`: fingerings (keys pressed, pitches, category, level, validation, sources).
+- `data/saxophone/keys.yaml`: the key catalogue (ids like `lh.b`, `rh.side_bb`, finger, group).
+- `data/saxophone/fingering/*.yaml`: fingerings (keys pressed, pitches, category, level, validation, sources).
+- `data/saxophone/translations/<lang>.yaml`: every translatable text of the data (names, French abbreviations,
+  descriptions, use / avoid). Never put names or descriptions in the key or fingering files.
+- `data/i18n/<lang>.yaml`: every user-interface text (web, chart, key page, appendix, legend); read via `i18n.ui()`.
 - `src/windfingerflow/`
   - `models.py` (strict pydantic models), `database.py` (loads and validates the YAML),
   - `profile.py` (player options), `chooser.py` (dynamic programming: standard vs alternate),
@@ -53,7 +56,8 @@ data with an incompatible licence (no NonCommercial / NoDerivs). Record the auth
 
 ## Conventions
 
-- Every user-visible text exists in English and French (`web/strings.py`, `name: { en, fr }` in the data).
+- Every user-visible text lives in a per-language file (see above), in English and French; English is the fallback.
+  A new text means a new entry in every `i18n/<lang>.yaml` (`tests/test_translations.py` fails otherwise).
 - Generated SVG/PDF pages carry the grey watermark (name, version sha1, parameters). New outputs must add it
   via `buildinfo.add_watermark` and list their options in `watermark_text(...)`.
 - Web: uploads are limited to 10 MB, SVG previews are served in an `<iframe>` under a strict CSP, the fonts route

@@ -1,0 +1,98 @@
+family: saxophone
+# Draft from design notes §5.3. Finger notation: L1-L4 / R1-R4 = index to little finger, LT = left thumb.
+keys:
+  - id: lh.octave
+    finger: LT
+    group: octave
+    lilypond: { group: lh, name: T }
+  - id: lh.front_f
+    finger: L1
+    group: main
+    lilypond: { group: lh, name: front-f }
+  - id: lh.palm_d
+    finger: L1
+    group: palm
+    lilypond: { group: lh, name: d }
+  - id: lh.palm_eb
+    finger: L1
+    group: palm
+    lilypond: { group: lh, name: ees }
+  - id: lh.palm_f
+    finger: L2
+    group: palm
+    lilypond: { group: lh, name: f }
+  - id: lh.b
+    finger: L1
+    group: main
+    lilypond: { group: cc, name: one }
+  - id: lh.bis
+    finger: L1
+    group: main
+    lilypond: { group: lh, name: bes }
+  - id: lh.a
+    finger: L2
+    group: main
+    lilypond: { group: cc, name: two }
+  - id: lh.g
+    finger: L3
+    group: main
+    lilypond: { group: cc, name: three }
+  - id: lh.gs
+    finger: L4
+    group: pinky
+    lilypond: { group: lh, name: gis }
+  - id: lh.low_cs
+    finger: L4
+    group: pinky
+    lilypond: { group: lh, name: cis }
+  - id: lh.low_b
+    finger: L4
+    group: pinky
+    lilypond: { group: lh, name: b }
+  - id: lh.low_bb
+    finger: L4
+    group: pinky
+    lilypond: { group: lh, name: low-bes }
+  - id: lh.low_a
+    finger: LT
+    group: thumb
+    lilypond: { group: lh, name: low-a }
+  - id: rh.f
+    finger: R1
+    group: main
+    lilypond: { group: cc, name: four }
+  - id: rh.e
+    finger: R2
+    group: main
+    lilypond: { group: cc, name: five }
+  - id: rh.d
+    finger: R3
+    group: main
+    lilypond: { group: cc, name: six }
+  - id: rh.alt_fs
+    finger: R3
+    group: main
+    lilypond: { group: rh, name: fis }
+  - id: rh.side_e
+    finger: R1
+    group: side
+    lilypond: { group: rh, name: e }
+  - id: rh.side_c
+    finger: R1
+    group: side
+    lilypond: { group: rh, name: c }
+  - id: rh.side_bb
+    finger: R1
+    group: side
+    lilypond: { group: rh, name: bes }
+  - id: rh.high_fs
+    finger: R1
+    group: side
+    lilypond: { group: rh, name: high-fis }
+  - id: rh.low_eb
+    finger: R4
+    group: pinky
+    lilypond: { group: rh, name: ees }
+  - id: rh.low_c
+    finger: R4
+    group: pinky

@@ -3,32 +3,23 @@
 instrument_family: saxophone
 fingerings:
   - id: bb.bis
-    name: { en: "Bis Bb", fr: "Sib bis" }
     pitches: [Bb4, Bb5]
     keys: [lh.b, lh.bis]
     category: standard
     level: beginner
     validated: true
-    use: "Flat keys, when no B natural is nearby."
-    avoid: "B to Bb movements, where the index finger must roll between two keys."
     sources: [{ name: "Dawkes, Saxophone fingerings ultimate guide (A. Penman)", url: "https://www.dawkes.co.uk/sound-room/saxophone-fingerings-ultimate-guide/" }, { name: "Corrected by the saxophonist (pilou), 2026-11-26: no A key" }]
   - id: bb.one_one
-    name: { en: "1 and 1 Bb", fr: "Sib 1+1" }
     pitches: [Bb4, Bb5]
     keys: [lh.b, rh.f]
     category: alternate
     level: advanced
     validated: true
-    use: "Versatile; the right hand is already in place."
-    avoid: "Fast passages where R1 has to move quickly."
     sources: [{ name: "Validated by the saxophonist (pilou), 2026-11-26: B key + F key (L1 + R1) sounds good and is easy to play; first judged bad by mistake (wrong keys tried)" }]
   - id: bb.side
-    name: { en: "Side Bb", fr: "Sib de côté" }
     pitches: [Bb4, Bb5]
     keys: [lh.b, lh.a, rh.side_bb]
     category: alternate
     level: beginner
     validated: true
-    use: "Chromatic B-Bb-B passages, A-Bb trills."
-    avoid: "Very flat keys when a simpler option exists."
     sources: [{ name: "Dawkes, Saxophone fingerings ultimate guide (A. Penman)", url: "https://www.dawkes.co.uk/sound-room/saxophone-fingerings-ultimate-guide/" }, { name: "Validated by the saxophonist (pilou), 2026-11-26: with the A key" }]

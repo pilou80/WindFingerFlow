@@ -14,6 +14,7 @@ from windfingerflow.buildinfo import add_watermark
 from windfingerflow.chooser import candidates, effective_keys
 from windfingerflow.database import Database
 from windfingerflow.fiati import FONT_FAMILY, diagram_markup
+from windfingerflow.i18n import ui
 from windfingerflow.instrument import ALTISSIMO_RANGE, WRITTEN_RANGE, midi_to_name
 from windfingerflow.legend import fingering_color, legend_svg
 from windfingerflow.models import Category, Fingering
@@ -59,20 +60,6 @@ SOLFEGE = {"C": "Do", "D": "Ré", "E": "Mi", "F": "Fa", "G": "Sol", "A": "La", "
 # (accidental label, semitone shift); doubles are written with two signs (font-safe in the labels).
 ACCIDENTALS = [("", 0), ("♭", -1), ("♯", 1), ("♯♯", 2), ("♭♭", -2)]
 
-TEXT = {
-    "en": {
-        "title": "Saxophone fingering chart (written pitch)",
-        "nodata": "no data",
-        "note": "Notes that sound the same share a box. Altissimo (above F#6) only when asked. "
-        "Alternates follow the standard fingering, with their name.",
-    },
-    "fr": {
-        "title": "Tableau de doigtés de saxophone (hauteur écrite)",
-        "nodata": "pas de données",
-        "note": "Les notes qui sonnent pareil partagent un cadre. Suraigu (au-dessus du Fa#6) seulement sur demande. "
-        "Les alternatives suivent le doigté standard, avec leur nom.",
-    },
-}
 
 Spelling = tuple[str, str, int]  # letter, accidental, octave
 Group = tuple[int, list[Spelling]]  # midi, spellings
@@ -214,7 +201,7 @@ def _cell(entry, col, box_y, row, lang, naming) -> str:
     if not shown:
         out.append(
             f'<text x="{dx0:g}" y="{box_y + box_h / 2:g}" font-size="10" fill="#888">'
-            f"{escape(TEXT[lang]['nodata'])}</text>"
+            f"{escape(ui(lang, 'chart')['nodata'])}</text>"
         )
         return "\n".join(out)
     step = min(DIAGRAM_STEP, (box_x + BOX_W - PAD - dx0) / len(shown))
@@ -225,7 +212,7 @@ def _cell(entry, col, box_y, row, lang, naming) -> str:
             f'<text x="{dx:g}" y="{base_y:g}" font-family="{FONT_FAMILY}" font-size="{DIAGRAM_SIZE}">{glyphs}</text>'
         )
         if is_alternate:
-            name = getattr(f.name, lang, None) or f.name.en
+            name = f.name.get(lang)
             out.append(
                 f'<text x="{dx:g}" y="{base_y + 11:g}" font-size="7.5" '
                 f'fill="{fingering_color(f)}">{escape(name[:ALT_NAME_CHARS])}</text>'
@@ -273,7 +260,7 @@ def chart_svg_pages(
 ) -> list[str]:
     """SVG pages. ``responsive`` drops the fixed size and loads the fonts via @font-face (web)."""
     profile = profile or Profile()
-    t = TEXT[lang]
+    t = ui(lang, "chart")
     pages = []
     for page_rows in _paginate(_rows(db, profile, alternates)):
         body = [
