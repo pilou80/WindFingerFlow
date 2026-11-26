@@ -1,0 +1,75 @@
+# Palm-key register, written D6 to F#6 (the top of the standard range).
+# Key roles from the Woodwind Fingering Guide: palm D is used for D, Eb, E, F, F#; palm Eb for Eb, E, F, F#;
+# side E for E, F, F#; palm F for F, F#; the high F# key only for F#. Combinations are built cumulatively from
+# these roles; the palm-key F# matches Sax Gourmet. Assumption to check: the octave key is added by the register
+# rules (it is not stated by the sources). Altissimo above F#6 is not covered yet.
+instrument_family: saxophone
+fingerings:
+  - id: d6.palm
+    name: { en: "High D (palm)", fr: "Ré aigu (paume)" }
+    pitches: [D6]
+    keys: [lh.palm_d]
+    category: standard
+    level: beginner
+    intonation: sharp
+    use: "Palm-key register. Verify with a tuner: palm-key notes vary a lot between instruments."
+    sources: [{ name: "Woodwind Fingering Guide (T. Reichard), key roles", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Intonation tendencies: Jagow (D'Addario), US Navy Band, The Instrumentalist" }]
+  - id: eb6.palm
+    name: { en: "High Eb (palm)", fr: "Mib aigu (paume)" }
+    pitches: [Eb6]
+    keys: [lh.palm_d, lh.palm_eb]
+    category: standard
+    level: beginner
+    intonation: sharp
+    use: "Palm-key register. Verify with a tuner: palm-key notes vary a lot between instruments."
+    sources: [{ name: "Woodwind Fingering Guide (T. Reichard), key roles", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Intonation tendencies: Jagow (D'Addario), US Navy Band, The Instrumentalist" }]
+  - id: e6.palm
+    name: { en: "High E (palm)", fr: "Mi aigu (paume)" }
+    pitches: [E6]
+    keys: [lh.palm_d, lh.palm_eb, rh.side_e]
+    category: standard
+    level: beginner
+    intonation: sharp
+    use: "Palm-key register. Verify with a tuner: palm-key notes vary a lot between instruments."
+    sources: [{ name: "Woodwind Fingering Guide (T. Reichard), key roles", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Intonation tendencies: Jagow (D'Addario), US Navy Band, The Instrumentalist" }]
+  - id: f6.palm
+    name: { en: "High F (palm)", fr: "Fa aigu (paume)" }
+    pitches: [F6]
+    keys: [lh.palm_d, lh.palm_eb, lh.palm_f, rh.side_e]
+    category: standard
+    level: beginner
+    intonation: sharp
+    use: "Palm-key register. Verify with a tuner: palm-key notes vary a lot between instruments."
+    sources: [{ name: "Woodwind Fingering Guide (T. Reichard), key roles", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Intonation tendencies: Jagow (D'Addario), US Navy Band, The Instrumentalist" }]
+  - id: fs6.palm
+    name: { en: "High F# (palm)", fr: "Fa# aigu (paume)" }
+    pitches: [F#6]
+    keys: [lh.palm_d, lh.palm_eb, lh.palm_f, rh.side_e, rh.high_fs]
+    category: standard
+    level: beginner
+    use: "Palm-key register. Verify with a tuner: palm-key notes vary a lot between instruments."
+    sources: [{ name: "Woodwind Fingering Guide (T. Reichard), key roles", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Sax Gourmet, Using the High F# Key (P. Coats)", url: "https://www.saxgourmet.com/?p=177" }]
+  - id: e6.fork
+    name: { en: "Fork E", fr: "Mi fourche" }
+    pitches: [E6]
+    keys: [lh.front_f, lh.a, lh.g]
+    category: alternate
+    level: advanced
+    use: "Without the palm keys. Works on soprano, alto and tenor; on baritone and some tenors add the E key (R2) to bring it in tune."
+    sources: [{ name: "Sax Gourmet, Using the High F# Key (P. Coats)", url: "https://www.saxgourmet.com/?p=177" }]
+  - id: f6.front
+    name: { en: "Front F", fr: "Fa avant" }
+    pitches: [F6]
+    keys: [lh.front_f, lh.a]
+    category: alternate
+    level: advanced
+    use: "Alternative to the palm keys for high F."
+    sources: [{ name: "Sax Gourmet, Using the High F# Key (P. Coats)", url: "https://www.saxgourmet.com/?p=177" }, { name: "Woodwind Fingering Guide (T. Reichard), key roles", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
+  - id: fs6.fork
+    name: { en: "Fork F#", fr: "Fa# fourche" }
+    pitches: [F#6]
+    keys: [lh.front_f, lh.a, rh.high_fs]
+    category: alternate
+    level: advanced
+    use: "Front F fingering with the high F# key added. Needs a high F# key (most modern models)."
+    sources: [{ name: "Sax Gourmet, Using the High F# Key (P. Coats)", url: "https://www.saxgourmet.com/?p=177" }]

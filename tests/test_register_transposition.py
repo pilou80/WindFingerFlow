@@ -33,7 +33,7 @@ def test_pitch_names_roundtrip():
 def test_octave_key_register():
     assert not needs_octave_key("C#5")
     assert needs_octave_key("D5")
-    assert needs_octave_key("C#6")
+    assert needs_octave_key("C#6") and needs_octave_key("D6") and needs_octave_key("F#6")
     assert not needs_octave_key("F4")
 
 
@@ -54,7 +54,7 @@ def test_range_warning():
 
 
 def test_every_chromatic_pitch_has_a_fingering(db):
-    for midi in range(name_to_midi("Bb3"), name_to_midi("C#6") + 1):
+    for midi in range(name_to_midi("Bb3"), name_to_midi("F#6") + 1):
         assert db.candidates(midi_to_name(midi)), midi_to_name(midi)
 
 

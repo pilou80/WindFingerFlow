@@ -50,14 +50,14 @@ TEXT = {
     "en": {
         "title": "Saxophone fingering chart (written pitch)",
         "nodata": "no data",
-        "note": "Notes that sound the same share a cell. Palm keys and altissimo are not covered yet. "
+        "note": "Notes that sound the same share a cell. Altissimo above F#6 is not covered. "
         "Alternates are named under the diagram.",
     },
     "fr": {
         "title": "Tableau de doigtés de saxophone (hauteur écrite)",
         "nodata": "pas de données",
-        "note": "Les notes qui sonnent pareil partagent une case. Clés de paume et suraigu pas encore "
-        "couverts. Les alternatives sont nommées sous le diagramme.",
+        "note": "Les notes qui sonnent pareil partagent une case. Suraigu au-dessus du Fa#6 "
+        "non couvert. Les alternatives sont nommées sous le diagramme.",
     },
 }
 

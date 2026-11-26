@@ -7,7 +7,7 @@ from windfingerflow.models import parse_pitch
 # Semitones to add to the sounding (concert) pitch to get the written pitch.
 SAX_OFFSET = {"soprano": 2, "alto": 9, "tenor": 14, "baritone": 21}
 WRITTEN_RANGE = (58, 90)  # written low Bb3 .. high F#6 (generic model)
-OCTAVE_KEY_RANGE = (74, 85)  # written D5 .. C#6 use the octave key
+OCTAVE_KEY_RANGE = (74, 90)  # written D5 .. F#6 use the octave key (assumed for the palm keys)
 
 _NAMES = {0: "C", 1: "C#", 2: "D", 3: "Eb", 4: "E", 5: "F", 6: "F#", 7: "G", 8: "G#", 9: "A"}
 _NAMES |= {10: "Bb", 11: "B"}
