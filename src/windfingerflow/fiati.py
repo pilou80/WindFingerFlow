@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 from pathlib import Path
+from xml.sax.saxutils import escape
 
 FONT_FAMILY = "Fiati"
 FONTS_DIR = Path(__file__).resolve().parents[2] / "fonts"
@@ -54,3 +55,15 @@ def diagram_text(keys: Iterable[str]) -> str:
     if missing:
         raise KeyError(f"no Fiati glyph for keys: {missing}")
     return chr(SAX_CHART) + "".join(chr(KEY_GLYPHS[k]) for k in sorted(keys, key=KEY_GLYPHS.get))
+
+
+PRESSED_COLOR = "#d81b60"  # pressed keys stand out from the black outline of the instrument
+
+
+def diagram_markup(keys: Iterable[str], color: str = PRESSED_COLOR) -> str:
+    """SVG text content of a diagram: black outline, pressed keys in colour (same text flow)."""
+    text = diagram_text(keys)
+    return (
+        f'<tspan fill="#000">{escape(text[0])}</tspan>'
+        f'<tspan fill="{color}">{escape(text[1:])}</tspan>'
+    )

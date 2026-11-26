@@ -3,7 +3,7 @@ import re
 from fastapi.testclient import TestClient
 
 from windfingerflow.database import load_database
-from windfingerflow.fiati import diagram_text
+from windfingerflow.fiati import diagram_markup
 from windfingerflow.keyschart import key_lines, keys_svg_pages
 from windfingerflow.web import app as webapp
 
@@ -20,8 +20,7 @@ def test_each_diagram_shows_only_its_key():
     db = load_database()
     text = "".join(keys_svg_pages(db))
     for key in db.keys.values():
-        glyphs = diagram_text([key.id])
-        assert text.count(f">{glyphs}<") == 1, key.id
+        assert text.count(diagram_markup([key.id])) == 1, key.id
 
 
 def test_finger_group_and_confirmation_flag_are_shown():

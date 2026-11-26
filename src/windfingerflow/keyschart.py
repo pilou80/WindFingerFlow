@@ -7,7 +7,7 @@ from xml.sax.saxutils import escape
 
 from windfingerflow.buildinfo import add_watermark
 from windfingerflow.database import Database
-from windfingerflow.fiati import FONT_FAMILY, diagram_text
+from windfingerflow.fiati import FONT_FAMILY, diagram_markup
 from windfingerflow.models import Key
 
 PAGE_W, PAGE_H = 1123, 794  # A4 landscape at 96 dpi
@@ -102,7 +102,7 @@ def _box(key: Key, col: int, y: float, height: float, lang: str) -> str:
         f'<rect x="{x:g}" y="{y:g}" width="{BOX_W:g}" height="{height:g}" rx="5" fill="none" stroke="#888"/>',
         (
             f'<text x="{x + PAD:g}" y="{y + PAD + DIAGRAM_SIZE:g}" font-family="{FONT_FAMILY}" '
-            f'font-size="{DIAGRAM_SIZE}">{escape(diagram_text([key.id]))}</text>'
+            f'font-size="{DIAGRAM_SIZE}">{diagram_markup([key.id])}</text>'
         ),
     ]
     ty = y + PAD + 11

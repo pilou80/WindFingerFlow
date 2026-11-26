@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 from xml.sax.saxutils import escape
 
 from windfingerflow.chooser import effective_keys
-from windfingerflow.fiati import FONT_FAMILY, diagram_text
+from windfingerflow.fiati import FONT_FAMILY, diagram_markup
 from windfingerflow.legend import fingering_color, legend_svg
 from windfingerflow.models import Category, Fingering
 from windfingerflow.score import NoteEvent
@@ -98,7 +98,7 @@ def _block(entry: Entry, top: int, lang: str) -> str:
     t = LABELS[lang]
     f = entry.fingering
     name = getattr(f.name, lang, None) or f.name.en
-    glyphs = escape(diagram_text(effective_keys(f, entry.pitch)))
+    glyphs = diagram_markup(effective_keys(f, entry.pitch))
     x_text = MARGIN + 200
     out = [
         (

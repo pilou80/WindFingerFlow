@@ -47,11 +47,11 @@ def test_group_label_lists_all_spellings_in_one_cell():
 
 def test_one_diagram_per_group_not_per_spelling():
     db = load_database()
-    from windfingerflow.fiati import diagram_text
+    from windfingerflow.fiati import diagram_markup
 
-    glyphs = diagram_text(db.fingerings["g.std"].keys)  # G4 only has one spelling group
+    markup = diagram_markup(db.fingerings["g.std"].keys)  # G4 only has one spelling group
     _, text = labels()
-    assert text.count(f">{glyphs}<") == 1  # exact element: other fingerings share its prefix
+    assert text.count(markup) == 1
 
 
 def test_alternates_are_opt_in_and_named():
@@ -101,9 +101,9 @@ def test_font_route_is_whitelisted():
     assert client.get("/fonts/other.ttf").status_code == 404
 
 
-def test_chart_is_black_and_white():
+def test_chart_has_no_colour_on_the_notes():
     _, text = labels()
-    assert "d35400" not in text and "<tspan" not in text
+    assert "d35400" not in text
 
 
 def test_alternates_follow_the_standard_fingering_beside_the_staff():
@@ -127,3 +127,12 @@ def test_both_naming_puts_letters_under_solfege():
     svg = "".join(chart_svg_pages(load_database(), naming="both"))
     assert "Do4" in svg and "C4" in svg
     assert svg.index("Do4") < svg.index("C4")
+
+
+def test_pressed_keys_are_coloured():
+    from windfingerflow.chart import chart_svg_pages
+    from windfingerflow.database import load_database
+    from windfingerflow.fiati import PRESSED_COLOR
+
+    svg = "".join(chart_svg_pages(load_database()))
+    assert f'fill="{PRESSED_COLOR}"' in svg

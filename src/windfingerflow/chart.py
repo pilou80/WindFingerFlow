@@ -13,7 +13,7 @@ from xml.sax.saxutils import escape
 from windfingerflow.buildinfo import add_watermark
 from windfingerflow.chooser import candidates, effective_keys
 from windfingerflow.database import Database
-from windfingerflow.fiati import FONT_FAMILY, diagram_text
+from windfingerflow.fiati import FONT_FAMILY, diagram_markup
 from windfingerflow.instrument import ALTISSIMO_RANGE, WRITTEN_RANGE, midi_to_name
 from windfingerflow.legend import fingering_color, legend_svg
 from windfingerflow.models import Category, Fingering
@@ -220,7 +220,7 @@ def _cell(entry, col, box_y, row, lang, naming) -> str:
     step = min(DIAGRAM_STEP, (box_x + BOX_W - PAD - dx0) / len(shown))
     for i, (f, is_alternate) in enumerate(shown):
         dx = dx0 + i * step
-        glyphs = escape(diagram_text(effective_keys(f, pitch)))
+        glyphs = diagram_markup(effective_keys(f, pitch))
         out.append(
             f'<text x="{dx:g}" y="{base_y:g}" font-family="{FONT_FAMILY}" font-size="{DIAGRAM_SIZE}">{glyphs}</text>'
         )
