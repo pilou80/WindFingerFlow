@@ -506,6 +506,7 @@ Accessibility example: if R2 is unavailable, standard F# is excluded but alterna
 - Other woodwinds: clarinet (pinky alternation L/R, throat-tone resonance fingerings, twelfth
   overblowing), flute (Bb thumb/1+1/lever, F# alternatives), oboe (forked F / left F), bassoon.
 - In-browser score preview with Verovio JS.
+- **3D saxophone model** to show the keys on a real instrument (candidate: https://sketchfab.com/3d-models/realistic-saxophone-1f5185760cdf4d6390d29b1df830bd8e). Not evaluated: check its licence (attribution, compatibility with AGPL) and export format before any use.
 - MuseScore CLI as optional high-quality rendering engine.
 
 ---
