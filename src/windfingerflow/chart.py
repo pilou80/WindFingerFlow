@@ -32,7 +32,7 @@ DIAGRAM_STEP = 42
 MAX_STANDARD = 2
 MAX_ALTERNATES = 3
 ALT_NAME_CHARS = 10  # names printed under the alternate diagrams
-LABEL_H = 20
+LABEL_H = 31  # room for two lines of note names ("both")
 NAME_H = 14  # alternate names printed under a diagram
 
 # Staff geometry. Positions are diatonic steps: octave * 7 + letter index (C=0 ... B=6),
@@ -198,10 +198,15 @@ def _cell(entry, col, box_y, row, lang, naming) -> str:
     staff_top = box_y + (box_h - (staff_h + LABEL_H)) / 2
     sx = box_x + PAD
     out += _staff(sx, staff_top, top, spellings)
-    label = " / ".join(note_label(*s[:2], s[2], naming) for s in spellings)
-    out.append(
-        f'<text x="{sx:g}" y="{staff_top + staff_h + 13:g}" font-size="10" font-weight="bold">{escape(label)}</text>'
-    )
+    # "both": the French (solfege) names with the English (letter) names underneath.
+    lines = ["solfege", "letters"] if naming == "both" else [naming]
+    for n, style in enumerate(lines):
+        label = " / ".join(note_label(*s[:2], s[2], style) for s in spellings)
+        weight = "bold" if n == 0 else "normal"
+        out.append(
+            f'<text x="{sx:g}" y="{staff_top + staff_h + 13 + 11 * n:g}" font-size="10" '
+            f'font-weight="{weight}">{escape(label)}</text>'
+        )
     # Diagrams to the right of the staff: the standard fingering first, then the alternates.
     dx0 = box_x + PAD + STAFF_MAX_W + 14
     base_y = box_y + PAD + DIAGRAM_SIZE

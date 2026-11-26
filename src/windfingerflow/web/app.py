@@ -230,7 +230,7 @@ def chart_make(
 ):
     t = pick(request.headers.get("accept-language"))
     if (
-        naming not in {"letters", "solfege"}
+        naming not in {"letters", "solfege", "both"}
         or level not in {lv.value for lv in Level}
         or lang not in {"en", "fr"}
     ):

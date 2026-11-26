@@ -118,3 +118,12 @@ def test_alternates_follow_the_standard_fingering_beside_the_staff():
         r'<line x1="[\d.]+" y1="[\d.]+" x2="[\d.]+" y2="[\d.]+" stroke="#ccc"', side
     )
     assert side.count("<rect x=") == plain.count("<rect x=")
+
+
+def test_both_naming_puts_letters_under_solfege():
+    from windfingerflow.chart import chart_svg_pages
+    from windfingerflow.database import load_database
+
+    svg = "".join(chart_svg_pages(load_database(), naming="both"))
+    assert "Do4" in svg and "C4" in svg
+    assert svg.index("Do4") < svg.index("C4")
