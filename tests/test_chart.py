@@ -58,3 +58,25 @@ def test_chart_page_and_pdf(tmp_path, monkeypatch):
     pdf = client.get(f"/download/{job}/chart")
     assert pdf.status_code == 200 and pdf.content.startswith(b"%PDF")
     assert client.post("/chart", data={"naming": "klingon"}).text.count("err") >= 1
+
+
+def test_ledger_lines():
+    from windfingerflow.chart import ledger_positions
+
+    assert ledger_positions(30) == [] and ledger_positions(39) == []
+    assert ledger_positions(27) == [28] and ledger_positions(26) == [28, 26]
+    assert ledger_positions(40) == [40] and ledger_positions(43) == [40, 42]
+
+
+def test_every_cell_is_drawn_on_a_staff():
+    pages = "".join(chart_svg_pages(load_database()))
+    assert pages.count("\ue050") == sum(1 for _, _, cells in chart_cells() for c in cells if c)
+    for glyph in ("\ue260", "\ue262", "\ue263", "\ue0a2"):
+        assert glyph in pages
+
+
+def test_font_route_is_whitelisted(tmp_path, monkeypatch):
+    client = TestClient(webapp.app)
+    assert client.get("/fonts/Bravura.otf").status_code == 200
+    assert client.get("/fonts/..%2Fsecret").status_code == 404
+    assert client.get("/fonts/other.ttf").status_code == 404

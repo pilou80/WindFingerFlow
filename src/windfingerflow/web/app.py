@@ -192,9 +192,14 @@ def preview(job: str, page: int):
     return FileResponse(path, media_type="image/svg+xml", headers=PREVIEW_HEADERS)
 
 
-@app.get("/fonts/fiati-regular.ttf")
-def fiati_font():
-    return FileResponse(FONTS_DIR / "fiati-regular.ttf", media_type="font/ttf")
+FONT_FILES = {"fiati-regular.ttf": "font/ttf", "Bravura.otf": "font/otf"}
+
+
+@app.get("/fonts/{name}")
+def font(name: str):
+    if name not in FONT_FILES:
+        raise HTTPException(404)
+    return FileResponse(FONTS_DIR / name, media_type=FONT_FILES[name])
 
 
 @app.get("/chart", response_class=HTMLResponse)
