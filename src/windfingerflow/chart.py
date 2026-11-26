@@ -1,4 +1,8 @@
-"""Fingering chart over the whole range: every note on a staff, natural, flat, sharp, double sharp."""
+"""Fingering chart over the whole range: one cell per pitch, enharmonic spellings grouped.
+
+Notes that sound the same share a fingering, so A sharp and B flat sit in one cell: one staff with
+both spellings and one set of diagrams. Natural, flat, sharp, double sharp and double flat are covered.
+"""
 
 from __future__ import annotations
 
@@ -13,48 +17,51 @@ from windfingerflow.profile import Profile
 
 PAGE_W, PAGE_H = 794, 1123  # A4 at 96 dpi
 MARGIN = 40
+COLUMNS = 4
 CELL_W = 178
-HEADER_Y = 95
-FIRST_ROW_Y = 112
+FIRST_ROW_Y = 85
 BOTTOM_MARGIN = 50
 DIAGRAM_SIZE = 100
 DIAGRAM_STEP = 42
 MAX_DIAGRAMS = 4
+LABEL_H = 18
 
 # Staff geometry. Positions are diatonic steps: octave * 7 + letter index (C=0 ... B=6),
 # so E4, the bottom line of the treble staff, is 30.
 STAFF_SPACE = 6
 STEP = STAFF_SPACE / 2
-STAFF_W = 92
-NOTE_X = 54
+CLEF_W = 28
+NOTE_SPACING = 26
 LINE_POSITIONS = (30, 32, 34, 36, 38)
 G_LINE = 32
 MUSIC_FONT = "Bravura"
 MUSIC_FONT_SIZE = 4 * STAFF_SPACE  # SMuFL: a font size of four staff spaces
 CLEF_G = "\ue050"
 NOTEHEAD_WHOLE = "\ue0a2"
-ACCIDENTAL_GLYPH = {"": "", "♭": "\ue260", "♯": "\ue262", "♯♯": "\ue263"}
+ACCIDENTAL_GLYPH = {"": "", "♭": "\ue260", "♯": "\ue262", "♯♯": "\ue263", "♭♭": "\ue264"}
 
 LETTERS = ["C", "D", "E", "F", "G", "A", "B"]
 BASE = {"C": 0, "D": 2, "E": 4, "F": 5, "G": 7, "A": 9, "B": 11}
 SOLFEGE = {"C": "Do", "D": "Ré", "E": "Mi", "F": "Fa", "G": "Sol", "A": "La", "B": "Si"}
-# (accidental label, semitone shift); double sharp is written with two sharps (font-safe).
-ACCIDENTALS = [("", 0), ("♭", -1), ("♯", 1), ("♯♯", 2)]
+# (accidental label, semitone shift); doubles are written with two signs (font-safe in the labels).
+ACCIDENTALS = [("", 0), ("♭", -1), ("♯", 1), ("♯♯", 2), ("♭♭", -2)]
 
 TEXT = {
     "en": {
         "title": "Saxophone fingering chart (written pitch)",
-        "cols": ["Natural", "Flat", "Sharp", "Double sharp"],
         "nodata": "no data",
-        "note": "Palm keys and altissimo are not covered yet. Alternates are named under the diagram.",
+        "note": "Notes that sound the same share a cell. Palm keys and altissimo are not covered yet. "
+        "Alternates are named under the diagram.",
     },
     "fr": {
         "title": "Tableau de doigtés de saxophone (hauteur écrite)",
-        "cols": ["Naturel", "Bémol", "Dièse", "Double dièse"],
         "nodata": "pas de données",
-        "note": "Clés de paume et suraigu pas encore couverts. Les alternatives sont nommées sous le diagramme.",
+        "note": "Les notes qui sonnent pareil partagent une case. Clés de paume et suraigu pas encore "
+        "couverts. Les alternatives sont nommées sous le diagramme.",
     },
 }
+
+Spelling = tuple[str, str, int]  # letter, accidental, octave
 
 
 def note_label(letter: str, accidental: str, octave: int, naming: str) -> str:
@@ -69,25 +76,29 @@ def staff_position(letter: str, octave: int) -> int:
 def ledger_positions(pos: int) -> list[int]:
     """Staff positions of the ledger lines a note at ``pos`` needs."""
     if pos <= 28:
-        return [q for q in range(28, pos - 1, -2)]
+        return list(range(28, pos - 1, -2))
     if pos >= 40:
-        return [q for q in range(40, pos + 1, 2)]
+        return list(range(40, pos + 1, 2))
     return []
 
 
-def chart_cells() -> list[tuple[str, int, list[tuple[str, int, int] | None]]]:
-    """Rows of (letter, octave, cells) where each cell is (accidental, shift, midi) or None."""
+def pitch_groups() -> list[tuple[int, list[Spelling]]]:
+    """Every pitch of the written range with all its spellings, lowest pitch first.
+
+    Spellings are ordered from the lowest to the highest staff position.
+    """
     low, high = WRITTEN_RANGE
-    rows = []
+    groups: dict[int, list[Spelling]] = {}
     for octave in range(3, 7):
         for letter in LETTERS:
-            cells = []
             for accidental, shift in ACCIDENTALS:
                 midi = (octave + 1) * 12 + BASE[letter] + shift
-                cells.append((accidental, shift, midi) if low <= midi <= high else None)
-            if any(cells):
-                rows.append((letter, octave, cells))
-    return rows
+                if low <= midi <= high:
+                    groups.setdefault(midi, []).append((letter, accidental, octave))
+    return [
+        (midi, sorted(spellings, key=lambda s: staff_position(s[0], s[2])))
+        for midi, spellings in sorted(groups.items())
+    ]
 
 
 def _fingerings(db: Database, pitch: str, profile: Profile, alternates: bool) -> list[Fingering]:
@@ -98,56 +109,65 @@ def _fingerings(db: Database, pitch: str, profile: Profile, alternates: bool) ->
     return found[:MAX_DIAGRAMS]
 
 
-def _row_extent(pos: int) -> tuple[int, int]:
+def _row_extent(row: list[tuple[int, list[Spelling]]]) -> tuple[int, int]:
     """Highest and lowest staff positions drawn for a row (staff plus room for ledger lines)."""
-    return max(39, pos + 2), min(29, pos - 2)
+    positions = [staff_position(s[0], s[2]) for _, spellings in row for s in spellings]
+    return max(39, max(positions) + 2), min(29, min(positions) - 2)
 
 
-def _row_height(pos: int) -> float:
-    top, bottom = _row_extent(pos)
-    return (top - bottom) * STEP + 8 + DIAGRAM_SIZE + 22
+def _staff_height(row) -> float:
+    top, bottom = _row_extent(row)
+    return (top - bottom) * STEP + 8
 
 
-def _staff(x: float, row_y: float, pos: int, accidental: str) -> list[str]:
-    top, _bottom = _row_extent(pos)
+def _row_height(row) -> float:
+    return _staff_height(row) + LABEL_H + DIAGRAM_SIZE + 22
 
+
+def _glyph(ch: str, x: float, y: float) -> str:
+    return f'<text x="{x:g}" y="{y:g}" font-family="{MUSIC_FONT}" font-size="{MUSIC_FONT_SIZE}">{ch}</text>'
+
+
+def _staff(x: float, row_y: float, top: int, spellings: list[Spelling]) -> list[str]:
     def y(p: float) -> float:
         return row_y + (top - p) * STEP + 2
 
-    nx = x + NOTE_X
+    width = CLEF_W + NOTE_SPACING * len(spellings) + 4
     out = [
-        f'<line x1="{x + 2}" y1="{y(q):g}" x2="{x + 2 + STAFF_W}" y2="{y(q):g}" stroke="#000" stroke-width="0.7"/>'
+        f'<line x1="{x + 2}" y1="{y(q):g}" x2="{x + 2 + width}" y2="{y(q):g}" stroke="#000" stroke-width="0.7"/>'
         for q in LINE_POSITIONS
     ]
-    out += [
-        f'<line x1="{nx - 3:g}" y1="{y(q):g}" x2="{nx + 13:g}" y2="{y(q):g}" stroke="#000" stroke-width="0.7"/>'
-        for q in ledger_positions(pos)
-    ]
-    glyph = lambda ch, gx, gy: (
-        f'<text x="{gx:g}" y="{gy:g}" font-family="{MUSIC_FONT}" font-size="{MUSIC_FONT_SIZE}">{ch}</text>'
-    )
-    out.append(glyph(CLEF_G, x + 4, y(G_LINE)))
-    if ACCIDENTAL_GLYPH[accidental]:
-        out.append(glyph(ACCIDENTAL_GLYPH[accidental], nx - 11, y(pos)))
-    out.append(glyph(NOTEHEAD_WHOLE, nx, y(pos)))
+    out.append(_glyph(CLEF_G, x + 4, y(G_LINE)))
+    for k, (letter, accidental, octave) in enumerate(spellings):
+        pos = staff_position(letter, octave)
+        nx = x + CLEF_W + 14 + k * NOTE_SPACING
+        out += [
+            f'<line x1="{nx - 3:g}" y1="{y(q):g}" x2="{nx + 13:g}" y2="{y(q):g}" stroke="#000" stroke-width="0.7"/>'
+            for q in ledger_positions(pos)
+        ]
+        if ACCIDENTAL_GLYPH[accidental]:
+            out.append(
+                _glyph(
+                    ACCIDENTAL_GLYPH[accidental], nx - (14 if len(accidental) > 1 else 11), y(pos)
+                )
+            )
+        out.append(_glyph(NOTEHEAD_WHOLE, nx, y(pos)))
     return out
 
 
-def _cell(db, letter, octave, cell, col, row_y, profile, alternates, lang, naming) -> str:
-    accidental, _shift, midi = cell
+def _cell(db, group, col, row_y, row, profile, alternates, lang, naming) -> str:
+    midi, spellings = group
     x = MARGIN + col * CELL_W
-    pos = staff_position(letter, octave)
+    top, _bottom = _row_extent(row)
+    staff_h = _staff_height(row)
     pitch = midi_to_name(midi)
-    top, bottom = _row_extent(pos)
-    staff_h = (top - bottom) * STEP + 8
-    label = note_label(letter, accidental, octave, naming)
-    out = _staff(x, row_y, pos, accidental)
+    out = _staff(x, row_y, top, spellings)
+    label = " / ".join(note_label(*s[:2], s[2], naming) for s in spellings)
     out.append(
-        f'<text x="{x + STAFF_W + 8}" y="{row_y + (top - G_LINE) * STEP + 6:g}" '
-        f'font-size="13" font-weight="bold">{escape(label)}</text>'
+        f'<text x="{x + 4}" y="{row_y + staff_h + 10:g}" font-size="11" font-weight="bold">{escape(label)}</text>'
     )
     found = _fingerings(db, pitch, profile, alternates)
-    base_y = row_y + staff_h + DIAGRAM_SIZE
+    base_y = row_y + staff_h + LABEL_H + DIAGRAM_SIZE
     if not found:
         out.append(
             f'<text x="{x + 6}" y="{base_y - 40:g}" font-size="10" fill="#888">{escape(TEXT[lang]["nodata"])}</text>'
@@ -167,10 +187,15 @@ def _cell(db, letter, octave, cell, col, row_y, profile, alternates, lang, namin
     return "\n".join(out)
 
 
+def _rows() -> list[list[tuple[int, list[Spelling]]]]:
+    groups = pitch_groups()
+    return [groups[i : i + COLUMNS] for i in range(0, len(groups), COLUMNS)]
+
+
 def _paginate(rows):
     pages, current, y = [], [], FIRST_ROW_Y
     for row in rows:
-        height = _row_height(staff_position(row[0], row[1]))
+        height = _row_height(row)
         if current and y + height > PAGE_H - BOTTOM_MARGIN:
             pages.append(current)
             current, y = [], FIRST_ROW_Y
@@ -194,25 +219,16 @@ def chart_svg_pages(
     profile = profile or Profile()
     t = TEXT[lang]
     pages = []
-    for page_rows in _paginate(chart_cells()):
+    for page_rows in _paginate(_rows()):
         body = [
             f'<text x="{MARGIN}" y="55" font-size="24" font-weight="bold">{escape(t["title"])}</text>'
         ]
-        for col, name in enumerate(t["cols"]):
-            body.append(
-                f'<text x="{MARGIN + col * CELL_W + 6}" y="{HEADER_Y}" font-size="13" fill="#555">{escape(name)}</text>'
-            )
-        for (letter, octave, cells), row_y in page_rows:
+        for row, row_y in page_rows:
             body.append(
                 f'<line x1="{MARGIN}" y1="{row_y - 4:g}" x2="{PAGE_W - MARGIN}" y2="{row_y - 4:g}" stroke="#ccc"/>'
             )
-            for col, cell in enumerate(cells):
-                if cell:
-                    body.append(
-                        _cell(
-                            db, letter, octave, cell, col, row_y, profile, alternates, lang, naming
-                        )
-                    )
+            for col, group in enumerate(row):
+                body.append(_cell(db, group, col, row_y, row, profile, alternates, lang, naming))
         body.append(
             f'<text x="{MARGIN}" y="{PAGE_H - 24}" font-size="9" fill="#666">{escape(t["note"])}</text>'
         )
