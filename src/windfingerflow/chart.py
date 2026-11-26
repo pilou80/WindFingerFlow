@@ -38,6 +38,9 @@ MUSIC_FONT = "Bravura"
 MUSIC_FONT_SIZE = 4 * STAFF_SPACE  # SMuFL: a font size of four staff spaces
 CLEF_G = "\ue050"
 NOTEHEAD_WHOLE = "\ue0a2"
+# Distance from the left edge of the accidental to the note head, so each sign sits right against its
+# own note (Bravura advances: flat 0.9, sharp 1.0, double sharp 1.0, double flat 1.6 staff spaces).
+ACCIDENTAL_OFFSET = {"♭": 7.5, "♯": 8, "♯♯": 8, "♭♭": 11.5}
 HIGHLIGHT_COLOR = "#d35400"  # the middle note of a three-spelling cell
 ACCIDENTAL_GLYPH = {"": "", "♭": "\ue260", "♯": "\ue262", "♯♯": "\ue263", "♭♭": "\ue264"}
 
@@ -158,7 +161,7 @@ def _staff(x: float, row_y: float, top: int, spellings: list[Spelling]) -> list[
             out.append(
                 _glyph(
                     ACCIDENTAL_GLYPH[accidental],
-                    nx - (14 if len(accidental) > 1 else 11),
+                    nx - ACCIDENTAL_OFFSET[accidental],
                     y(pos),
                     fill,
                 )
