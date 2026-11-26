@@ -23,9 +23,9 @@ fingerings:
   - id: bb.side
     name: { en: "Side Bb", fr: "Sib de côté" }
     pitches: [Bb4, Bb5]
-    keys: [lh.b, rh.side_bb]
+    keys: [lh.b, lh.a, rh.side_bb]
     category: alternate
     level: beginner
     use: "Chromatic B-Bb-B passages, A-Bb trills."
     avoid: "Very flat keys when a simpler option exists."
-    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
+    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Validated by the saxophonist (pilou), 2026-11-26: with the A key" }]

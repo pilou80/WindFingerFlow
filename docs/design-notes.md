@@ -441,7 +441,7 @@ Finger notation: L1–L4 / R1–R4 = index → little finger; LT = left thumb.
 |---|---|---|---|---|---|---|
 | `bb.bis` | Bis Bb / Sib bis | `lh.b` + `lh.bis` | L1 (two keys) | reputedly good (source needed) | flat keys, no B natural nearby | B ↔ Bb (L1 must roll) |
 | `bb.one_one` | 1 and 1 Bb / Sib 1+1 | `lh.b` + `rh.f` | L1, R1 | to document | versatile; right hand already in place | fast passages where R1 must move quickly |
-| `bb.side` | Side Bb / Sib de côté | `lh.b` + `rh.side_bb` | L1, R1 (side) | to document | chromatic B–Bb–B, A–Bb trill | very flat keys if a simpler option exists |
+| `bb.side` | Side Bb / Sib de côté | `lh.b` + `lh.a` + `rh.side_bb` | L1, L2, R1 (side) | to document | chromatic B–Bb–B, A–Bb trill | very flat keys if a simpler option exists |
 
 Typical choice: B–Bb–B → side Bb; Bb–F–Bb → bis.
 
