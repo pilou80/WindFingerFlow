@@ -114,3 +114,16 @@ def render_pdf(
     with open(pdf, "wb") as fh:
         writer.write(fh)
     return len(pages)
+
+
+def write_pdf(svg_pages: list[str], pdf: str | Path) -> int:
+    """Write already-built SVG pages (for example the fingering chart) to a PDF."""
+    writer = PdfWriter()
+    for svg in svg_pages:
+        buf = io.BytesIO()
+        cairosvg.svg2pdf(bytestring=svg.encode("utf-8"), write_to=buf)
+        buf.seek(0)
+        writer.append(buf)
+    with open(pdf, "wb") as fh:
+        writer.write(fh)
+    return len(svg_pages)

@@ -16,12 +16,14 @@ from fastapi import FastAPI, Form, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
 
+from windfingerflow.chart import chart_svg_pages
+from windfingerflow.database import load_database
 from windfingerflow.fiati import FONTS_DIR
 from windfingerflow.instrument import SAX_OFFSET
 from windfingerflow.models import Finger, Level
 from windfingerflow.pipeline import run
 from windfingerflow.profile import Profile
-from windfingerflow.render import render_preview_pages
+from windfingerflow.render import render_preview_pages, write_pdf
 from windfingerflow.score import load_score
 from windfingerflow.score_parts import default_part, list_parts
 from windfingerflow.web.strings import pick
@@ -195,13 +197,57 @@ def fiati_font():
     return FileResponse(FONTS_DIR / "fiati-regular.ttf", media_type="font/ttf")
 
 
+@app.get("/chart", response_class=HTMLResponse)
+def chart_form(request: Request):
+    lang = "fr" if (request.headers.get("accept-language") or "").lower().startswith("fr") else "en"
+    return _page(request, "chart.html", levels=[lv.value for lv in Level], lang_default=lang)
+
+
+@app.post("/chart", response_class=HTMLResponse)
+def chart_make(
+    request: Request,
+    naming: str = Form("letters"),
+    level: str = Form("beginner"),
+    lang: str = Form("en"),
+    alternates: bool = Form(False),
+    allow_unconfirmed: bool = Form(False),
+):
+    t = pick(request.headers.get("accept-language"))
+    if (
+        naming not in {"letters", "solfege"}
+        or level not in {lv.value for lv in Level}
+        or lang not in {"en", "fr"}
+    ):
+        return _page(request, "chart_result.html", error=t["err_parse"])
+    _cleanup()
+    job = uuid.uuid4().hex
+    folder = WORKDIR / job
+    folder.mkdir(parents=True)
+    profile = Profile(level=Level(level), allow_unconfirmed=allow_unconfirmed)
+    db = load_database("saxophone")
+    options = {"alternates": alternates, "lang": lang, "naming": naming}
+    try:
+        write_pdf(chart_svg_pages(db, profile, **options), folder / "chart.pdf")
+        previews = []
+        for n, svg in enumerate(chart_svg_pages(db, profile, responsive=True, **options), 1):
+            (folder / f"preview-{n}.svg").write_text(svg, encoding="utf-8")
+            previews.append((n, 794, 1123))
+    except Exception:
+        log.exception("chart failed")
+        shutil.rmtree(folder, ignore_errors=True)
+        return _page(request, "chart_result.html", error=t["err_parse"])
+    return _page(request, "chart_result.html", job=job, previews=previews)
+
+
 @app.get("/download/{job}/{kind}")
 def download(job: str, kind: str):
-    if not _ID_RE.match(job) or kind not in {"pdf", "musicxml"}:
+    if not _ID_RE.match(job) or kind not in {"pdf", "musicxml", "chart"}:
         raise HTTPException(404)
-    name = "annotated.pdf" if kind == "pdf" else "annotated.musicxml"
+    name = {"pdf": "annotated.pdf", "musicxml": "annotated.musicxml", "chart": "chart.pdf"}[kind]
     path = WORKDIR / job / name
     if not path.is_file():
         raise HTTPException(404)
-    media = "application/pdf" if kind == "pdf" else "application/vnd.recordare.musicxml+xml"
+    media = (
+        "application/pdf" if kind in {"pdf", "chart"} else "application/vnd.recordare.musicxml+xml"
+    )
     return FileResponse(path, media_type=media, filename=name)
