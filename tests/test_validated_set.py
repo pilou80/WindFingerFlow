@@ -8,11 +8,11 @@ def test_what_pilou_has_validated():
     for f in db.fingerings.values():
         if f.level == Level.BEGINNER:
             assert f.validated, f.id
-    for fid in ("c.side", "f6.front", "fs6.fork"):
+    for fid in ("c.side", "f6.front", "fs6.fork", "bb.one_one"):
         assert db.fingerings[fid].validated, fid
 
 
 def test_what_is_still_to_confirm():
     db = load_database()
     pending = {f.id for f in db.fingerings.values() if not f.validated}
-    assert pending == {"bb.one_one", "d.long", "e6.fork"}
+    assert pending == {"d.long", "e6.fork"}

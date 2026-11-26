@@ -17,10 +17,11 @@ fingerings:
     pitches: [Bb4, Bb5]
     keys: [lh.b, rh.f]
     category: alternate
-    level: experimental  # judged not reliable by the saxophonist (pilou, 2026-11-26)
+    level: advanced
+    validated: true
     use: "Versatile; the right hand is already in place."
     avoid: "Fast passages where R1 has to move quickly."
-    sources: [{ name: "UNVERIFIED: kept from the early design-notes draft; no page read describes a 1 and 1 Bb key list" }, { name: "To check: Dawkes complete guide, section 1 Middle Bb (flute-style Bb)", url: "https://www.dawkes.co.uk/sound-room/saxophone-fingerings-a-complete-guide-to-alternatives/" }, { name: "To check: Woodwind Fingering Guide, first octave chart, entry 1Bb (image only)", url: "https://www.wfg.woodwind.org/sax/sax_alt_1.html" }]
+    sources: [{ name: "Validated by the saxophonist (pilou), 2026-11-26: B key + F key (L1 + R1) sounds good and is easy to play; first judged bad by mistake (wrong keys tried)" }]
   - id: bb.side
     name: { en: "Side Bb", fr: "Sib de côté" }
     pitches: [Bb4, Bb5]
