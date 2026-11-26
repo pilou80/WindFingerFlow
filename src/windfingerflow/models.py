@@ -112,6 +112,7 @@ class Fingering(Strict):
     use: str = ""
     avoid: str = ""
     needs_confirmation: bool = False
+    validated: bool = False  # confirmed by the saxophonist (pilou)
     sources: list[Source] = Field(default_factory=list)
 
 

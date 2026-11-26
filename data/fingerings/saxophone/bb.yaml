@@ -8,6 +8,7 @@ fingerings:
     keys: [lh.b, lh.bis]
     category: standard
     level: beginner
+    validated: true
     use: "Flat keys, when no B natural is nearby."
     avoid: "B to Bb movements, where the index finger must roll between two keys."
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Corrected by the saxophonist (pilou), 2026-11-26: no A key" }]
@@ -26,6 +27,7 @@ fingerings:
     keys: [lh.b, lh.a, rh.side_bb]
     category: alternate
     level: beginner
+    validated: true
     use: "Chromatic B-Bb-B passages, A-Bb trills."
     avoid: "Very flat keys when a simpler option exists."
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Validated by the saxophonist (pilou), 2026-11-26: with the A key" }]

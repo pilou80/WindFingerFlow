@@ -9,6 +9,7 @@ fingerings:
     keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d, lh.low_bb, rh.low_c]
     category: standard
     level: beginner
+    validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Validated by the saxophonist (pilou), 2026-11-26" }]
   - id: b.low
     name: { en: "Low B", fr: "Si grave" }
@@ -16,6 +17,7 @@ fingerings:
     keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d, lh.low_b, rh.low_c]
     category: standard
     level: beginner
+    validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Validated by the saxophonist (pilou), 2026-11-26" }]
   - id: c.low
     name: { en: "Low C", fr: "Do grave" }
@@ -23,6 +25,7 @@ fingerings:
     keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d, rh.low_c]
     category: standard
     level: beginner
+    validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Validated by the saxophonist (pilou), 2026-11-26" }]
   - id: cs.low
     name: { en: "Low C#", fr: "Do# grave" }
@@ -30,6 +33,7 @@ fingerings:
     keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d, lh.low_cs, rh.low_c]
     category: standard
     level: beginner
+    validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Validated by the saxophonist (pilou), 2026-11-26" }]
   - id: d.std
     name: { en: "D", fr: "Ré" }
@@ -37,6 +41,7 @@ fingerings:
     keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d]
     category: standard
     level: beginner
+    validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: eb.std
     name: { en: "Eb", fr: "Mib" }
@@ -44,6 +49,7 @@ fingerings:
     keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d, rh.low_eb]
     category: standard
     level: beginner
+    validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: e.std
     name: { en: "E", fr: "Mi" }
@@ -51,6 +57,7 @@ fingerings:
     keys: [lh.b, lh.a, lh.g, rh.f, rh.e]
     category: standard
     level: beginner
+    validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: f.std
     name: { en: "F", fr: "Fa" }
@@ -58,6 +65,7 @@ fingerings:
     keys: [lh.b, lh.a, lh.g, rh.f]
     category: standard
     level: beginner
+    validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: g.std
     name: { en: "G", fr: "Sol" }
@@ -65,6 +73,7 @@ fingerings:
     keys: [lh.b, lh.a, lh.g]
     category: standard
     level: beginner
+    validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: gs.std
     name: { en: "G#", fr: "Sol#" }
@@ -72,6 +81,7 @@ fingerings:
     keys: [lh.b, lh.a, lh.g, lh.gs]
     category: standard
     level: beginner
+    validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: a.std
     name: { en: "A", fr: "La" }
@@ -79,6 +89,7 @@ fingerings:
     keys: [lh.b, lh.a]
     category: standard
     level: beginner
+    validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: b.std
     name: { en: "B", fr: "Si" }
@@ -86,6 +97,7 @@ fingerings:
     keys: [lh.b]
     category: standard
     level: beginner
+    validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: c.std
     name: { en: "C", fr: "Do" }
@@ -93,6 +105,7 @@ fingerings:
     keys: [lh.a]
     category: standard
     level: beginner
+    validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: cs.std
     name: { en: "C#", fr: "Do#" }
@@ -100,4 +113,5 @@ fingerings:
     keys: []
     category: standard
     level: beginner
+    validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]

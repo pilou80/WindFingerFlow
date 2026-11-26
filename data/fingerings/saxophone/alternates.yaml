@@ -9,6 +9,7 @@ fingerings:
     keys: [lh.b, rh.side_c]
     category: alternate
     level: advanced
+    validated: true
     intonation: flat
     use: "Fast passages around B and C, where it avoids moving both hands."
     avoid: "Slow exposed notes: it is often flatter than the standard fingering."
