@@ -26,10 +26,12 @@ def test_each_diagram_shows_only_its_key():
 
 def test_finger_group_and_confirmation_flag_are_shown():
     db = load_database()
-    lines = dict(key_lines(db.keys["rh.low_c"], "en"))
-    assert any("R4" in t for s, t in key_lines(db.keys["rh.low_c"], "en") if s == "info")
-    assert lines.get("flag") == "! to confirm"
-    assert "flag" not in dict(key_lines(db.keys["lh.b"], "en"))
+    key = db.keys["rh.low_c"]
+    assert any("R4" in t for style, t in key_lines(key, "en") if style == "info")
+    assert "flag" not in dict(key_lines(key, "en"))
+    flagged = key.model_copy(update={"needs_confirmation": True})  # no catalogue key is flagged now
+    assert dict(key_lines(flagged, "en")).get("flag") == "! to confirm"
+    assert dict(key_lines(flagged, "fr")).get("flag") == "! à confirmer"
 
 
 def test_pages_fit_and_are_watermarked():
