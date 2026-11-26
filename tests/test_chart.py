@@ -56,9 +56,9 @@ def test_one_diagram_per_group_not_per_spelling():
 
 def test_alternates_are_opt_in_and_named():
     db = load_database()
-    without = "".join(chart_svg_pages(db, Profile(level=Level.ADVANCED)))
+    without = "".join(chart_svg_pages(db, Profile(level=Level.EXPERIMENTAL)))
     with_alt = "".join(
-        chart_svg_pages(db, Profile(level=Level.ADVANCED), alternates=True, lang="fr")
+        chart_svg_pages(db, Profile(level=Level.EXPERIMENTAL), alternates=True, lang="fr")
     )
     assert "Sib 1+1" not in without and "Sib 1+1" in with_alt
 

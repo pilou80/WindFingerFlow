@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 
 from windfingerflow.models import Finger, Level
 
-LEVEL_ORDER = {Level.BEGINNER: 0, Level.ADVANCED: 1, Level.EXPERT: 2}
+LEVEL_ORDER = {Level.BEGINNER: 0, Level.ADVANCED: 1, Level.EXPERT: 2, Level.EXPERIMENTAL: 3}
 
 
 @dataclass

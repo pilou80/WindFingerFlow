@@ -45,6 +45,7 @@ class Level(StrEnum):
     BEGINNER = "beginner"
     ADVANCED = "advanced"
     EXPERT = "expert"
+    EXPERIMENTAL = "experimental"  # fingerings the saxophonist found unreliable or unproven
 
 
 class Intonation(StrEnum):

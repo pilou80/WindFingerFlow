@@ -16,7 +16,7 @@ fingerings:
     pitches: [Bb4, Bb5]
     keys: [lh.b, lh.a, rh.f]
     category: alternate
-    level: beginner
+    level: experimental  # judged not reliable by the saxophonist (pilou, 2026-11-26)
     use: "Versatile; the right hand is already in place."
     avoid: "Fast passages where R1 has to move quickly."
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]

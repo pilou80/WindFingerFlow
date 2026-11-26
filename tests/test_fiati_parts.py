@@ -6,6 +6,7 @@ from windfingerflow.annotate import annotate
 from windfingerflow.chooser import Step, choose
 from windfingerflow.database import load_database
 from windfingerflow.fiati import FONTS_DIR, KEY_GLYPHS, SAX_CHART, diagram_text
+from windfingerflow.models import Level
 from windfingerflow.render import render_pdf
 from windfingerflow.score import extract_line
 from windfingerflow.score_parts import default_part, list_parts
@@ -37,7 +38,7 @@ def test_annotation_styles(tmp_path, style, words):
     chosen = choose(
         load_database(),
         [Step(e.pitch, e.duration) for e in events],
-        Profile(allow_unconfirmed=True),
+        Profile(level=Level.EXPERIMENTAL, allow_unconfirmed=True),
     )
     assert annotate(events, chosen, style=style) == 4
     out = tmp_path / "o.musicxml"

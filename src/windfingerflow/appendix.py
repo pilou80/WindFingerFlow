@@ -33,6 +33,7 @@ LABELS = {
         "beginner": "beginner",
         "advanced": "advanced",
         "expert": "expert",
+        "experimental": "experimental",
     },
     "fr": {
         "title": "Doigtés alternatifs utilisés",
@@ -49,6 +50,7 @@ LABELS = {
         "beginner": "débutant",
         "advanced": "avancé",
         "expert": "expert",
+        "experimental": "expérimental",
     },
 }
 

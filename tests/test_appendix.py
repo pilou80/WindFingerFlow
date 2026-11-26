@@ -4,6 +4,7 @@ from pypdf import PdfReader
 from windfingerflow.appendix import appendix_svg_pages, collect_entries, format_bars
 from windfingerflow.chooser import Step, choose
 from windfingerflow.database import load_database
+from windfingerflow.models import Level
 from windfingerflow.pipeline import run
 from windfingerflow.profile import Profile
 
@@ -27,7 +28,9 @@ def test_entries_collect_bars(tmp_path):
     events = extract_line(load_score(make_xml(tmp_path)))
     db = load_database()
     chosen = choose(
-        db, [Step(e.pitch, e.duration) for e in events], Profile(allow_unconfirmed=True)
+        db,
+        [Step(e.pitch, e.duration) for e in events],
+        Profile(level=Level.EXPERIMENTAL, allow_unconfirmed=True),
     )
     entries = collect_entries(events, chosen)
     assert {e.fingering.id for e in entries} == {"fs.alt", "bb.one_one"}
@@ -38,7 +41,11 @@ def test_appendix_svg_mentions_name_and_bars(tmp_path):
     from windfingerflow.score import extract_line, load_score
 
     events = extract_line(load_score(make_xml(tmp_path)))
-    chosen = choose(load_database(), [Step(e.pitch, e.duration) for e in events])
+    chosen = choose(
+        load_database(),
+        [Step(e.pitch, e.duration) for e in events],
+        Profile(level=Level.EXPERIMENTAL),
+    )
     pages = appendix_svg_pages(collect_entries(events, chosen), "fr")
     assert len(pages) == 1 and "Sib 1+1" in pages[0] and "Mesures: 1-2" in pages[0]
 
