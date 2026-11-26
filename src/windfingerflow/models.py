@@ -75,6 +75,7 @@ class LilyPondKey(Strict):
 class Key(Strict):
     id: KeyId
     name: I18n
+    abbr_fr: str | None = None  # short French notation (C1, C2, C3, Ta, Tc, Tf)
     finger: Finger
     substitute_fingers: list[Finger] = Field(default_factory=list)
     group: KeyGroup

@@ -62,3 +62,23 @@ def test_french_page_has_french_name_in_bold():
     assert fr["name"] == key.name.fr and fr["name2"] == key.name.en
     en = dict(key_lines(key, "en"))
     assert en["name"] == key.name.en and en["name2"] == key.name.fr
+
+
+def test_french_abbreviations_of_the_palm_and_side_keys():
+    from windfingerflow.database import load_database
+    from windfingerflow.keyschart import key_lines
+
+    db = load_database()
+    expected = {
+        "lh.palm_d": "C1",
+        "lh.palm_eb": "C2",
+        "rh.side_e": "C3",
+        "rh.side_bb": "Ta",
+        "rh.side_c": "Tc",
+        "rh.alt_fs": "Tf",
+    }
+    for key_id, abbr in expected.items():
+        key = db.keys[key_id]
+        assert key.abbr_fr == abbr
+        assert dict(key_lines(key, "fr"))["name"].startswith(f"{abbr} - ")
+        assert not dict(key_lines(key, "en"))["name"].startswith(abbr)

@@ -70,6 +70,8 @@ def key_lines(key: Key, lang: str) -> list[tuple[str, str]]:
         if lang == "fr"
         else (key.name.en, key.name.fr or "")
     )
+    if lang == "fr" and key.abbr_fr:
+        first = f"{key.abbr_fr} - {first}"
     lines = [("id", key.id), ("name", first), ("name2", second)]
     lines.append(
         ("info", f"{t['finger']} {key.finger.value} - {t['group']}: {t['groups'][key.group.value]}")

@@ -14,6 +14,7 @@ keys:
     lilypond: { group: lh, name: front-f }
     availability: "all (not some old models)"
   - id: lh.palm_d
+    abbr_fr: "C1"
     name: { en: "Palm D", fr: "Clé de paume Ré" }
     finger: L1
     group: palm
@@ -21,6 +22,7 @@ keys:
     availability: "all"
     description: "Pressed with the index knuckle; the palm is a substitute."
   - id: lh.palm_eb
+    abbr_fr: "C2"
     name: { en: "Palm Eb", fr: "Clé de paume Mib" }
     finger: L1
     group: palm
@@ -108,6 +110,7 @@ keys:
     lilypond: { group: cc, name: six }
     availability: "all"
   - id: rh.alt_fs
+    abbr_fr: "Tf"
     name: { en: "Alternate F#", fr: "Fa# alternatif" }
     finger: R3
     group: main
@@ -115,18 +118,21 @@ keys:
     availability: "all"
     description: "Used for the alternate F#; fingering validated by pilou (2026-11-26)."
   - id: rh.side_e
+    abbr_fr: "C3"
     name: { en: "Side E (high E)", fr: "Mi aigu latéral" }
     finger: R1
     group: side
     lilypond: { group: rh, name: e }
     availability: "all"
   - id: rh.side_c
+    abbr_fr: "Tc"
     name: { en: "Side C", fr: "Do latéral" }
     finger: R1
     group: side
     lilypond: { group: rh, name: c }
     availability: "all"
   - id: rh.side_bb
+    abbr_fr: "Ta"
     name: { en: "Side Bb", fr: "Sib de côté" }
     finger: R1
     group: side
