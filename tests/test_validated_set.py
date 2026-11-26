@@ -15,4 +15,5 @@ def test_what_pilou_has_validated():
 def test_what_is_still_to_confirm():
     db = load_database()
     pending = {f.id for f in db.fingerings.values() if not f.validated}
-    assert pending == {"d.long", "e6.fork"}
+    altissimo = {"g6.alt", "gs6.alt", "a6.alt", "bb6.alt", "b6.alt", "c7.alt"}
+    assert pending == {"d.long", "e6.fork"} | altissimo

@@ -21,4 +21,8 @@ def test_low_c_key_is_pressed_for_low_c_and_the_three_notes_below_c_sharp():
 def test_low_c_key_is_confirmed():
     db = load_database()
     assert not db.keys["rh.low_c"].needs_confirmation
-    assert all(not f.needs_confirmation for fid, f in db.fingerings.items() if fid != "d.long")
+    assert all(
+        not f.needs_confirmation
+        for fid, f in db.fingerings.items()
+        if fid != "d.long" and not fid.endswith(("6.alt", "7.alt"))
+    )

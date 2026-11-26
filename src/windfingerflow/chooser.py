@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from windfingerflow.database import Database
-from windfingerflow.instrument import needs_octave_key
+from windfingerflow.instrument import WRITTEN_RANGE, name_to_midi, needs_octave_key
 from windfingerflow.models import Category, Finger, Fingering, Intonation
 from windfingerflow.profile import LEVEL_ORDER, Profile
 
@@ -33,6 +33,8 @@ def effective_keys(f: Fingering, pitch: str) -> set[str]:
 
 
 def candidates(db: Database, pitch: str, profile: Profile) -> list[Fingering]:
+    if name_to_midi(pitch) > WRITTEN_RANGE[1] and not profile.allow_altissimo:
+        return []
     out = []
     for f in db.candidates(pitch):
         if f.id in profile.excluded_fingerings:

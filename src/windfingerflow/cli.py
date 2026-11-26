@@ -24,6 +24,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument(
         "--allow-unconfirmed", action="store_true", help="also suggest unverified fingerings"
     )
+    ap.add_argument("--altissimo", action="store_true", help="also propose altissimo (G6..C7)")
     ap.add_argument("--style", choices=["text", "diagram", "both"], default="text")
     ap.add_argument("--appendix", action="store_true", help="add detailed pages to the PDF")
     ap.add_argument("--lang", default="en", choices=["en", "fr"])
@@ -35,6 +36,7 @@ def main(argv: list[str] | None = None) -> int:
         excluded_fingerings=set(args.exclude),
         unavailable_fingers={Finger(f) for f in args.unavailable},
         allow_unconfirmed=args.allow_unconfirmed,
+        allow_altissimo=args.altissimo,
     )
     result = run(
         args.score,

@@ -8,6 +8,7 @@ from xml.sax.saxutils import escape
 
 from windfingerflow.chooser import effective_keys
 from windfingerflow.fiati import FONT_FAMILY, diagram_text
+from windfingerflow.legend import fingering_color, legend_svg
 from windfingerflow.models import Category, Fingering
 from windfingerflow.score import NoteEvent
 
@@ -104,7 +105,10 @@ def _block(entry: Entry, top: int, lang: str) -> str:
             f'<text x="{MARGIN}" y="{top + 230}" font-family="{FONT_FAMILY}" '
             f'font-size="{DIAGRAM_SIZE * 2}">{glyphs}</text>'
         ),
-        f'<text x="{x_text}" y="{top + 40}" font-size="26" font-weight="bold">{escape(name)}</text>',
+        (
+            f'<text x="{x_text}" y="{top + 40}" font-size="26" font-weight="bold" '
+            f'fill="{fingering_color(f)}">{escape(name)}</text>'
+        ),
     ]
     meta = [f"{t['level']}: {t[f.level.value]}"]
     if f.intonation.value != "unknown":
@@ -138,6 +142,7 @@ def appendix_svg_pages(entries: list[Entry], lang: str = "en") -> list[str]:
                 f"{escape(LABELS[lang]['title'])}</text>"
             )
         ]
+        body.append(legend_svg(MARGIN, 92, lang, size=11))
         for i, entry in enumerate(entries[start : start + BLOCKS_PER_PAGE]):
             body.append(_block(entry, 110 + i * BLOCK_H, lang))
         pages.append(

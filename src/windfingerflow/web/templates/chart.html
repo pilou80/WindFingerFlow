@@ -33,6 +33,7 @@
   <select id="lang" name="lang"><option value="en" {% if t.title and lang_default == "en" %}selected{% endif %}>English</option><option value="fr" {% if lang_default == "fr" %}selected{% endif %}>Français</option></select>
   <label><input type="checkbox" name="alternates" value="true"> {{ t.chart_alternates }}</label>
   <label><input type="checkbox" name="allow_unconfirmed" value="true"> {{ t.allow_unconfirmed }}</label>
+  <label><input type="checkbox" name="altissimo" value="true"> {{ t.altissimo }}</label>
   <button type="submit">{{ t.chart_go }}</button><span id="busy" class="htmx-indicator">{{ t.working }}</span>
 </form>
 <div id="result" aria-live="polite" hidden></div>

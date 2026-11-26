@@ -7,7 +7,8 @@ from windfingerflow.models import parse_pitch
 # Semitones to add to the sounding (concert) pitch to get the written pitch.
 SAX_OFFSET = {"soprano": 2, "alto": 9, "tenor": 14, "baritone": 21}
 WRITTEN_RANGE = (58, 90)  # written low Bb3 .. high F#6 (generic model)
-OCTAVE_KEY_RANGE = (74, 90)  # written D5 .. F#6 use the octave key (assumed for the palm keys)
+ALTISSIMO_RANGE = (91, 96)  # written G6 .. C7, only when the player asks for it
+OCTAVE_KEY_RANGE = (74, 96)  # written D5 .. F#6 use the octave key (assumed for the palm keys)
 
 _NAMES = {0: "C", 1: "C#", 2: "D", 3: "Eb", 4: "E", 5: "F", 6: "F#", 7: "G", 8: "G#", 9: "A"}
 _NAMES |= {10: "Bb", 11: "B"}
@@ -30,5 +31,6 @@ def needs_octave_key(pitch: str) -> bool:
     return low <= name_to_midi(pitch) <= high
 
 
-def in_written_range(midi: int) -> bool:
-    return WRITTEN_RANGE[0] <= midi <= WRITTEN_RANGE[1]
+def in_written_range(midi: int, altissimo: bool = False) -> bool:
+    high = ALTISSIMO_RANGE[1] if altissimo else WRITTEN_RANGE[1]
+    return WRITTEN_RANGE[0] <= midi <= high

@@ -68,10 +68,10 @@ def is_sax_part(part: stream.Stream) -> bool:
     return isinstance(part.getInstrument(returnDefault=True), instrument.Saxophone)
 
 
-def range_warnings(events: list[NoteEvent]) -> list[str]:
+def range_warnings(events: list[NoteEvent], altissimo: bool = False) -> list[str]:
     out = []
     for e in events:
-        if not in_written_range(e.midi):
+        if not in_written_range(e.midi, altissimo):
             out.append(f"{e.pitch} (offset {e.element.offset}) is outside the written sax range")
         if e.is_chord:
             out.append(f"chord at offset {e.element.offset}: only the top note ({e.pitch}) is used")

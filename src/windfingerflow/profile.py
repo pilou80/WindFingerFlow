@@ -17,3 +17,5 @@ class Profile:
     limited_fingers: set[Finger] = field(default_factory=set)
     # Fingerings flagged needs_confirmation are only suggested when this is True.
     allow_unconfirmed: bool = False
+    # Altissimo (written G6..C7) is only proposed when this is True.
+    allow_altissimo: bool = False

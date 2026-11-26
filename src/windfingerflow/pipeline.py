@@ -50,7 +50,7 @@ def run(
     events = extract_line(score, part, sax)
     chosen = choose(db, [Step(e.pitch, e.duration) for e in events], profile)
     used = profile or Profile()
-    result = Result(events, chosen, range_warnings(events), score=score)
+    result = Result(events, chosen, range_warnings(events, used.allow_altissimo), score=score)
     result.watermark = watermark_text(
         "score",
         part=part,
@@ -60,6 +60,7 @@ def run(
         lang=lang,
         all_notes=all_notes,
         unconfirmed=used.allow_unconfirmed,
+        altissimo=used.allow_altissimo,
         exclude=",".join(sorted(used.excluded_fingerings)),
         unavailable=",".join(sorted(f.value for f in used.unavailable_fingers)),
         appendix=appendix,

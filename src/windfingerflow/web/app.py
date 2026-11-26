@@ -83,6 +83,7 @@ def process(
     exclude: str = Form(""),
     all_notes: bool = Form(False),
     allow_unconfirmed: bool = Form(False),
+    altissimo: bool = Form(False),
     style: str = Form("text"),
     appendix: bool = Form(False),
 ):
@@ -118,6 +119,7 @@ def process(
         excluded_fingerings={x.strip() for x in exclude.split(",") if x.strip()},
         unavailable_fingers={Finger(f) for f in unavailable or []},
         allow_unconfirmed=allow_unconfirmed,
+        allow_altissimo=altissimo,
     )
     try:
         result = run(
@@ -224,6 +226,7 @@ def chart_make(
     lang: str = Form("en"),
     alternates: bool = Form(False),
     allow_unconfirmed: bool = Form(False),
+    altissimo: bool = Form(False),
 ):
     t = pick(request.headers.get("accept-language"))
     if (
@@ -236,7 +239,9 @@ def chart_make(
     job = uuid.uuid4().hex
     folder = WORKDIR / job
     folder.mkdir(parents=True)
-    profile = Profile(level=Level(level), allow_unconfirmed=allow_unconfirmed)
+    profile = Profile(
+        level=Level(level), allow_unconfirmed=allow_unconfirmed, allow_altissimo=altissimo
+    )
     db = load_database("saxophone")
     options = {"alternates": alternates, "lang": lang, "naming": naming}
     mark = watermark_text(
@@ -246,6 +251,7 @@ def chart_make(
         level=level,
         alternates=alternates,
         unconfirmed=allow_unconfirmed,
+        altissimo=altissimo,
     )
     try:
         write_pdf(chart_svg_pages(db, profile, watermark=mark, **options), folder / "chart.pdf")

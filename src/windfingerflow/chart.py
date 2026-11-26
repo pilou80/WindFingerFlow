@@ -14,7 +14,8 @@ from windfingerflow.buildinfo import add_watermark
 from windfingerflow.chooser import candidates, effective_keys
 from windfingerflow.database import Database
 from windfingerflow.fiati import FONT_FAMILY, diagram_text
-from windfingerflow.instrument import WRITTEN_RANGE, midi_to_name
+from windfingerflow.instrument import ALTISSIMO_RANGE, WRITTEN_RANGE, midi_to_name
+from windfingerflow.legend import fingering_color, legend_svg
 from windfingerflow.models import Category, Fingering
 from windfingerflow.profile import Profile
 
@@ -25,7 +26,7 @@ GAP = 14
 BOX_W = (PAGE_W - 2 * MARGIN - (COLUMNS - 1) * GAP) / COLUMNS
 PAD = 8
 FIRST_ROW_Y = 68
-BOTTOM_MARGIN = 34
+BOTTOM_MARGIN = 50
 DIAGRAM_SIZE = 100
 DIAGRAM_STEP = 42
 MAX_STANDARD = 2
@@ -62,13 +63,13 @@ TEXT = {
     "en": {
         "title": "Saxophone fingering chart (written pitch)",
         "nodata": "no data",
-        "note": "Notes that sound the same share a box. Altissimo above F#6 is not covered. "
+        "note": "Notes that sound the same share a box. Altissimo (above F#6) only when asked. "
         "Alternates follow the standard fingering, with their name.",
     },
     "fr": {
         "title": "Tableau de doigtés de saxophone (hauteur écrite)",
         "nodata": "pas de données",
-        "note": "Les notes qui sonnent pareil partagent un cadre. Suraigu au-dessus du Fa#6 non couvert. "
+        "note": "Les notes qui sonnent pareil partagent un cadre. Suraigu (au-dessus du Fa#6) seulement sur demande. "
         "Les alternatives suivent le doigté standard, avec leur nom.",
     },
 }
@@ -96,14 +97,16 @@ def ledger_positions(pos: int) -> list[int]:
     return []
 
 
-def pitch_groups() -> list[Group]:
+def pitch_groups(altissimo: bool = False) -> list[Group]:
     """Every pitch of the written range with all its spellings, lowest pitch first.
 
     Spellings are ordered from the lowest to the highest staff position.
     """
     low, high = WRITTEN_RANGE
+    if altissimo:
+        high = ALTISSIMO_RANGE[1]
     groups: dict[int, list[Spelling]] = {}
-    for octave in range(3, 7):
+    for octave in range(3, 8):
         for letter in LETTERS:
             for accidental, shift in ACCIDENTALS:
                 midi = (octave + 1) * 12 + BASE[letter] + shift
@@ -219,7 +222,8 @@ def _cell(entry, col, box_y, row, lang, naming) -> str:
         if is_alternate:
             name = getattr(f.name, lang, None) or f.name.en
             out.append(
-                f'<text x="{dx:g}" y="{base_y + 11:g}" font-size="7.5">{escape(name[:ALT_NAME_CHARS])}</text>'
+                f'<text x="{dx:g}" y="{base_y + 11:g}" font-size="7.5" '
+                f'fill="{fingering_color(f)}">{escape(name[:ALT_NAME_CHARS])}</text>'
             )
     if standard and alternates:
         sep = dx0 + len(standard) * step - 4
@@ -232,7 +236,7 @@ def _cell(entry, col, box_y, row, lang, naming) -> str:
 
 def _rows(db: Database, profile: Profile, alternates: bool) -> list[list[Entry]]:
     entries: list[Entry] = []
-    for group in pitch_groups():
+    for group in pitch_groups(profile.allow_altissimo):
         standard, extra = _fingerings(db, midi_to_name(group[0]), profile, alternates)
         entries.append((group, standard, extra))
     return [entries[i : i + COLUMNS] for i in range(0, len(entries), COLUMNS)]
@@ -273,6 +277,8 @@ def chart_svg_pages(
         for row, box_y in page_rows:
             for col, entry in enumerate(row):
                 body.append(_cell(entry, col, box_y, row, lang, naming))
+        if alternates:
+            body.append(legend_svg(MARGIN, PAGE_H - 36, lang))
         body.append(
             f'<text x="{MARGIN}" y="{PAGE_H - 22}" font-size="9" fill="#666">{escape(t["note"])}</text>'
         )
