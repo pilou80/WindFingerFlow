@@ -29,9 +29,9 @@ def test_derived_fingers(db):
     }
 
 
-def test_alternate_fs_is_flagged_for_confirmation(db):
-    assert db.keys["rh.alt_fs"].needs_confirmation
-    assert db.fingerings["fs.alt"].needs_confirmation
+def test_alternate_fs_is_confirmed_and_offered_by_default(db):
+    assert not db.keys["rh.alt_fs"].needs_confirmation
+    assert not db.fingerings["fs.alt"].needs_confirmation
 
 
 def test_unavailable_finger_excludes_standard_fs(db):

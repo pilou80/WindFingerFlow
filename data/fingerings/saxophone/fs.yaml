@@ -18,5 +18,4 @@ fingerings:
     level: beginner
     use: "F to F# movements, F-F# trills, chromatic E-F-F# lines."
     avoid: "Slow exposed notes until intonation has been checked."
-    needs_confirmation: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]

@@ -113,8 +113,7 @@ keys:
     group: main
     lilypond: { group: rh, name: fis }
     availability: "all"
-    description: "Finger is probable, to confirm."
-    needs_confirmation: true
+    description: "Used for the alternate F#; fingering validated by pilou (2026-11-26)."
   - id: rh.side_e
     name: { en: "Side E (high E)", fr: "Mi aigu latéral" }
     finger: R1
