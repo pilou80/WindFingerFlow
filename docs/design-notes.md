@@ -487,6 +487,17 @@ Accessibility example: if R2 is unavailable, standard F# is excluded but alterna
 
 ---
 
+### Missing common fingerings, to validate (2026-11-26)
+
+Listed from memory and NOT in the data yet: no key combination is written until a source or the saxophonist confirms it. Each one should enter as `experimental`, `validated: false`, `needs_confirmation: true`.
+
+- Alternate Eb (D# 4/5/6) and alternate C# (5/6) fingerings.
+- Alternates for the low notes (Bb3, B3, C4, C#4) that avoid moving the left little finger.
+- Altissimo above F#6 (G6, A6, Bb6, C7...).
+- Trill fingerings (for example G#-A#, B-C#).
+- Tuning / ghost-note fingerings.
+- Other alternates for Bb (thumb bis variants).
+
 ## 14. Future ideas
 - **PDF / scanned score input via Audiveris (OMR)** — band scores often arrive as PDFs.
   - Open-source optical music recognition (Java), license **AGPL-3.0** (same as ours).
