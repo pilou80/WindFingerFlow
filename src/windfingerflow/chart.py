@@ -24,7 +24,7 @@ BOTTOM_MARGIN = 50
 DIAGRAM_SIZE = 100
 DIAGRAM_STEP = 42
 MAX_DIAGRAMS = 4
-LABEL_H = 18
+LABEL_H = 22
 
 # Staff geometry. Positions are diatonic steps: octave * 7 + letter index (C=0 ... B=6),
 # so E4, the bottom line of the treble staff, is 30.
@@ -164,7 +164,7 @@ def _cell(db, group, col, row_y, row, profile, alternates, lang, naming) -> str:
     out = _staff(x, row_y, top, spellings)
     label = " / ".join(note_label(*s[:2], s[2], naming) for s in spellings)
     out.append(
-        f'<text x="{x + 4}" y="{row_y + staff_h + 10:g}" font-size="11" font-weight="bold">{escape(label)}</text>'
+        f'<text x="{x + 4}" y="{row_y + staff_h + 14:g}" font-size="11" font-weight="bold">{escape(label)}</text>'
     )
     found = _fingerings(db, pitch, profile, alternates)
     base_y = row_y + staff_h + LABEL_H + DIAGRAM_SIZE
