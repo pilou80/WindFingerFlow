@@ -16,6 +16,7 @@ from fastapi import FastAPI, Form, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
 
+from windfingerflow.buildinfo import watermark_text
 from windfingerflow.chart import PAGE_H as CHART_H
 from windfingerflow.chart import PAGE_W as CHART_W
 from windfingerflow.chart import chart_svg_pages
@@ -136,7 +137,9 @@ def process(
         source.unlink(missing_ok=True)
     try:
         previews = []
-        for n, (svg, w, h) in enumerate(render_preview_pages(folder / "annotated.musicxml"), 1):
+        for n, (svg, w, h) in enumerate(
+            render_preview_pages(folder / "annotated.musicxml", result.watermark), 1
+        ):
             (folder / f"preview-{n}.svg").write_text(svg, encoding="utf-8")
             previews.append((n, round(w), round(h)))
     except Exception:
@@ -233,10 +236,20 @@ def chart_make(
     profile = Profile(level=Level(level), allow_unconfirmed=allow_unconfirmed)
     db = load_database("saxophone")
     options = {"alternates": alternates, "lang": lang, "naming": naming}
+    mark = watermark_text(
+        "chart",
+        naming=naming,
+        lang=lang,
+        level=level,
+        alternates=alternates,
+        unconfirmed=allow_unconfirmed,
+    )
     try:
-        write_pdf(chart_svg_pages(db, profile, **options), folder / "chart.pdf")
+        write_pdf(chart_svg_pages(db, profile, watermark=mark, **options), folder / "chart.pdf")
         previews = []
-        for n, svg in enumerate(chart_svg_pages(db, profile, responsive=True, **options), 1):
+        for n, svg in enumerate(
+            chart_svg_pages(db, profile, responsive=True, watermark=mark, **options), 1
+        ):
             (folder / f"preview-{n}.svg").write_text(svg, encoding="utf-8")
             previews.append((n, CHART_W, CHART_H))
     except Exception:

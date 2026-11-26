@@ -8,6 +8,7 @@ import re
 import tempfile
 from pathlib import Path
 
+from windfingerflow.buildinfo import add_watermark
 from windfingerflow.fiati import DIAGRAM_SCALE, FONT_FAMILY, FONTS_DIR
 
 
@@ -72,14 +73,16 @@ _PREVIEW_STYLE = (
 )
 
 
-def render_preview_pages(musicxml: str | Path) -> list[tuple[str, float, float]]:
+def render_preview_pages(
+    musicxml: str | Path, watermark: str | None = None
+) -> list[tuple[str, float, float]]:
     """Responsive SVG pages for the browser, as (svg, width, height).
 
     The root size is replaced by a viewBox so the page scales to its container, and the Fiati
     font is loaded through @font-face (the SVG is shown in an iframe, never inlined).
     """
     out = []
-    for svg in render_svg_pages(musicxml, PREVIEW_OPTIONS):
+    for svg in render_svg_pages(musicxml, PREVIEW_OPTIONS, watermark):
         m = _SVG_ROOT.search(svg)
         if not m:
             raise ValueError("unexpected SVG root from Verovio")
@@ -91,20 +94,26 @@ def render_preview_pages(musicxml: str | Path) -> list[tuple[str, float, float]]
     return out
 
 
-def render_svg_pages(musicxml: str | Path, options: dict | None = None) -> list[str]:
+def render_svg_pages(
+    musicxml: str | Path, options: dict | None = None, watermark: str | None = None
+) -> list[str]:
     tk = verovio.toolkit()
     tk.setResourcePath(RESOURCE_PATH)
     tk.setOptions(options or PAGE_OPTIONS)
     if not tk.loadFile(str(musicxml)):
         raise ValueError(f"Verovio could not read {musicxml}")
-    return [_tag_fiati(tk.renderToSVG(page)) for page in range(1, tk.getPageCount() + 1)]
+    pages = [_tag_fiati(tk.renderToSVG(page)) for page in range(1, tk.getPageCount() + 1)]
+    return [add_watermark(p, watermark) for p in pages] if watermark else pages
 
 
 def render_pdf(
-    musicxml: str | Path, pdf: str | Path, extra_svg_pages: list[str] | None = None
+    musicxml: str | Path,
+    pdf: str | Path,
+    extra_svg_pages: list[str] | None = None,
+    watermark: str | None = None,
 ) -> int:
     """Write ``pdf`` from ``musicxml``; returns the number of pages."""
-    pages = render_svg_pages(musicxml)
+    pages = render_svg_pages(musicxml, None, watermark)
     writer = PdfWriter()
     for svg in [*pages, *(extra_svg_pages or [])]:
         buf = io.BytesIO()

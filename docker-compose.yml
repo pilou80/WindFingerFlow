@@ -1,6 +1,9 @@
 services:
   windfingerflow:
-    build: .
+    build:
+      context: .
+      args:
+        GIT_SHA: "${GIT_SHA:-unknown}"  # set by scripts/deploy.sh, shown in the page watermark
     restart: unless-stopped
     # Bound to localhost and the Tailscale and LAN addresses of the NAS, never to the internet.
     ports:

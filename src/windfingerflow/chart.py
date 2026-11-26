@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from xml.sax.saxutils import escape
 
+from windfingerflow.buildinfo import add_watermark
 from windfingerflow.chooser import candidates, effective_keys
 from windfingerflow.database import Database
 from windfingerflow.fiati import FONT_FAMILY, diagram_text
@@ -272,6 +273,7 @@ def chart_svg_pages(
     lang: str = "en",
     naming: str = "letters",
     responsive: bool = False,
+    watermark: str | None = None,
 ) -> list[str]:
     """SVG pages. ``responsive`` drops the fixed size and loads the fonts via @font-face (web)."""
     profile = profile or Profile()
@@ -285,7 +287,7 @@ def chart_svg_pages(
             for col, entry in enumerate(row):
                 body.append(_cell(entry, col, box_y, row, lang, naming))
         body.append(
-            f'<text x="{MARGIN}" y="{PAGE_H - 14}" font-size="9" fill="#666">{escape(t["note"])}</text>'
+            f'<text x="{MARGIN}" y="{PAGE_H - 22}" font-size="9" fill="#666">{escape(t["note"])}</text>'
         )
         size = "" if responsive else f' width="{PAGE_W}" height="{PAGE_H}"'
         style = (
@@ -300,4 +302,4 @@ def chart_svg_pages(
             + "\n".join(body)
             + "</svg>"
         )
-    return pages
+    return [add_watermark(p, watermark) for p in pages] if watermark else pages

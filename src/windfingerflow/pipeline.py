@@ -9,6 +9,7 @@ from music21 import stream
 
 from windfingerflow.annotate import annotate
 from windfingerflow.appendix import appendix_svg_pages, collect_entries
+from windfingerflow.buildinfo import add_watermark, watermark_text
 from windfingerflow.chooser import Step, choose
 from windfingerflow.database import load_database
 from windfingerflow.models import Fingering
@@ -25,6 +26,7 @@ class Result:
     annotations: int = 0
     pages: int = 0
     score: stream.Score | None = field(default=None, repr=False)
+    watermark: str = ""
 
 
 def run(
@@ -47,7 +49,21 @@ def run(
         raise ValueError(f"part {part} does not exist (the score has {len(parts)} part(s))")
     events = extract_line(score, part, sax)
     chosen = choose(db, [Step(e.pitch, e.duration) for e in events], profile)
+    used = profile or Profile()
     result = Result(events, chosen, range_warnings(events), score=score)
+    result.watermark = watermark_text(
+        "score",
+        part=part,
+        sax=sax or "written",
+        level=used.level.value,
+        style=style,
+        lang=lang,
+        all_notes=all_notes,
+        unconfirmed=used.allow_unconfirmed,
+        exclude=",".join(sorted(used.excluded_fingerings)),
+        unavailable=",".join(sorted(f.value for f in used.unavailable_fingers)),
+        appendix=appendix,
+    )
     if musicxml_out or pdf_out:
         result.annotations = annotate(events, chosen, lang, all_notes, style)
         xml = Path(musicxml_out) if musicxml_out else Path(str(pdf_out) + ".musicxml")
@@ -55,8 +71,9 @@ def run(
         if pdf_out:
             extra = []
             if appendix:
-                extra = appendix_svg_pages(collect_entries(events, chosen), lang)
-            result.pages = render_pdf(xml, pdf_out, extra)
+                pages = appendix_svg_pages(collect_entries(events, chosen), lang)
+                extra = [add_watermark(p, result.watermark) for p in pages]
+            result.pages = render_pdf(xml, pdf_out, extra, result.watermark)
             if not musicxml_out:
                 xml.unlink(missing_ok=True)
     return result
