@@ -6,31 +6,31 @@ fingerings:
   - id: bb.low
     name: { en: "Low Bb", fr: "Sib grave" }
     pitches: [Bb3]
-    keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d, lh.low_bb]
+    keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d, lh.low_bb, rh.low_c]
     category: standard
     level: beginner
-    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
+    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Validated by the saxophonist (pilou), 2026-11-26" }]
   - id: b.low
     name: { en: "Low B", fr: "Si grave" }
     pitches: [B3]
-    keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d, lh.low_b]
+    keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d, lh.low_b, rh.low_c]
     category: standard
     level: beginner
-    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
+    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Validated by the saxophonist (pilou), 2026-11-26" }]
   - id: c.low
     name: { en: "Low C", fr: "Do grave" }
     pitches: [C4]
     keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d, rh.low_c]
     category: standard
     level: beginner
-    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
+    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Validated by the saxophonist (pilou), 2026-11-26" }]
   - id: cs.low
     name: { en: "Low C#", fr: "Do# grave" }
     pitches: [C#4]
-    keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d, lh.low_cs]
+    keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d, lh.low_cs, rh.low_c]
     category: standard
     level: beginner
-    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
+    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Validated by the saxophonist (pilou), 2026-11-26" }]
   - id: d.std
     name: { en: "D", fr: "Ré" }
     pitches: [D4, D5]

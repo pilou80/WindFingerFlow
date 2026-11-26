@@ -150,5 +150,4 @@ keys:
     finger: R4
     group: pinky
     availability: "all"
-    description: "Lower pinky key of the right hand. LilyPond name to check."
-    needs_confirmation: true
+    description: "Lower pinky key of the right hand. Also pressed for low Bb, B and C# (validated by pilou, 2026-11-26)."
