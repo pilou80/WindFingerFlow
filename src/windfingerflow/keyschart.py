@@ -64,7 +64,13 @@ TEXT = {
 def key_lines(key: Key, lang: str) -> list[tuple[str, str]]:
     """Text lines of a key box as (style, text); style is one of id, name, name2, info, small, flag."""
     t = TEXT[lang]
-    lines = [("id", key.id), ("name", key.name.en), ("name2", key.name.fr or "")]
+    # The name in the page language is the bold one, the other language follows in italics.
+    first, second = (
+        (key.name.fr or key.name.en, key.name.en)
+        if lang == "fr"
+        else (key.name.en, key.name.fr or "")
+    )
+    lines = [("id", key.id), ("name", first), ("name2", second)]
     lines.append(
         ("info", f"{t['finger']} {key.finger.value} - {t['group']}: {t['groups'][key.group.value]}")
     )

@@ -52,3 +52,14 @@ def test_keys_page_and_pdf(tmp_path, monkeypatch):
     svg = client.get(f"/preview/{job}/1").text
     assert "keys" in svg and "lang=fr" in svg
     assert "err" in client.post("/keys", data={"lang": "xx"}).text
+
+
+def test_french_page_has_french_name_in_bold():
+    from windfingerflow.database import load_database
+    from windfingerflow.keyschart import key_lines
+
+    key = next(k for k in load_database().keys.values() if k.name.fr and k.name.fr != k.name.en)
+    fr = dict(key_lines(key, "fr"))
+    assert fr["name"] == key.name.fr and fr["name2"] == key.name.en
+    en = dict(key_lines(key, "en"))
+    assert en["name"] == key.name.en and en["name2"] == key.name.fr
