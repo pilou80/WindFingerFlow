@@ -1,7 +1,7 @@
 {% if error %}
 <p class="err">{{ error }}</p>
 {% else %}
-<p><a class="dl" href="/download/{{ job }}/chart">{{ t.pdf }}</a></p>
+<p><a class="dl" href="/download/{{ job }}/{{ pdf_kind or 'chart' }}">{{ t.pdf }}</a></p>
 {% for n, w, h in previews %}
 <p><a class="dl" href="/preview/{{ job }}/{{ n }}" target="_blank" rel="noopener">{{ t.preview }} {{ n }}/{{ previews|length }} - {{ t.open_tab }}</a></p>
 <iframe src="/preview/{{ job }}/{{ n }}" title="{{ t.preview }} {{ n }}" loading="lazy" style="width:100%;aspect-ratio:{{ w }}/{{ h }};border:1px solid var(--line);background:#fff"></iframe>

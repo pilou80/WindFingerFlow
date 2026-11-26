@@ -23,6 +23,9 @@ from windfingerflow.chart import chart_svg_pages
 from windfingerflow.database import load_database
 from windfingerflow.fiati import FONTS_DIR
 from windfingerflow.instrument import SAX_OFFSET
+from windfingerflow.keyschart import PAGE_H as KEYS_H
+from windfingerflow.keyschart import PAGE_W as KEYS_W
+from windfingerflow.keyschart import keys_svg_pages
 from windfingerflow.models import Finger, Level
 from windfingerflow.pipeline import run
 from windfingerflow.profile import Profile
@@ -259,15 +262,52 @@ def chart_make(
     return _page(request, "chart_result.html", job=job, previews=previews)
 
 
+@app.get("/keys", response_class=HTMLResponse)
+def keys_form(request: Request):
+    lang = "fr" if (request.headers.get("accept-language") or "").lower().startswith("fr") else "en"
+    return _page(request, "keys.html", lang_default=lang)
+
+
+@app.post("/keys", response_class=HTMLResponse)
+def keys_make(request: Request, lang: str = Form("en")):
+    t = pick(request.headers.get("accept-language"))
+    if lang not in {"en", "fr"}:
+        return _page(request, "chart_result.html", error=t["err_parse"])
+    _cleanup()
+    job = uuid.uuid4().hex
+    folder = WORKDIR / job
+    folder.mkdir(parents=True)
+    db = load_database("saxophone")
+    mark = watermark_text("keys", lang=lang)
+    try:
+        write_pdf(keys_svg_pages(db, lang=lang, watermark=mark), folder / "keys.pdf")
+        previews = []
+        for n, svg in enumerate(keys_svg_pages(db, lang=lang, responsive=True, watermark=mark), 1):
+            (folder / f"preview-{n}.svg").write_text(svg, encoding="utf-8")
+            previews.append((n, KEYS_W, KEYS_H))
+    except Exception:
+        log.exception("keys page failed")
+        shutil.rmtree(folder, ignore_errors=True)
+        return _page(request, "chart_result.html", error=t["err_parse"])
+    return _page(request, "chart_result.html", job=job, previews=previews, pdf_kind="keys")
+
+
 @app.get("/download/{job}/{kind}")
 def download(job: str, kind: str):
-    if not _ID_RE.match(job) or kind not in {"pdf", "musicxml", "chart"}:
+    if not _ID_RE.match(job) or kind not in {"pdf", "musicxml", "chart", "keys"}:
         raise HTTPException(404)
-    name = {"pdf": "annotated.pdf", "musicxml": "annotated.musicxml", "chart": "chart.pdf"}[kind]
+    name = {
+        "pdf": "annotated.pdf",
+        "musicxml": "annotated.musicxml",
+        "chart": "chart.pdf",
+        "keys": "keys.pdf",
+    }[kind]
     path = WORKDIR / job / name
     if not path.is_file():
         raise HTTPException(404)
     media = (
-        "application/pdf" if kind in {"pdf", "chart"} else "application/vnd.recordare.musicxml+xml"
+        "application/pdf"
+        if kind in {"pdf", "chart", "keys"}
+        else "application/vnd.recordare.musicxml+xml"
     )
     return FileResponse(path, media_type=media, filename=name)

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ t.keys_title }} - {{ t.title }}</title>
+<script src="https://unpkg.com/htmx.org@2.0.4"></script>
+<style>
+  :root { --bg:#fafaf7; --fg:#1d1d1b; --muted:#6b6b66; --accent:#1f5f8b; --card:#fff; --line:#ddd; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#17181a; --fg:#ececea; --muted:#9a9a95; --accent:#7db7e0; --card:#212326; --line:#3a3c40; } }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.5 system-ui, sans-serif; }
+  main { max-width:42rem; margin:0 auto; padding:1.5rem 16px 3rem; }
+  h1 { margin:0 0 .25rem; } p.tag { color:var(--muted); margin-top:0; }
+  form, #result { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:1rem; margin-top:1rem; }
+  label { display:block; margin:.75rem 0 .25rem; font-weight:600; }
+  select { width:100%; box-sizing:border-box; padding:.4rem; font:inherit; background:var(--bg); color:var(--fg); border:1px solid var(--line); border-radius:4px; }
+  button { margin-top:1rem; padding:.55rem 1.2rem; font:inherit; background:var(--accent); color:var(--bg); border:0; border-radius:4px; cursor:pointer; }
+  .htmx-indicator { display:none; margin-left:.6rem; color:var(--muted); } .htmx-request .htmx-indicator { display:inline; }
+  .err { color:#c0392b; } a { color:var(--accent); } a.dl { margin-right:1rem; }
+</style>
+</head>
+<body>
+<main>
+<p><a href="/">&larr; {{ t.title }}</a></p>
+<h1>{{ t.keys_title }}</h1>
+<p class="tag">{{ t.keys_tagline }}</p>
+<form hx-post="/keys" hx-target="#result" hx-indicator="#busy">
+  <label for="lang">{{ t.annot_lang }}</label>
+  <select id="lang" name="lang"><option value="en" {% if lang_default == "en" %}selected{% endif %}>English</option><option value="fr" {% if lang_default == "fr" %}selected{% endif %}>Français</option></select>
+  <button type="submit">{{ t.keys_go }}</button><span id="busy" class="htmx-indicator">{{ t.working }}</span>
+</form>
+<div id="result" aria-live="polite" hidden></div>
+</main>
+<script>document.body.addEventListener("htmx:afterSwap", e => { if (e.target.id === "result") e.target.hidden = false; });</script>
+</body>
+</html>

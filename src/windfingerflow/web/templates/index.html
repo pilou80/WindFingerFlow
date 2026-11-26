@@ -25,7 +25,7 @@
 <main>
 <h1>{{ t.title }}</h1>
 <p class="tag">{{ t.tagline }}</p>
-<p><a href="/chart">{{ t.chart_link }}</a></p>
+<p><a href="/chart">{{ t.chart_link }}</a> &middot; <a href="/keys">{{ t.keys_link }}</a></p>
 <form hx-post="/process" hx-target="#result" hx-encoding="multipart/form-data" hx-indicator="#busy">
   <label for="file">{{ t.file }}</label>
   <input type="file" id="file" name="file" hx-post="/parts" hx-trigger="change" hx-target="#parts" hx-encoding="multipart/form-data" hx-include="this" hx-indicator="#busy" accept=".musicxml,.xml,.mxl,.mei,.krn,.abc,.mid,.midi" required>
