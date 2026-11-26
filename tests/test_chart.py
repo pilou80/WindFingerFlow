@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 
 from windfingerflow.chart import (
+    PAGE_W,
     chart_svg_pages,
     ledger_positions,
     note_label,
@@ -64,7 +65,7 @@ def test_alternates_are_opt_in_and_named():
 
 def test_responsive_pages_load_the_fonts():
     page = chart_svg_pages(load_database(), responsive=True)[0]
-    assert "@font-face" in page and "Bravura" in page and 'width="794"' not in page
+    assert "@font-face" in page and "Bravura" in page and f'width="{PAGE_W}"' not in page
 
 
 def test_ledger_lines():
@@ -100,15 +101,15 @@ def test_font_route_is_whitelisted():
     assert client.get("/fonts/other.ttf").status_code == 404
 
 
-def test_middle_note_of_a_three_spelling_cell_is_coloured():
-    from windfingerflow.chart import HIGHLIGHT_COLOR, highlighted_index
-
-    assert highlighted_index([("A", "♯", 4), ("B", "♭", 4), ("C", "♭♭", 5)]) == 1
-    assert highlighted_index([("A", "♯", 4), ("B", "♭", 4)]) is None
-    assert highlighted_index([("G", "", 4)]) is None
-    groups = pitch_groups()
-    threes = sum(1 for _, sp in groups if len(sp) == 3)
+def test_chart_is_black_and_white():
     _, text = labels()
-    # one coloured notehead and one coloured label per three-spelling cell
-    assert text.count(f'fill="{HIGHLIGHT_COLOR}"') >= 2 * threes
-    assert threes > 0
+    assert "d35400" not in text and "<tspan" not in text
+
+
+def test_alternates_sit_in_their_own_band_under_the_staff():
+    db = load_database()
+    plain = "".join(chart_svg_pages(db, Profile(level=Level.ADVANCED)))
+    band = "".join(chart_svg_pages(db, Profile(level=Level.ADVANCED), alternates=True))
+    assert "stroke-dasharray" not in plain and "stroke-dasharray" in band
+    assert band.count("<rect x=") > 0 and band.count("<rect x=") == plain.count("<rect x=")
+    assert len(band) > len(plain)

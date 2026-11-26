@@ -16,6 +16,8 @@ from fastapi import FastAPI, Form, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
 
+from windfingerflow.chart import PAGE_H as CHART_H
+from windfingerflow.chart import PAGE_W as CHART_W
 from windfingerflow.chart import chart_svg_pages
 from windfingerflow.database import load_database
 from windfingerflow.fiati import FONTS_DIR
@@ -236,7 +238,7 @@ def chart_make(
         previews = []
         for n, svg in enumerate(chart_svg_pages(db, profile, responsive=True, **options), 1):
             (folder / f"preview-{n}.svg").write_text(svg, encoding="utf-8")
-            previews.append((n, 794, 1123))
+            previews.append((n, CHART_W, CHART_H))
     except Exception:
         log.exception("chart failed")
         shutil.rmtree(folder, ignore_errors=True)

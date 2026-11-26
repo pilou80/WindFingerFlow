@@ -1,7 +1,9 @@
-"""Fingering chart over the whole range: one cell per pitch, enharmonic spellings grouped.
+"""Fingering chart over the whole range: one framed box per pitch, enharmonic spellings grouped.
 
-Notes that sound the same share a fingering, so A sharp and B flat sit in one cell: one staff with
-both spellings and one set of diagrams. Natural, flat, sharp, double sharp and double flat are covered.
+Notes that sound the same share a fingering, so A sharp and B flat sit in one box: one staff with
+all their spellings on the left and the standard fingering on the right. Alternate fingerings, when
+asked for, go in a separate band under the staff, inside the same frame. Natural, flat, sharp, double
+sharp and double flat spellings are covered. Pages are A4 landscape.
 """
 
 from __future__ import annotations
@@ -15,23 +17,31 @@ from windfingerflow.instrument import WRITTEN_RANGE, midi_to_name
 from windfingerflow.models import Category, Fingering
 from windfingerflow.profile import Profile
 
-PAGE_W, PAGE_H = 794, 1123  # A4 at 96 dpi
+PAGE_W, PAGE_H = 1123, 794  # A4 landscape at 96 dpi
 MARGIN = 40
-COLUMNS = 4
-CELL_W = 178
-FIRST_ROW_Y = 85
-BOTTOM_MARGIN = 50
+COLUMNS = 3
+GAP = 14
+BOX_W = (PAGE_W - 2 * MARGIN - (COLUMNS - 1) * GAP) / COLUMNS
+PAD = 8
+FIRST_ROW_Y = 68
+BOTTOM_MARGIN = 34
 DIAGRAM_SIZE = 100
 DIAGRAM_STEP = 42
-MAX_DIAGRAMS = 4
-LABEL_H = 22
+MAX_STANDARD = 2
+MAX_ALTERNATES = 3
+ALT_STEP = 62  # alternates carry their name underneath, so they need more room
+ALT_NAME_CHARS = 13
+ALT_BAND_GAP = 6
+LABEL_H = 20
+NAME_H = 14  # alternate names printed under a diagram
 
 # Staff geometry. Positions are diatonic steps: octave * 7 + letter index (C=0 ... B=6),
 # so E4, the bottom line of the treble staff, is 30.
 STAFF_SPACE = 6
 STEP = STAFF_SPACE / 2
 CLEF_W = 28
-NOTE_SPACING = 38  # room for a note's own accidental before the next note head
+NOTE_SPACING = 30
+STAFF_MAX_W = CLEF_W + NOTE_SPACING * 3 + 4  # diagrams start to the right of the widest staff
 LINE_POSITIONS = (30, 32, 34, 36, 38)
 G_LINE = 32
 MUSIC_FONT = "Bravura"
@@ -41,7 +51,6 @@ NOTEHEAD_WHOLE = "\ue0a2"
 # Distance from the left edge of the accidental to the note head, so each sign sits right against its
 # own note (Bravura advances: flat 0.9, sharp 1.0, double sharp 1.0, double flat 1.6 staff spaces).
 ACCIDENTAL_OFFSET = {"♭": 7.5, "♯": 8, "♯♯": 8, "♭♭": 11.5}
-HIGHLIGHT_COLOR = "#d35400"  # the middle note of a three-spelling cell
 ACCIDENTAL_GLYPH = {"": "", "♭": "\ue260", "♯": "\ue262", "♯♯": "\ue263", "♭♭": "\ue264"}
 
 LETTERS = ["C", "D", "E", "F", "G", "A", "B"]
@@ -54,18 +63,20 @@ TEXT = {
     "en": {
         "title": "Saxophone fingering chart (written pitch)",
         "nodata": "no data",
-        "note": "Notes that sound the same share a cell. Altissimo above F#6 is not covered. "
-        "Alternates are named under the diagram.",
+        "note": "Notes that sound the same share a box. Altissimo above F#6 is not covered. "
+        "Alternates are in the band under the staff.",
     },
     "fr": {
         "title": "Tableau de doigtés de saxophone (hauteur écrite)",
         "nodata": "pas de données",
-        "note": "Les notes qui sonnent pareil partagent une case. Suraigu au-dessus du Fa#6 "
-        "non couvert. Les alternatives sont nommées sous le diagramme.",
+        "note": "Les notes qui sonnent pareil partagent un cadre. Suraigu au-dessus du Fa#6 non couvert. "
+        "Les alternatives sont dans la bande sous la portée.",
     },
 }
 
 Spelling = tuple[str, str, int]  # letter, accidental, octave
+Group = tuple[int, list[Spelling]]  # midi, spellings
+Entry = tuple[Group, list[Fingering], list[Fingering]]  # group, standard fingerings, alternates
 
 
 def note_label(letter: str, accidental: str, octave: int, naming: str) -> str:
@@ -86,7 +97,7 @@ def ledger_positions(pos: int) -> list[int]:
     return []
 
 
-def pitch_groups() -> list[tuple[int, list[Spelling]]]:
+def pitch_groups() -> list[Group]:
     """Every pitch of the written range with all its spellings, lowest pitch first.
 
     Spellings are ordered from the lowest to the highest staff position.
@@ -105,123 +116,149 @@ def pitch_groups() -> list[tuple[int, list[Spelling]]]:
     ]
 
 
-def _fingerings(db: Database, pitch: str, profile: Profile, alternates: bool) -> list[Fingering]:
+def _fingerings(
+    db: Database, pitch: str, profile: Profile, alternates: bool
+) -> tuple[list[Fingering], list[Fingering]]:
+    """(standard fingerings, alternates). Alternates are only returned when asked for."""
     found = candidates(db, pitch, profile)
-    found.sort(key=lambda f: (f.category != Category.STANDARD, f.id))
-    if not alternates:
-        found = [f for f in found if f.category == Category.STANDARD]
-    return found[:MAX_DIAGRAMS]
+    found.sort(key=lambda f: f.id)
+    standard = [f for f in found if f.category == Category.STANDARD][:MAX_STANDARD]
+    extra = (
+        [f for f in found if f.category != Category.STANDARD][:MAX_ALTERNATES] if alternates else []
+    )
+    return standard, extra
 
 
-def _row_extent(row: list[tuple[int, list[Spelling]]]) -> tuple[int, int]:
+def _row_extent(row: list[Entry]) -> tuple[int, int]:
     """Highest and lowest staff positions drawn for a row (staff plus room for ledger lines)."""
-    positions = [staff_position(s[0], s[2]) for _, spellings in row for s in spellings]
+    positions = [staff_position(s[0], s[2]) for (_, spellings), _, _ in row for s in spellings]
     return max(39, max(positions) + 2), min(29, min(positions) - 2)
 
 
-def _staff_height(row) -> float:
+def _staff_height(row: list[Entry]) -> float:
     top, bottom = _row_extent(row)
     return (top - bottom) * STEP + 8
 
 
-def _row_height(row) -> float:
-    return _staff_height(row) + LABEL_H + DIAGRAM_SIZE + 22
+def _top_height(row: list[Entry]) -> float:
+    """Height of the upper zone: the staff with its label, or the standard diagrams."""
+    return max(_staff_height(row) + LABEL_H, DIAGRAM_SIZE)
 
 
-def highlighted_index(spellings: list[Spelling]) -> int | None:
-    """Index of the spelling drawn in colour: the middle note of a cell with three spellings."""
-    return len(spellings) // 2 if len(spellings) == 3 else None
+def _alt_height(row: list[Entry]) -> float:
+    if not any(alts for _, _, alts in row):
+        return 0
+    return ALT_BAND_GAP + DIAGRAM_SIZE + NAME_H
 
 
-def _glyph(ch: str, x: float, y: float, fill: str | None = None) -> str:
-    color = f' fill="{fill}"' if fill else ""
-    return f'<text x="{x:g}" y="{y:g}" font-family="{MUSIC_FONT}" font-size="{MUSIC_FONT_SIZE}"{color}>{ch}</text>'
+def _box_height(row: list[Entry]) -> float:
+    return _top_height(row) + _alt_height(row) + 2 * PAD
 
 
-def _staff(x: float, row_y: float, top: int, spellings: list[Spelling]) -> list[str]:
+def _glyph(ch: str, x: float, y: float) -> str:
+    return f'<text x="{x:g}" y="{y:g}" font-family="{MUSIC_FONT}" font-size="{MUSIC_FONT_SIZE}">{ch}</text>'
+
+
+def _staff(x: float, staff_top: float, top: int, spellings: list[Spelling]) -> list[str]:
     def y(p: float) -> float:
-        return row_y + (top - p) * STEP + 2
+        return staff_top + (top - p) * STEP + 2
 
     width = CLEF_W + NOTE_SPACING * len(spellings) + 4
     out = [
-        f'<line x1="{x + 2}" y1="{y(q):g}" x2="{x + 2 + width}" y2="{y(q):g}" stroke="#000" stroke-width="0.7"/>'
+        f'<line x1="{x:g}" y1="{y(q):g}" x2="{x + width:g}" y2="{y(q):g}" stroke="#000" stroke-width="0.7"/>'
         for q in LINE_POSITIONS
     ]
-    out.append(_glyph(CLEF_G, x + 4, y(G_LINE)))
-    highlight = highlighted_index(spellings)
+    out.append(_glyph(CLEF_G, x + 2, y(G_LINE)))
     for k, (letter, accidental, octave) in enumerate(spellings):
-        fill = HIGHLIGHT_COLOR if k == highlight else None
         pos = staff_position(letter, octave)
-        nx = x + CLEF_W + 14 + k * NOTE_SPACING
+        nx = x + CLEF_W + 12 + k * NOTE_SPACING
         out += [
             f'<line x1="{nx - 3:g}" y1="{y(q):g}" x2="{nx + 13:g}" y2="{y(q):g}" stroke="#000" stroke-width="0.7"/>'
             for q in ledger_positions(pos)
         ]
         if ACCIDENTAL_GLYPH[accidental]:
             out.append(
-                _glyph(
-                    ACCIDENTAL_GLYPH[accidental],
-                    nx - ACCIDENTAL_OFFSET[accidental],
-                    y(pos),
-                    fill,
-                )
+                _glyph(ACCIDENTAL_GLYPH[accidental], nx - ACCIDENTAL_OFFSET[accidental], y(pos))
             )
-        out.append(_glyph(NOTEHEAD_WHOLE, nx, y(pos), fill))
+        out.append(_glyph(NOTEHEAD_WHOLE, nx, y(pos)))
     return out
 
 
-def _cell(db, group, col, row_y, row, profile, alternates, lang, naming) -> str:
-    midi, spellings = group
-    x = MARGIN + col * CELL_W
+def _cell(entry, col, box_y, row, lang, naming) -> str:
+    (midi, spellings), standard, alternates = entry
+    box_x = MARGIN + col * (BOX_W + GAP)
+    box_h = _box_height(row)
     top, _bottom = _row_extent(row)
     staff_h = _staff_height(row)
+    top_h = _top_height(row)
     pitch = midi_to_name(midi)
-    out = _staff(x, row_y, top, spellings)
-    highlight = highlighted_index(spellings)
-    parts = []
-    for k, s in enumerate(spellings):
-        name = escape(note_label(*s[:2], s[2], naming))
-        parts.append(f'<tspan fill="{HIGHLIGHT_COLOR}">{name}</tspan>' if k == highlight else name)
-    out.append(
-        f'<text x="{x + 4}" y="{row_y + staff_h + 14:g}" font-size="11" font-weight="bold">'
-        + " / ".join(parts)
-        + "</text>"
-    )
-    found = _fingerings(db, pitch, profile, alternates)
-    base_y = row_y + staff_h + LABEL_H + DIAGRAM_SIZE
-    if not found:
-        out.append(
-            f'<text x="{x + 6}" y="{base_y - 40:g}" font-size="10" fill="#888">{escape(TEXT[lang]["nodata"])}</text>'
+    out = [
+        (
+            f'<rect x="{box_x:g}" y="{box_y:g}" width="{BOX_W:g}" height="{box_h:g}" rx="5" '
+            'fill="none" stroke="#888" stroke-width="1"/>'
         )
-        return "\n".join(out)
-    for i, f in enumerate(found):
-        dx = x + 6 + i * DIAGRAM_STEP
+    ]
+    # Staff and label on the left of the upper zone, vertically centred in it.
+    staff_top = box_y + PAD + (top_h - (staff_h + LABEL_H)) / 2
+    sx = box_x + PAD
+    out += _staff(sx, staff_top, top, spellings)
+    label = " / ".join(note_label(*s[:2], s[2], naming) for s in spellings)
+    out.append(
+        f'<text x="{sx:g}" y="{staff_top + staff_h + 13:g}" font-size="10" font-weight="bold">{escape(label)}</text>'
+    )
+    # Standard fingering to the right of the staff.
+    dx0 = box_x + PAD + STAFF_MAX_W + 14
+    base_y = box_y + PAD + DIAGRAM_SIZE
+    if not standard and not alternates:
+        out.append(
+            f'<text x="{dx0:g}" y="{box_y + top_h / 2:g}" font-size="10" fill="#888">'
+            f"{escape(TEXT[lang]['nodata'])}</text>"
+        )
+    for i, f in enumerate(standard):
         glyphs = escape(diagram_text(effective_keys(f, pitch)))
         out.append(
-            f'<text x="{dx}" y="{base_y:g}" font-family="{FONT_FAMILY}" font-size="{DIAGRAM_SIZE}">{glyphs}</text>'
+            f'<text x="{dx0 + i * DIAGRAM_STEP:g}" y="{base_y:g}" font-family="{FONT_FAMILY}" '
+            f'font-size="{DIAGRAM_SIZE}">{glyphs}</text>'
         )
-        if f.category != Category.STANDARD:
+    # Alternates in their own band under the staff, inside the same frame.
+    if alternates:
+        band_top = box_y + PAD + top_h
+        out.append(
+            f'<line x1="{box_x + PAD:g}" y1="{band_top:g}" x2="{box_x + BOX_W - PAD:g}" y2="{band_top:g}" '
+            'stroke="#ccc" stroke-dasharray="3 3"/>'
+        )
+        alt_base = band_top + ALT_BAND_GAP + DIAGRAM_SIZE
+        for i, f in enumerate(alternates):
+            ax = box_x + PAD + i * ALT_STEP
+            glyphs = escape(diagram_text(effective_keys(f, pitch)))
             name = getattr(f.name, lang, None) or f.name.en
             out.append(
-                f'<text x="{dx}" y="{base_y + 11:g}" font-size="7.5">{escape(name[:11])}</text>'
+                f'<text x="{ax:g}" y="{alt_base:g}" font-family="{FONT_FAMILY}" '
+                f'font-size="{DIAGRAM_SIZE}">{glyphs}</text>'
+            )
+            out.append(
+                f'<text x="{ax:g}" y="{alt_base + 11:g}" font-size="8">{escape(name[:ALT_NAME_CHARS])}</text>'
             )
     return "\n".join(out)
 
 
-def _rows() -> list[list[tuple[int, list[Spelling]]]]:
-    groups = pitch_groups()
-    return [groups[i : i + COLUMNS] for i in range(0, len(groups), COLUMNS)]
+def _rows(db: Database, profile: Profile, alternates: bool) -> list[list[Entry]]:
+    entries: list[Entry] = []
+    for group in pitch_groups():
+        standard, extra = _fingerings(db, midi_to_name(group[0]), profile, alternates)
+        entries.append((group, standard, extra))
+    return [entries[i : i + COLUMNS] for i in range(0, len(entries), COLUMNS)]
 
 
 def _paginate(rows):
     pages, current, y = [], [], FIRST_ROW_Y
     for row in rows:
-        height = _row_height(row)
+        height = _box_height(row)
         if current and y + height > PAGE_H - BOTTOM_MARGIN:
             pages.append(current)
             current, y = [], FIRST_ROW_Y
         current.append((row, y))
-        y += height
+        y += height + GAP
     if current:
         pages.append(current)
     return pages
@@ -240,18 +277,15 @@ def chart_svg_pages(
     profile = profile or Profile()
     t = TEXT[lang]
     pages = []
-    for page_rows in _paginate(_rows()):
+    for page_rows in _paginate(_rows(db, profile, alternates)):
         body = [
-            f'<text x="{MARGIN}" y="55" font-size="24" font-weight="bold">{escape(t["title"])}</text>'
+            f'<text x="{MARGIN}" y="42" font-size="22" font-weight="bold">{escape(t["title"])}</text>'
         ]
-        for row, row_y in page_rows:
-            body.append(
-                f'<line x1="{MARGIN}" y1="{row_y - 4:g}" x2="{PAGE_W - MARGIN}" y2="{row_y - 4:g}" stroke="#ccc"/>'
-            )
-            for col, group in enumerate(row):
-                body.append(_cell(db, group, col, row_y, row, profile, alternates, lang, naming))
+        for row, box_y in page_rows:
+            for col, entry in enumerate(row):
+                body.append(_cell(entry, col, box_y, row, lang, naming))
         body.append(
-            f'<text x="{MARGIN}" y="{PAGE_H - 24}" font-size="9" fill="#666">{escape(t["note"])}</text>'
+            f'<text x="{MARGIN}" y="{PAGE_H - 14}" font-size="9" fill="#666">{escape(t["note"])}</text>'
         )
         size = "" if responsive else f' width="{PAGE_W}" height="{PAGE_H}"'
         style = (
