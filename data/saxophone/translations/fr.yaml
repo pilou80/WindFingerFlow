@@ -186,3 +186,61 @@ fingerings:
     name: Do
   cs.std:
     name: Do#
+  # alternatives à tester (fingering/to_test.yaml)
+  bb.one_two:
+    name: "Sib (Si + Mi)"
+    use: "Sib alternatif, la main droite est déjà posée."
+  bb.one_three:
+    name: "Sib (Si + Ré)"
+    use: "Sib alternatif, la main droite est déjà posée."
+  bb.one_g:
+    name: "Sib (Si + Sol)"
+    use: "Sib alternatif au timbre plus sombre et voilé."
+  c.a_g_gs:
+    name: "Do (La + Sol + Sol#)"
+    use: "Do alternatif, pour les passages avec la clé de Sol#."
+  gs.low_cs:
+    name: "Sol# (avec la clé de Do# grave)"
+    use: "Pour enchaîner avec un Do# grave."
+  gs.low_b:
+    name: "Sol# (avec la clé de Si grave)"
+    use: "Pour enchaîner avec un Si grave."
+  gs.low_bb:
+    name: "Sol# (avec la clé de Sib grave)"
+    use: "Pour enchaîner avec un Sib grave."
+  fs5.d:
+    name: "Fa# (avec la clé de Ré)"
+    use: "Fa#5 alternatif (soprano, alto, ténor)."
+  cs6.fingers:
+    name: "Do# aigu (main droite)"
+    use: "Meilleur timbre et plus stable que le Do#6 ouvert."
+  d6.eb_a:
+    name: "Ré aigu (paume Mib + La)"
+    use: "Ré aigu alternatif."
+  d6.eb_b_c:
+    name: "Ré aigu (paume Mib + Si + Do latéral)"
+    use: "Ré aigu alternatif."
+  eb6.palm_eb:
+    name: "Mib aigu (paume Mib seule)"
+    use: "Mib aigu alternatif, plus bas que le doigté habituel."
+  e6.front:
+    name: "Mi aigu (Fa avant)"
+    use: "Mi aigu sans les clés de paume."
+  e6.front_side_e:
+    name: "Mi aigu (Fa avant + Mi latéral)"
+    use: "Mi aigu sans les clés de paume ; juste au ténor."
+  e6.palm_d_f:
+    name: "Mi aigu (paume Ré + paume Fa)"
+    use: "Mi aigu alternatif."
+  f6.front_a:
+    name: "Fa aigu (Fa avant + La)"
+    use: "Fa aigu alternatif."
+  f6.front_a_e:
+    name: "Fa aigu (Fa avant + La + Mi latéral)"
+    use: "Fa aigu alternatif ; plus haut que le précédent."
+  f6.b_a_side_e:
+    name: "Fa aigu (Si + La + Mi latéral)"
+    use: "Fa aigu alternatif."
+  f6.high_fs:
+    name: "Fa aigu (clé de Fa# aigu seule)"
+    use: "Fa aigu alternatif."

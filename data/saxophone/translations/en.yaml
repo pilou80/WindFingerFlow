@@ -180,3 +180,61 @@ fingerings:
     name: C
   cs.std:
     name: C#
+  # to-test alternates (fingering/to_test.yaml)
+  bb.one_two:
+    name: "Bb (B + E keys)"
+    use: "Alternate Bb with the right hand already down."
+  bb.one_three:
+    name: "Bb (B + D keys)"
+    use: "Alternate Bb with the right hand already down."
+  bb.one_g:
+    name: "Bb (B + G keys)"
+    use: "Alternate Bb with a darker, cloudier tone."
+  c.a_g_gs:
+    name: "C (A + G + G# keys)"
+    use: "Alternate C, for passages with the G# key."
+  gs.low_cs:
+    name: "G# (with low C# key)"
+    use: "Slides from or to a low C#."
+  gs.low_b:
+    name: "G# (with low B key)"
+    use: "Slides from or to a low B."
+  gs.low_bb:
+    name: "G# (with low Bb key)"
+    use: "Slides from or to a low Bb."
+  fs5.d:
+    name: "F# (with D key)"
+    use: "Alternate F#5 (soprano, alto, tenor)."
+  cs6.fingers:
+    name: "High C# (right hand)"
+    use: "Better tone and more stable than the open C#6."
+  d6.eb_a:
+    name: "High D (palm Eb + A)"
+    use: "Alternate high D."
+  d6.eb_b_c:
+    name: "High D (palm Eb + B + side C)"
+    use: "Alternate high D."
+  eb6.palm_eb:
+    name: "High Eb (palm Eb only)"
+    use: "Alternate high Eb, lower in pitch than the usual fingering."
+  e6.front:
+    name: "High E (front F)"
+    use: "High E without the palm keys."
+  e6.front_side_e:
+    name: "High E (front F + side E)"
+    use: "High E without the palm keys; in tune on tenor."
+  e6.palm_d_f:
+    name: "High E (palm D + palm F)"
+    use: "Alternate high E."
+  f6.front_a:
+    name: "High F (front F + A)"
+    use: "Alternate high F."
+  f6.front_a_e:
+    name: "High F (front F + A + side E)"
+    use: "Alternate high F; sharper than the previous one."
+  f6.b_a_side_e:
+    name: "High F (B + A + side E)"
+    use: "Alternate high F."
+  f6.high_fs:
+    name: "High F (high F# key only)"
+    use: "Alternate high F."

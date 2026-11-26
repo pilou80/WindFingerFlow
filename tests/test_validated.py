@@ -1,4 +1,5 @@
 from windfingerflow.database import load_database
+from windfingerflow.models import Level
 
 
 def keys(db, fid):
@@ -24,5 +25,5 @@ def test_low_c_key_is_confirmed():
     assert all(
         not f.needs_confirmation
         for fid, f in db.fingerings.items()
-        if fid != "d.long" and not fid.endswith(("6.alt", "7.alt"))
+        if fid != "d.long" and f.level != Level.EXPERIMENTAL
     )

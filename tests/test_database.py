@@ -15,7 +15,7 @@ def test_every_key_has_english_and_french_names(db):
 
 def test_bb_candidates(db):
     ids = {f.id for f in db.candidates("Bb4")}
-    assert ids == {"bb.bis", "bb.one_one", "bb.side"}
+    assert {"bb.bis", "bb.one_one", "bb.side"} <= ids
 
 
 def test_derived_fingers(db):
