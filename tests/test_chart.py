@@ -106,10 +106,15 @@ def test_chart_is_black_and_white():
     assert "d35400" not in text and "<tspan" not in text
 
 
-def test_alternates_sit_in_their_own_band_under_the_staff():
+def test_alternates_follow_the_standard_fingering_beside_the_staff():
+    import re
+
     db = load_database()
     plain = "".join(chart_svg_pages(db, Profile(level=Level.ADVANCED)))
-    band = "".join(chart_svg_pages(db, Profile(level=Level.ADVANCED), alternates=True))
-    assert "stroke-dasharray" not in plain and "stroke-dasharray" in band
-    assert band.count("<rect x=") > 0 and band.count("<rect x=") == plain.count("<rect x=")
-    assert len(band) > len(plain)
+    side = "".join(chart_svg_pages(db, Profile(level=Level.ADVANCED), alternates=True))
+    # a dashed separator marks where the alternates start; there is no longer a band under the staff
+    assert "stroke-dasharray" not in plain and "stroke-dasharray" in side
+    assert not re.search(
+        r'<line x1="[\d.]+" y1="[\d.]+" x2="[\d.]+" y2="[\d.]+" stroke="#ccc"', side
+    )
+    assert side.count("<rect x=") == plain.count("<rect x=")

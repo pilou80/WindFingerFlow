@@ -30,9 +30,7 @@ DIAGRAM_SIZE = 100
 DIAGRAM_STEP = 42
 MAX_STANDARD = 2
 MAX_ALTERNATES = 3
-ALT_STEP = 62  # alternates carry their name underneath, so they need more room
-ALT_NAME_CHARS = 13
-ALT_BAND_GAP = 6
+ALT_NAME_CHARS = 10  # names printed under the alternate diagrams
 LABEL_H = 20
 NAME_H = 14  # alternate names printed under a diagram
 
@@ -65,13 +63,13 @@ TEXT = {
         "title": "Saxophone fingering chart (written pitch)",
         "nodata": "no data",
         "note": "Notes that sound the same share a box. Altissimo above F#6 is not covered. "
-        "Alternates are in the band under the staff.",
+        "Alternates follow the standard fingering, with their name.",
     },
     "fr": {
         "title": "Tableau de doigtés de saxophone (hauteur écrite)",
         "nodata": "pas de données",
         "note": "Les notes qui sonnent pareil partagent un cadre. Suraigu au-dessus du Fa#6 non couvert. "
-        "Les alternatives sont dans la bande sous la portée.",
+        "Les alternatives suivent le doigté standard, avec leur nom.",
     },
 }
 
@@ -142,18 +140,13 @@ def _staff_height(row: list[Entry]) -> float:
 
 
 def _top_height(row: list[Entry]) -> float:
-    """Height of the upper zone: the staff with its label, or the standard diagrams."""
-    return max(_staff_height(row) + LABEL_H, DIAGRAM_SIZE)
-
-
-def _alt_height(row: list[Entry]) -> float:
-    if not any(alts for _, _, alts in row):
-        return 0
-    return ALT_BAND_GAP + DIAGRAM_SIZE + NAME_H
+    """Height of the box content: the staff with its label, or the diagrams (with alternate names)."""
+    names = NAME_H if any(alts for _, _, alts in row) else 0
+    return max(_staff_height(row) + LABEL_H, DIAGRAM_SIZE + names)
 
 
 def _box_height(row: list[Entry]) -> float:
-    return _top_height(row) + _alt_height(row) + 2 * PAD
+    return _top_height(row) + 2 * PAD
 
 
 def _glyph(ch: str, x: float, y: float) -> str:
@@ -191,7 +184,6 @@ def _cell(entry, col, box_y, row, lang, naming) -> str:
     box_h = _box_height(row)
     top, _bottom = _row_extent(row)
     staff_h = _staff_height(row)
-    top_h = _top_height(row)
     pitch = midi_to_name(midi)
     out = [
         (
@@ -199,47 +191,42 @@ def _cell(entry, col, box_y, row, lang, naming) -> str:
             'fill="none" stroke="#888" stroke-width="1"/>'
         )
     ]
-    # Staff and label on the left of the upper zone, vertically centred in it.
-    staff_top = box_y + PAD + (top_h - (staff_h + LABEL_H)) / 2
+    # Staff and label on the left, vertically centred in the box.
+    staff_top = box_y + (box_h - (staff_h + LABEL_H)) / 2
     sx = box_x + PAD
     out += _staff(sx, staff_top, top, spellings)
     label = " / ".join(note_label(*s[:2], s[2], naming) for s in spellings)
     out.append(
         f'<text x="{sx:g}" y="{staff_top + staff_h + 13:g}" font-size="10" font-weight="bold">{escape(label)}</text>'
     )
-    # Standard fingering to the right of the staff.
+    # Diagrams to the right of the staff: the standard fingering first, then the alternates.
     dx0 = box_x + PAD + STAFF_MAX_W + 14
     base_y = box_y + PAD + DIAGRAM_SIZE
-    if not standard and not alternates:
+    shown = [(f, False) for f in standard] + [(f, True) for f in alternates]
+    if not shown:
         out.append(
-            f'<text x="{dx0:g}" y="{box_y + top_h / 2:g}" font-size="10" fill="#888">'
+            f'<text x="{dx0:g}" y="{box_y + box_h / 2:g}" font-size="10" fill="#888">'
             f"{escape(TEXT[lang]['nodata'])}</text>"
         )
-    for i, f in enumerate(standard):
+        return "\n".join(out)
+    step = min(DIAGRAM_STEP, (box_x + BOX_W - PAD - dx0) / len(shown))
+    for i, (f, is_alternate) in enumerate(shown):
+        dx = dx0 + i * step
         glyphs = escape(diagram_text(effective_keys(f, pitch)))
         out.append(
-            f'<text x="{dx0 + i * DIAGRAM_STEP:g}" y="{base_y:g}" font-family="{FONT_FAMILY}" '
-            f'font-size="{DIAGRAM_SIZE}">{glyphs}</text>'
+            f'<text x="{dx:g}" y="{base_y:g}" font-family="{FONT_FAMILY}" font-size="{DIAGRAM_SIZE}">{glyphs}</text>'
         )
-    # Alternates in their own band under the staff, inside the same frame.
-    if alternates:
-        band_top = box_y + PAD + top_h
-        out.append(
-            f'<line x1="{box_x + PAD:g}" y1="{band_top:g}" x2="{box_x + BOX_W - PAD:g}" y2="{band_top:g}" '
-            'stroke="#ccc" stroke-dasharray="3 3"/>'
-        )
-        alt_base = band_top + ALT_BAND_GAP + DIAGRAM_SIZE
-        for i, f in enumerate(alternates):
-            ax = box_x + PAD + i * ALT_STEP
-            glyphs = escape(diagram_text(effective_keys(f, pitch)))
+        if is_alternate:
             name = getattr(f.name, lang, None) or f.name.en
             out.append(
-                f'<text x="{ax:g}" y="{alt_base:g}" font-family="{FONT_FAMILY}" '
-                f'font-size="{DIAGRAM_SIZE}">{glyphs}</text>'
+                f'<text x="{dx:g}" y="{base_y + 11:g}" font-size="7.5">{escape(name[:ALT_NAME_CHARS])}</text>'
             )
-            out.append(
-                f'<text x="{ax:g}" y="{alt_base + 11:g}" font-size="8">{escape(name[:ALT_NAME_CHARS])}</text>'
-            )
+    if standard and alternates:
+        sep = dx0 + len(standard) * step - 4
+        out.append(
+            f'<line x1="{sep:g}" y1="{box_y + PAD:g}" x2="{sep:g}" y2="{base_y + NAME_H - 4:g}" '
+            'stroke="#bbb" stroke-dasharray="3 3"/>'
+        )
     return "\n".join(out)
 
 
