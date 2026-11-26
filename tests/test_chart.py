@@ -36,9 +36,12 @@ def test_every_written_pitch_appears_once():
 
 
 def test_group_label_lists_all_spellings_in_one_cell():
+    import re
+
     _, text = labels(lang="fr", naming="solfege")
-    assert "Si♭4 / La♯4" in text or "La♯4 / Si♭4" in text
-    assert "Mi♭4" in text and "Do♯♯4" in text and "Ré♭♭4" in text or "Mi♭♭4" in text
+    plain = re.sub(r"<[^>]+>", "", text)  # the coloured middle note is wrapped in a tspan
+    assert "La♯4 / Si♭4 / Do♭♭5" in plain
+    assert "Mi♭4" in plain and "Do♯♯4" in plain
 
 
 def test_one_diagram_per_group_not_per_spelling():
@@ -95,3 +98,17 @@ def test_font_route_is_whitelisted():
     assert client.get("/fonts/Bravura.otf").status_code == 200
     assert client.get("/fonts/..%2Fsecret").status_code == 404
     assert client.get("/fonts/other.ttf").status_code == 404
+
+
+def test_middle_note_of_a_three_spelling_cell_is_coloured():
+    from windfingerflow.chart import HIGHLIGHT_COLOR, highlighted_index
+
+    assert highlighted_index([("A", "♯", 4), ("B", "♭", 4), ("C", "♭♭", 5)]) == 1
+    assert highlighted_index([("A", "♯", 4), ("B", "♭", 4)]) is None
+    assert highlighted_index([("G", "", 4)]) is None
+    groups = pitch_groups()
+    threes = sum(1 for _, sp in groups if len(sp) == 3)
+    _, text = labels()
+    # one coloured notehead and one coloured label per three-spelling cell
+    assert text.count(f'fill="{HIGHLIGHT_COLOR}"') >= 2 * threes
+    assert threes > 0

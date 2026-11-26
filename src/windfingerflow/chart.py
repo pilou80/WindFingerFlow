@@ -31,13 +31,14 @@ LABEL_H = 22
 STAFF_SPACE = 6
 STEP = STAFF_SPACE / 2
 CLEF_W = 28
-NOTE_SPACING = 26
+NOTE_SPACING = 38  # room for a note's own accidental before the next note head
 LINE_POSITIONS = (30, 32, 34, 36, 38)
 G_LINE = 32
 MUSIC_FONT = "Bravura"
 MUSIC_FONT_SIZE = 4 * STAFF_SPACE  # SMuFL: a font size of four staff spaces
 CLEF_G = "\ue050"
 NOTEHEAD_WHOLE = "\ue0a2"
+HIGHLIGHT_COLOR = "#d35400"  # the middle note of a three-spelling cell
 ACCIDENTAL_GLYPH = {"": "", "♭": "\ue260", "♯": "\ue262", "♯♯": "\ue263", "♭♭": "\ue264"}
 
 LETTERS = ["C", "D", "E", "F", "G", "A", "B"]
@@ -124,8 +125,14 @@ def _row_height(row) -> float:
     return _staff_height(row) + LABEL_H + DIAGRAM_SIZE + 22
 
 
-def _glyph(ch: str, x: float, y: float) -> str:
-    return f'<text x="{x:g}" y="{y:g}" font-family="{MUSIC_FONT}" font-size="{MUSIC_FONT_SIZE}">{ch}</text>'
+def highlighted_index(spellings: list[Spelling]) -> int | None:
+    """Index of the spelling drawn in colour: the middle note of a cell with three spellings."""
+    return len(spellings) // 2 if len(spellings) == 3 else None
+
+
+def _glyph(ch: str, x: float, y: float, fill: str | None = None) -> str:
+    color = f' fill="{fill}"' if fill else ""
+    return f'<text x="{x:g}" y="{y:g}" font-family="{MUSIC_FONT}" font-size="{MUSIC_FONT_SIZE}"{color}>{ch}</text>'
 
 
 def _staff(x: float, row_y: float, top: int, spellings: list[Spelling]) -> list[str]:
@@ -138,7 +145,9 @@ def _staff(x: float, row_y: float, top: int, spellings: list[Spelling]) -> list[
         for q in LINE_POSITIONS
     ]
     out.append(_glyph(CLEF_G, x + 4, y(G_LINE)))
+    highlight = highlighted_index(spellings)
     for k, (letter, accidental, octave) in enumerate(spellings):
+        fill = HIGHLIGHT_COLOR if k == highlight else None
         pos = staff_position(letter, octave)
         nx = x + CLEF_W + 14 + k * NOTE_SPACING
         out += [
@@ -148,10 +157,13 @@ def _staff(x: float, row_y: float, top: int, spellings: list[Spelling]) -> list[
         if ACCIDENTAL_GLYPH[accidental]:
             out.append(
                 _glyph(
-                    ACCIDENTAL_GLYPH[accidental], nx - (14 if len(accidental) > 1 else 11), y(pos)
+                    ACCIDENTAL_GLYPH[accidental],
+                    nx - (14 if len(accidental) > 1 else 11),
+                    y(pos),
+                    fill,
                 )
             )
-        out.append(_glyph(NOTEHEAD_WHOLE, nx, y(pos)))
+        out.append(_glyph(NOTEHEAD_WHOLE, nx, y(pos), fill))
     return out
 
 
@@ -162,9 +174,15 @@ def _cell(db, group, col, row_y, row, profile, alternates, lang, naming) -> str:
     staff_h = _staff_height(row)
     pitch = midi_to_name(midi)
     out = _staff(x, row_y, top, spellings)
-    label = " / ".join(note_label(*s[:2], s[2], naming) for s in spellings)
+    highlight = highlighted_index(spellings)
+    parts = []
+    for k, s in enumerate(spellings):
+        name = escape(note_label(*s[:2], s[2], naming))
+        parts.append(f'<tspan fill="{HIGHLIGHT_COLOR}">{name}</tspan>' if k == highlight else name)
     out.append(
-        f'<text x="{x + 4}" y="{row_y + staff_h + 14:g}" font-size="11" font-weight="bold">{escape(label)}</text>'
+        f'<text x="{x + 4}" y="{row_y + staff_h + 14:g}" font-size="11" font-weight="bold">'
+        + " / ".join(parts)
+        + "</text>"
     )
     found = _fingerings(db, pitch, profile, alternates)
     base_y = row_y + staff_h + LABEL_H + DIAGRAM_SIZE
