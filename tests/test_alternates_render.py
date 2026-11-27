@@ -35,3 +35,15 @@ def test_render_pdf(tmp_path):
     out = tmp_path / "out.pdf"
     assert render_pdf(xml, out) >= 1
     assert len(PdfReader(str(out)).pages) >= 1
+
+
+def test_text_annotations_are_slanted_but_diagrams_are_not():
+    from windfingerflow.render import _slant_annotations
+
+    svg = (
+        '<g id="a" class="dir"><text x="10" y="20" font-size="0px"><tspan font-size="405px">Fa avant</tspan></text></g>'
+        '<g id="b" class="dir"><text x="30" y="40" font-size="0px"><tspan font-size="900px" font-family="Fiati">X</tspan></text></g>'
+    )
+    out = _slant_annotations(svg)
+    assert 'transform="rotate(-45 10 20)"' in out
+    assert "rotate" not in out.split("Fiati")[0].split("Fa avant</tspan></text></g>")[1]

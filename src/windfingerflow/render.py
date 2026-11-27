@@ -65,6 +65,26 @@ def _tag_fiati(svg: str) -> str:
     return _PUA_TSPAN.sub(fix, svg)
 
 
+ANNOTATION_ANGLE = (
+    -45
+)  # degrees: slanted text annotations do not overlap when several follow each other
+_DIR_TEXT = re.compile(
+    r'(<g id="[^"]*" class="dir">\s*)<text x="([\d.]+)" y="([\d.]+)"([^>]*)>(.*?)</text>', re.DOTALL
+)
+
+
+def _slant_annotations(svg: str, angle: float = ANNOTATION_ANGLE) -> str:
+    """Rotate the text annotations around their start point (the Fiati diagrams stay upright)."""
+
+    def fix(m: re.Match) -> str:
+        head, x, y, attrs, body = m.groups()
+        if FONT_FAMILY in body:
+            return m.group(0)
+        return f'{head}<text x="{x}" y="{y}"{attrs} transform="rotate({angle:g} {x} {y})">{body}</text>'
+
+    return _DIR_TEXT.sub(fix, svg)
+
+
 PREVIEW_OPTIONS = {**PAGE_OPTIONS, "adjustPageHeight": True}
 _SVG_ROOT = re.compile(r'<svg width="([\d.]+)px" height="([\d.]+)px"')
 _PREVIEW_STYLE = (
@@ -102,7 +122,10 @@ def render_svg_pages(
     tk.setOptions(options or PAGE_OPTIONS)
     if not tk.loadFile(str(musicxml)):
         raise ValueError(f"Verovio could not read {musicxml}")
-    pages = [_tag_fiati(tk.renderToSVG(page)) for page in range(1, tk.getPageCount() + 1)]
+    pages = [
+        _slant_annotations(_tag_fiati(tk.renderToSVG(page)))
+        for page in range(1, tk.getPageCount() + 1)
+    ]
     return [add_watermark(p, watermark) for p in pages] if watermark else pages
 
 
