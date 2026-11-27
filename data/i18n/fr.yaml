@@ -9,6 +9,10 @@ web:
   part: Numéro de partie (0 = première)
   sax: Saxophone
   sax_written: Garder la partie telle qu'écrite
+  sax_soprano: Soprano
+  sax_alto: Alto
+  sax_tenor: Ténor
+  sax_baritone: Baryton
   level: Niveau
   level_beginner: Débutant
   level_advanced: Avancé

@@ -28,3 +28,14 @@ def test_levels_are_translated_in_the_forms():
         french = client.get(page + "?ui=fr").text
         assert ">Débutant<" in french and ">Expérimental<" in french, page
         assert ">beginner<" not in french, page
+
+
+def test_saxophone_names_are_translated():
+    from windfingerflow.instrument import SAX_OFFSET
+
+    client = TestClient(webapp.app)
+    french = client.get("/?ui=fr").text
+    assert ">Ténor<" in french and ">Baryton<" in french
+    english = client.get("/?ui=en").text
+    assert ">Tenor<" in english and ">Baritone<" in english
+    assert set(SAX_OFFSET) == {"soprano", "alto", "tenor", "baritone"}  # keep the UI texts in step

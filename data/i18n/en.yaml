@@ -9,6 +9,10 @@ web:
   part: Part number (0 = first)
   sax: Saxophone
   sax_written: Keep the part as written
+  sax_soprano: Soprano
+  sax_alto: Alto
+  sax_tenor: Tenor
+  sax_baritone: Baritone
   level: Level
   level_beginner: Beginner
   level_advanced: Advanced

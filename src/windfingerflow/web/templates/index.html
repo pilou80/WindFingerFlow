@@ -39,7 +39,7 @@
   <label for="sax">{{ t.sax }}</label>
   <select id="sax" name="sax">
     <option value="">{{ t.sax_written }}</option>
-    {% for s in saxes %}<option value="{{ s }}">{{ s }}</option>{% endfor %}
+    {% for s in saxes %}<option value="{{ s }}">{{ t["sax_" ~ s] }}</option>{% endfor %}
   </select>
   <label for="level">{{ t.level }}</label>
   <select id="level" name="level">{% for l in levels %}<option value="{{ l }}">{{ t["level_" ~ l] }}</option>{% endfor %}</select>
