@@ -58,6 +58,29 @@
   <button type="submit">{{ t.go }}</button><span id="busy" class="htmx-indicator">{{ t.working }}</span>
 </form>
 <div id="result" aria-live="polite" hidden></div>
+<script id="sax-i18n" type="application/json">{{ {"written": t.sax_written, "transpose": t.sax_transpose, "names": {"soprano": t.sax_soprano, "alto": t.sax_alto, "tenor": t.sax_tenor, "baritone": t.sax_baritone}}|tojson }}</script>
+<script>
+// The saxophone list depends on the chosen part: a sax part can be kept as written (its own sax) or
+// transposed for another sax; its own sax is not offered as a transposition.
+(function () {
+  var text = JSON.parse(document.getElementById("sax-i18n").textContent);
+  function update() {
+    var part = document.getElementById("part"), sax = document.getElementById("sax");
+    if (!sax) return;
+    var own = (part && part.selectedOptions && part.selectedOptions[0] && part.selectedOptions[0].dataset.sax) || "";
+    var current = sax.value;
+    sax.innerHTML = "";
+    function add(value, label) { var o = document.createElement("option"); o.value = value; o.textContent = label; sax.appendChild(o); }
+    add("", text.written + (own ? " (" + text.names[own] + ")" : ""));
+    Object.keys(text.names).forEach(function (kind) {
+      if (kind !== own) add(kind, text.names[kind] + (own ? " (" + text.transpose + ")" : ""));
+    });
+    if (Array.prototype.some.call(sax.options, function (o) { return o.value === current; })) sax.value = current;
+  }
+  document.addEventListener("change", function (e) { if (e.target && e.target.id === "part") update(); });
+  document.body.addEventListener("htmx:afterSwap", update);
+})();
+</script>
 </main>
 <script>document.body.addEventListener("htmx:afterSwap", e => { if (e.target.id === "result") e.target.hidden = false; });</script>
 </body>

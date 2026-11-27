@@ -2,7 +2,7 @@
 <label for="part">{{ t.part }}</label>
 <select id="part" name="part">
   {% for p in parts %}
-  <option value="{{ p.index }}" {% if p.index == default %}selected{% endif %}>{{ p.index }} - {{ p.name }} ({{ p.notes }} {{ t.notes }}{% if p.is_sax %}, sax{% endif %})</option>
+  <option value="{{ p.index }}" data-sax="{{ p.sax }}" {% if p.index == default %}selected{% endif %}>{{ p.index }} - {{ p.name }} ({{ p.notes }} {{ t.notes }}{% if p.is_sax %}, sax{% endif %})</option>
   {% endfor %}
 </select>
 {% else %}

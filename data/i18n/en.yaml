@@ -9,6 +9,7 @@ web:
   part: Part number (0 = first)
   sax: Saxophone
   sax_written: Keep the part as written
+  sax_transpose: transpose
   sax_soprano: Soprano
   sax_alto: Alto
   sax_tenor: Tenor

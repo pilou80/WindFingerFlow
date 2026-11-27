@@ -14,6 +14,22 @@ class PartInfo:
     instrument: str
     notes: int
     is_sax: bool
+    sax: str = ""  # soprano / alto / tenor / baritone when the part is written for one of them
+
+
+SAX_KINDS = {
+    instrument.SopranoSaxophone: "soprano",
+    instrument.AltoSaxophone: "alto",
+    instrument.TenorSaxophone: "tenor",
+    instrument.BaritoneSaxophone: "baritone",
+}
+
+
+def sax_kind(inst) -> str:
+    for cls, kind in SAX_KINDS.items():
+        if isinstance(inst, cls):
+            return kind
+    return ""
 
 
 def list_parts(score: stream.Score) -> list[PartInfo]:
@@ -29,6 +45,7 @@ def list_parts(score: stream.Score) -> list[PartInfo]:
                 str(inst.instrumentName or ""),
                 len(part.flatten().notes),
                 isinstance(inst, instrument.Saxophone),
+                sax_kind(inst),
             )
         )
     return out
