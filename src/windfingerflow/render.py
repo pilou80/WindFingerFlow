@@ -49,6 +49,9 @@ PAGE_OPTIONS = {
     "pageMarginRight": 80,
     "breaks": "auto",
     "footer": "none",
+    # more room around annotated notes: wider note spacing, and space above each system for the slanted texts
+    "spacingLinear": 0.34,
+    "spacingSystem": 16,
 }
 
 
@@ -65,6 +68,7 @@ def _tag_fiati(svg: str) -> str:
     return _PUA_TSPAN.sub(fix, svg)
 
 
+ANNOTATION_SCALE = 0.62  # Verovio sets <words> in a large size: shrink the text annotations
 ANNOTATION_ANGLE = (
     -45
 )  # degrees: slanted text annotations do not overlap when several follow each other
@@ -80,6 +84,11 @@ def _slant_annotations(svg: str, angle: float = ANNOTATION_ANGLE) -> str:
         head, x, y, attrs, body = m.groups()
         if FONT_FAMILY in body:
             return m.group(0)
+        body = re.sub(
+            r'font-size="([\d.]+)px"',
+            lambda f: f'font-size="{float(f.group(1)) * ANNOTATION_SCALE:.0f}px"',
+            body,
+        )
         return f'{head}<text x="{x}" y="{y}"{attrs} transform="rotate({angle:g} {x} {y})">{body}</text>'
 
     return _DIR_TEXT.sub(fix, svg)
