@@ -31,7 +31,7 @@
   <label for="naming">{{ t.naming }}</label>
   <select id="naming" name="naming"><option value="letters">{{ t.naming_letters }}</option><option value="solfege">{{ t.naming_solfege }}</option><option value="both">{{ t.naming_both }}</option></select>
   <label for="level">{{ t.level }}</label>
-  <select id="level" name="level">{% for l in levels %}<option value="{{ l }}">{{ l }}</option>{% endfor %}</select>
+  <select id="level" name="level">{% for l in levels %}<option value="{{ l }}">{{ t["level_" ~ l] }}</option>{% endfor %}</select>
   <label for="lang">{{ t.annot_lang }}</label>
   <select id="lang" name="lang">{% for code, label in languages.items() %}<option value="{{ code }}"{% if code == lang_default %} selected{% endif %}>{{ label }}</option>{% endfor %}</select>
   <label><input type="checkbox" name="alternates" value="true"> {{ t.chart_alternates }}</label>

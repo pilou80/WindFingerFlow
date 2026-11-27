@@ -10,6 +10,10 @@ web:
   sax: Saxophone
   sax_written: Garder la partie telle qu'écrite
   level: Niveau
+  level_beginner: Débutant
+  level_advanced: Avancé
+  level_expert: Expert
+  level_experimental: Expérimental
   annot_lang: Langue des annotations
   unavailable: Doigts inutilisables
   exclude: Doigtés à exclure (identifiants, séparés par des virgules)

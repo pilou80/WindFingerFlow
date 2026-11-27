@@ -10,6 +10,10 @@ web:
   sax: Saxophone
   sax_written: Keep the part as written
   level: Level
+  level_beginner: Beginner
+  level_advanced: Advanced
+  level_expert: Expert
+  level_experimental: Experimental
   annot_lang: Annotation language
   unavailable: Fingers you cannot use
   exclude: Fingerings to exclude (ids, comma separated)
