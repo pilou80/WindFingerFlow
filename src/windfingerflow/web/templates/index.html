@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ ui_lang }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,10 +20,12 @@
   .htmx-indicator { display:none; margin-left:.6rem; color:var(--muted); } .htmx-request .htmx-indicator { display:inline; }
   table { border-collapse:collapse; width:100%; } td, th { text-align:left; padding:.2rem .5rem; border-bottom:1px solid var(--line); }
   .err { color:#c0392b; } a.dl { margin-right:1rem; color:var(--accent); }
+  .langs { text-align:right; font-size:.9rem; color:var(--muted); } .langs a { color:var(--accent); }
 </style>
 </head>
 <body>
 <main>
+<nav class="langs" aria-label="Language">{% for code, label in languages.items() %}{% if code == ui_lang %}<b lang="{{ code }}">{{ label }}</b>{% else %}<a href="?ui={{ code }}" lang="{{ code }}" hreflang="{{ code }}">{{ label }}</a>{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}</nav>
 <h1><img src="/logo.svg" alt="" width="36" height="36" style="vertical-align:middle;margin-right:.5rem">{{ t.title }}</h1>
 <p class="tag">{{ t.tagline }}</p>
 <p><a href="/chart">{{ t.chart_link }}</a> &middot; <a href="/keys">{{ t.keys_link }}</a></p>

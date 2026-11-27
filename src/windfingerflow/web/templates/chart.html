@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ ui_lang }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,11 +18,13 @@
   button { margin-top:1rem; padding:.55rem 1.2rem; font:inherit; background:var(--accent); color:var(--bg); border:0; border-radius:4px; cursor:pointer; }
   .htmx-indicator { display:none; margin-left:.6rem; color:var(--muted); } .htmx-request .htmx-indicator { display:inline; }
   .err { color:#c0392b; } a { color:var(--accent); } a.dl { margin-right:1rem; }
+  .langs { text-align:right; font-size:.9rem; color:var(--muted); } .langs a { color:var(--accent); }
 </style>
 </head>
 <body>
 <main>
 <p><a href="/">&larr; {{ t.title }}</a></p>
+<nav class="langs" aria-label="Language">{% for code, label in languages.items() %}{% if code == ui_lang %}<b lang="{{ code }}">{{ label }}</b>{% else %}<a href="?ui={{ code }}" lang="{{ code }}" hreflang="{{ code }}">{{ label }}</a>{% endif %}{% if not loop.last %} · {% endif %}{% endfor %}</nav>
 <h1><img src="/logo.svg" alt="" width="36" height="36" style="vertical-align:middle;margin-right:.5rem">{{ t.chart_title }}</h1>
 <p class="tag">{{ t.chart_tagline }}</p>
 <form hx-post="/chart" hx-target="#result" hx-indicator="#busy">

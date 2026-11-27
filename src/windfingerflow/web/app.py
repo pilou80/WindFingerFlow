@@ -23,7 +23,7 @@ from windfingerflow.chart import PAGE_W as CHART_W
 from windfingerflow.chart import chart_svg_pages
 from windfingerflow.database import load_database
 from windfingerflow.fiati import FONTS_DIR
-from windfingerflow.i18n import language_names, languages, pick_language
+from windfingerflow.i18n import language_names, languages, pick_language, ui
 from windfingerflow.instrument import SAX_OFFSET
 from windfingerflow.keyschart import PAGE_H as KEYS_H
 from windfingerflow.keyschart import PAGE_W as KEYS_W
@@ -34,7 +34,6 @@ from windfingerflow.profile import Profile
 from windfingerflow.render import render_preview_pages, write_pdf
 from windfingerflow.score import load_score
 from windfingerflow.score_parts import default_part, list_parts
-from windfingerflow.web.strings import pick
 
 log = logging.getLogger("windfingerflow.web")
 
@@ -57,10 +56,32 @@ def _cleanup() -> None:
             shutil.rmtree(entry, ignore_errors=True)
 
 
+LANG_COOKIE = "wff_lang"
+
+
+def request_language(request: Request) -> str:
+    """Interface language: ?ui=xx, else the remembered choice, else the browser's preference."""
+    for candidate in (request.query_params.get("ui"), request.cookies.get(LANG_COOKIE)):
+        if candidate in languages():
+            return candidate
+    return pick_language(request.headers.get("accept-language"))
+
+
+@app.middleware("http")
+async def remember_language(request: Request, call_next):
+    response = await call_next(request)
+    chosen = request.query_params.get("ui")
+    if chosen in languages():
+        response.set_cookie(LANG_COOKIE, chosen, max_age=365 * 24 * 3600, samesite="lax")
+    return response
+
+
 def _page(request: Request, name: str, **context):
-    t = pick(request.headers.get("accept-language"))
+    t = ui(request_language(request), "web")
     return templates.TemplateResponse(
-        request, name, {"t": t, "languages": language_names(), **context}
+        request,
+        name,
+        {"t": t, "languages": language_names(), "ui_lang": request_language(request), **context},
     )
 
 
@@ -78,7 +99,7 @@ def index(request: Request):
         saxes=list(SAX_OFFSET),
         levels=[lv.value for lv in Level],
         fingers=[f.value for f in Finger],
-        lang_default=pick_language(request.headers.get("accept-language")),
+        lang_default=request_language(request),
     )
 
 
@@ -98,7 +119,7 @@ def process(
     style: str = Form("text"),
     appendix: bool = Form(False),
 ):
-    t = pick(request.headers.get("accept-language"))
+    t = ui(request_language(request), "web")
 
     def error(key: str):
         return _page(request, "result.html", error=t[key])
@@ -176,7 +197,7 @@ def process(
 @app.post("/parts", response_class=HTMLResponse)
 def parts(request: Request, file: UploadFile):
     """HTMX fragment: the part selector for an uploaded score."""
-    t = pick(request.headers.get("accept-language"))
+    t = ui(request_language(request), "web")
     suffix = Path(file.filename or "").suffix.lower()
     if suffix not in ALLOWED_SUFFIXES:
         return _page(request, "parts.html", error=t["err_ext"])
@@ -225,7 +246,7 @@ def font(name: str):
 
 @app.get("/chart", response_class=HTMLResponse)
 def chart_form(request: Request):
-    lang = pick_language(request.headers.get("accept-language"))
+    lang = request_language(request)
     return _page(request, "chart.html", levels=[lv.value for lv in Level], lang_default=lang)
 
 
@@ -239,7 +260,7 @@ def chart_make(
     allow_unconfirmed: bool = Form(False),
     altissimo: bool = Form(False),
 ):
-    t = pick(request.headers.get("accept-language"))
+    t = ui(request_language(request), "web")
     if (
         naming not in {"letters", "solfege", "both"}
         or level not in {lv.value for lv in Level}
@@ -281,13 +302,13 @@ def chart_make(
 
 @app.get("/keys", response_class=HTMLResponse)
 def keys_form(request: Request):
-    lang = pick_language(request.headers.get("accept-language"))
+    lang = request_language(request)
     return _page(request, "keys.html", lang_default=lang)
 
 
 @app.post("/keys", response_class=HTMLResponse)
 def keys_make(request: Request, lang: str = Form("en")):
-    t = pick(request.headers.get("accept-language"))
+    t = ui(request_language(request), "web")
     if lang not in languages():
         return _page(request, "chart_result.html", error=t["err_parse"])
     _cleanup()
