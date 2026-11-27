@@ -39,3 +39,14 @@ def test_saxophone_names_are_translated():
     english = client.get("/?ui=en").text
     assert ">Tenor<" in english and ">Baritone<" in english
     assert set(SAX_OFFSET) == {"soprano", "alto", "tenor", "baritone"}  # keep the UI texts in step
+
+
+def test_pages_show_the_version_and_a_github_link():
+    from windfingerflow import __version__
+
+    client = TestClient(webapp.app)
+    for page in ("/", "/chart", "/keys"):
+        html = client.get(page + "?ui=fr").text
+        assert f"WindFingerFlow {__version__} (" in html, page
+        assert 'href="https://github.com/pilou80/WindFingerFlow"' in html, page
+        assert "Code source sur GitHub" in html, page

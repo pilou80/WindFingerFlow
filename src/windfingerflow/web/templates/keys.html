@@ -19,6 +19,7 @@
   .htmx-indicator { display:none; margin-left:.6rem; color:var(--muted); } .htmx-request .htmx-indicator { display:inline; }
   .err { color:#c0392b; } a { color:var(--accent); } a.dl { margin-right:1rem; }
   .langs { text-align:right; font-size:.9rem; color:var(--muted); } .langs a { color:var(--accent); }
+  footer.site { margin-top:2rem; font-size:.85rem; color:var(--muted); text-align:center; } footer.site a { color:var(--accent); }
 </style>
 </head>
 <body>
@@ -33,6 +34,7 @@
   <button type="submit">{{ t.keys_go }}</button><span id="busy" class="htmx-indicator">{{ t.working }}</span>
 </form>
 <div id="result" aria-live="polite" hidden></div>
+<footer class="site">WindFingerFlow {{ version }} ({{ sha }}) &middot; <a href="{{ repo_url }}" rel="noopener">{{ t.source_code }}</a></footer>
 </main>
 <script>document.body.addEventListener("htmx:afterSwap", e => { if (e.target.id === "result") e.target.hidden = false; });</script>
 </body>

@@ -21,6 +21,7 @@
   table { border-collapse:collapse; width:100%; } td, th { text-align:left; padding:.2rem .5rem; border-bottom:1px solid var(--line); }
   .err { color:#c0392b; } a.dl { margin-right:1rem; color:var(--accent); }
   .langs { text-align:right; font-size:.9rem; color:var(--muted); } .langs a { color:var(--accent); }
+  footer.site { margin-top:2rem; font-size:.85rem; color:var(--muted); text-align:center; } footer.site a { color:var(--accent); }
 </style>
 </head>
 <body>
@@ -81,6 +82,7 @@
   document.body.addEventListener("htmx:afterSwap", update);
 })();
 </script>
+<footer class="site">WindFingerFlow {{ version }} ({{ sha }}) &middot; <a href="{{ repo_url }}" rel="noopener">{{ t.source_code }}</a></footer>
 </main>
 <script>document.body.addEventListener("htmx:afterSwap", e => { if (e.target.id === "result") e.target.hidden = false; });</script>
 </body>

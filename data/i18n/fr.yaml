@@ -9,6 +9,7 @@ web:
   part: Numéro de partie (0 = première)
   sax: Saxophone
   sax_written: Garder la partie telle qu'écrite
+  source_code: Code source sur GitHub
   sax_transpose: transposer
   sax_soprano: Soprano
   sax_alto: Alto

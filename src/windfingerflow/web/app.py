@@ -16,8 +16,9 @@ from fastapi import FastAPI, Form, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
 
+from windfingerflow import __version__
 from windfingerflow.branding import LOGO_PATH
-from windfingerflow.buildinfo import stamp_musicxml, watermark_text
+from windfingerflow.buildinfo import git_sha, stamp_musicxml, watermark_text
 from windfingerflow.chart import PAGE_H as CHART_H
 from windfingerflow.chart import PAGE_W as CHART_W
 from windfingerflow.chart import chart_svg_pages
@@ -56,6 +57,7 @@ def _cleanup() -> None:
             shutil.rmtree(entry, ignore_errors=True)
 
 
+REPO_URL = "https://github.com/pilou80/WindFingerFlow"
 LANG_COOKIE = "wff_lang"
 
 
@@ -81,7 +83,15 @@ def _page(request: Request, name: str, **context):
     return templates.TemplateResponse(
         request,
         name,
-        {"t": t, "languages": language_names(), "ui_lang": request_language(request), **context},
+        {
+            "t": t,
+            "languages": language_names(),
+            "ui_lang": request_language(request),
+            "version": __version__,
+            "sha": git_sha(),
+            "repo_url": REPO_URL,
+            **context,
+        },
     )
 
 
