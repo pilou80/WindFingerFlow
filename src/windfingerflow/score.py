@@ -64,6 +64,42 @@ def extract_line(
     return events
 
 
+SAX_CLASSES = {
+    "soprano": instrument.SopranoSaxophone,
+    "alto": instrument.AltoSaxophone,
+    "tenor": instrument.TenorSaxophone,
+    "baritone": instrument.BaritoneSaxophone,
+}
+
+
+def retarget_part(
+    score: stream.Score, part_index: int, target_sax: str, name: str | None = None
+) -> None:
+    """Rewrite the displayed notes as written for ``target_sax`` and name the instrument accordingly.
+
+    The part goes to its sounding pitch first (using its own instrument), then to the written pitch of the
+    target saxophone, so key signatures follow and the MusicXML carries the right transposition. The note
+    objects are kept (in place), so the events extracted earlier still point at the displayed notes.
+    """
+    parts = getattr(score, "parts", None)
+    part = parts[part_index] if parts else score
+    if getattr(part, "atSoundingPitch", "unknown") is not True:
+        part.toSoundingPitch(inPlace=True)
+    for old in list(part.recurse().getElementsByClass(instrument.Instrument)):
+        site = old.activeSite
+        if site is not None:
+            site.remove(old)
+    new = SAX_CLASSES[target_sax]()
+    if name:
+        new.instrumentName = name
+        new.partName = name
+    part.insert(0, new)
+    part.toWrittenPitch(inPlace=True)
+    if name and hasattr(part, "partName"):
+        part.partName = name
+        part.partAbbreviation = None
+
+
 def is_sax_part(part: stream.Stream) -> bool:
     return isinstance(part.getInstrument(returnDefault=True), instrument.Saxophone)
 

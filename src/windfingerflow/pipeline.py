@@ -12,10 +12,11 @@ from windfingerflow.appendix import appendix_svg_pages, collect_entries
 from windfingerflow.buildinfo import add_watermark, watermark_text
 from windfingerflow.chooser import Step, choose
 from windfingerflow.database import load_database
+from windfingerflow.i18n import ui
 from windfingerflow.models import Fingering
 from windfingerflow.profile import Profile
 from windfingerflow.render import render_pdf
-from windfingerflow.score import NoteEvent, extract_line, load_score, range_warnings
+from windfingerflow.score import NoteEvent, extract_line, load_score, range_warnings, retarget_part
 
 
 @dataclass
@@ -66,6 +67,8 @@ def run(
         appendix=appendix,
     )
     if musicxml_out or pdf_out:
+        if sax:
+            retarget_part(score, part, sax, ui(lang, "score").get(f"part_{sax}"))
         result.annotations = annotate(events, chosen, lang, all_notes, style)
         xml = Path(musicxml_out) if musicxml_out else Path(str(pdf_out) + ".musicxml")
         score.write("musicxml", fp=str(xml))

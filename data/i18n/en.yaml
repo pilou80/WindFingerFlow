@@ -101,3 +101,8 @@ legend:
   experimental: experimental
   to_test: to test
   title: 'Alternate names:'
+score:
+  part_soprano: Soprano saxophone
+  part_alto: Alto saxophone
+  part_tenor: Tenor saxophone
+  part_baritone: Baritone saxophone
