@@ -23,3 +23,12 @@ def test_what_is_still_to_confirm():
     path = DEFAULT_DATA_DIR / "saxophone" / "fingering" / "to_test.yaml"
     to_test = {f["id"] for f in yaml.safe_load(path.read_text(encoding="utf-8"))["fingerings"]}
     assert to_test and pending == {"d.long", "e6.fork"} | altissimo | to_test
+
+
+def test_measured_intonation_of_the_high_f_fingerings():
+    """pilou, 2026-11-27, tenor at A=440."""
+    db = load_database()
+    assert db.fingerings["f6.palm"].cents == 13
+    assert db.fingerings["f6.front"].cents == 4
+    flat = db.fingerings["f6.b_a_side_e"]
+    assert flat.cents == -45 and flat.level == Level.EXPERIMENTAL and flat.validated

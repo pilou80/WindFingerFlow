@@ -36,7 +36,8 @@ fingerings:
     level: beginner
     validated: true
     intonation: sharp
-    sources: [{ name: "Woodwind Fingering Guide (T. Reichard), key roles", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Intonation tendencies: Jagow (D'Addario), US Navy Band, The Instrumentalist" }]
+    cents: 13
+    sources: [{ name: "Woodwind Fingering Guide (T. Reichard), key roles", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Intonation tendencies: Jagow (D'Addario), US Navy Band, The Instrumentalist" }, { name: "Measured by the saxophonist (pilou), 2026-11-27, tenor tuned to A=440: +13 cents" }]
   - id: fs6.palm
     pitches: [F#6]
     keys: [lh.palm_d, lh.palm_eb, lh.palm_f, rh.side_e, rh.high_fs]
@@ -56,7 +57,9 @@ fingerings:
     category: alternate
     level: advanced
     validated: true
-    sources: [{ name: "Sax Gourmet, Using the High F# Key (P. Coats)", url: "https://www.saxgourmet.com/?p=177" }, { name: "Woodwind Fingering Guide (T. Reichard), key roles", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
+    intonation: in_tune
+    cents: 4
+    sources: [{ name: "Sax Gourmet, Using the High F# Key (P. Coats)", url: "https://www.saxgourmet.com/?p=177" }, { name: "Woodwind Fingering Guide (T. Reichard), key roles", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Measured by the saxophonist (pilou), 2026-11-27, tenor tuned to A=440: +4 cents, better in tune than the palm F" }]
   - id: fs6.fork
     pitches: [F#6]
     keys: [lh.front_f, lh.a, rh.high_fs]
