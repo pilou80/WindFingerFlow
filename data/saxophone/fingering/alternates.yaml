@@ -18,3 +18,10 @@ fingerings:
     level: expert  # pilou cannot play it yet, which does not make it wrong (2026-11-26)
     needs_confirmation: true
     sources: [{ name: "Dawkes, saxophone fingerings: a complete guide to alternatives", url: "https://www.dawkes.co.uk/sound-room/saxophone-fingerings-a-complete-guide-to-alternatives/" }]
+  - id: c.a_g_gs
+    pitches: [C5, C6]
+    keys: [lh.a, lh.g, lh.gs]
+    category: alternate
+    level: advanced
+    validated: true
+    sources: [{ name: "WFG alternate chart, code -23G#|---", url: "https://www.wfg.woodwind.org/sax/sax_alt_1.html" }, { name: "Validated by the saxophonist (pilou), 2026-11-27" }]
