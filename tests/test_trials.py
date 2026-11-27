@@ -95,3 +95,9 @@ def test_the_real_trial_file_loads():
     db = load_database()
     assert [t.player for t in db.trials] == ["pilou"]
     assert db.fingerings["f6.palm"].cents == 13
+
+
+def test_instrument_families_are_discovered_from_the_data_folder():
+    from windfingerflow.database import families
+
+    assert "saxophone" in families()

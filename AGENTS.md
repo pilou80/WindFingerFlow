@@ -23,6 +23,10 @@ Python 3.12+. Run the web app with `uvicorn windfingerflow.web.app:app`; CLI: `w
 
 ## Layout
 
+`data/saxophone/` is a **git submodule** (repository `windfingerflow-data-saxophone`). Data changes: edit and commit
+inside `data/saxophone`, push that repository, then commit the updated submodule pointer here. Never edit the data
+and forget the pointer. Clone with `--recurse-submodules`.
+
 - `data/saxophone/keys.yaml`: the key catalogue (ids like `lh.b`, `rh.side_bb`, finger, group).
 - `data/saxophone/fingering/*.yaml`: fingerings (keys pressed, pitches, category, level, validation, sources).
 - `data/saxophone/trials/<player>-<instrument>.yaml`: what each player tried (validated, level, cents, note). A player's

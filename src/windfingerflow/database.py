@@ -40,6 +40,11 @@ class Database:
         return [f for f in self.fingerings.values() if pitch in f.pitches]
 
 
+def families(data_dir: Path = DEFAULT_DATA_DIR) -> list[str]:
+    """Instrument families available under ``data/``: the folders that hold a ``keys.yaml``."""
+    return sorted(p.parent.name for p in data_dir.glob("*/keys.yaml"))
+
+
 def _load_yaml(path: Path) -> object:
     with path.open(encoding="utf-8") as fh:
         return yaml.safe_load(fh)
