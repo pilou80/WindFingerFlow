@@ -10,10 +10,14 @@ from windfingerflow.models import Category, Fingering
 from windfingerflow.score import NoteEvent
 
 STYLES = ("text", "diagram", "both")
+# One colour per distinct fingering (in order of first use), for the annotation and its note, so that
+# neighbouring notes with different annotations can be told apart.
+PALETTE = ("#d81b60", "#1e88e5", "#2e7d32", "#ef6c00", "#8e24aa", "#00897b", "#c62828", "#6d4c41")
 
 
-def _add(event: NoteEvent, expression: expressions.TextExpression) -> None:
+def _add(event: NoteEvent, expression: expressions.TextExpression, color: str) -> None:
     expression.placement = "above"
+    expression.style.color = color
     # Insert into the real container (the measure), not the flattened view.
     container = event.element.getContextByClass(stream.Measure) or event.element.activeSite
     container.insert(event.element.getOffsetBySite(container), expression)
@@ -30,19 +34,22 @@ def annotate(
     if style not in STYLES:
         raise ValueError(f"unknown annotation style {style!r}")
     count = 0
+    colors: dict[str, str] = {}
     for event, fingering in zip(events, chosen, strict=True):
         if fingering is None:
             continue
         if not all_notes and fingering.category == Category.STANDARD:
             continue
+        color = colors.setdefault(fingering.id, PALETTE[len(colors) % len(PALETTE)])
+        event.element.style.color = color
         if style in ("diagram", "both"):
             diagram = expressions.TextExpression(
                 diagram_text(effective_keys(fingering, event.pitch))
             )
             diagram.style.fontFamily = FONT_FAMILY
-            _add(event, diagram)
+            _add(event, diagram, color)
         if style in ("text", "both"):
             text = fingering.name.get(lang)
-            _add(event, expressions.TextExpression(text))
+            _add(event, expressions.TextExpression(text), color)
         count += 1
     return count
