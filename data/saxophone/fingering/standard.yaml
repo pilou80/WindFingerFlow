@@ -72,7 +72,9 @@ fingerings:
     category: standard
     level: beginner
     validated: true
-    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
+    intonation: flat
+    cents: -13
+    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Measured by the saxophonist (pilou), 2026-11-27, tenor tuned to A=440, on G#4: -13 cents" }]
   - id: a.std
     pitches: [A4, A5]
     keys: [lh.b, lh.a]

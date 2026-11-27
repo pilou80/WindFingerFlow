@@ -25,27 +25,6 @@ fingerings:
     level: experimental
     needs_confirmation: true
     sources: [{ name: "WFG alternate chart, code 1-3|---", url: "https://www.wfg.woodwind.org/sax/sax_alt_1.html" }, { name: "UNVERIFIED: not tried by the saxophonist; code read from a page summary" }]
-  - id: gs.low_cs
-    pitches: [G#4, G#5]
-    keys: [lh.b, lh.a, lh.g, lh.low_cs]
-    category: alternate
-    level: experimental
-    needs_confirmation: true
-    sources: [{ name: "WFG alternate chart, code 123C#|---", url: "https://www.wfg.woodwind.org/sax/sax_alt_1.html" }, { name: "UNVERIFIED: not tried by the saxophonist; code read from a page summary" }]
-  - id: gs.low_b
-    pitches: [G#4, G#5]
-    keys: [lh.b, lh.a, lh.g, lh.low_b]
-    category: alternate
-    level: experimental
-    needs_confirmation: true
-    sources: [{ name: "WFG alternate chart, code 123B|---", url: "https://www.wfg.woodwind.org/sax/sax_alt_1.html" }, { name: "UNVERIFIED: not tried by the saxophonist; code read from a page summary" }]
-  - id: gs.low_bb
-    pitches: [G#4, G#5]
-    keys: [lh.b, lh.a, lh.g, lh.low_bb]
-    category: alternate
-    level: experimental
-    needs_confirmation: true
-    sources: [{ name: "WFG alternate chart, code 123Bb|---", url: "https://www.wfg.woodwind.org/sax/sax_alt_1.html" }, { name: "UNVERIFIED: not tried by the saxophonist; code read from a page summary" }]
   - id: fs5.d
     pitches: [F#5]
     keys: [lh.b, lh.a, lh.g, rh.d]

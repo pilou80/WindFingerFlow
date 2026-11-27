@@ -37,3 +37,10 @@ def test_measured_intonation_of_the_high_f_fingerings():
 def test_high_fs_key_alone_for_high_f_is_expert_and_flat():
     f = load_database().fingerings["f6.high_fs"]
     assert f.level == Level.EXPERT and f.validated and f.cents == -13
+
+
+def test_the_four_g_sharp_fingerings_measure_minus_13_cents():
+    db = load_database()
+    for fid in ("gs.std", "gs.low_cs", "gs.low_b", "gs.low_bb"):
+        f = db.fingerings[fid]
+        assert f.cents == -13 and f.validated, fid
