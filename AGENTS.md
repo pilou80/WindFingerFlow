@@ -25,6 +25,8 @@ Python 3.12+. Run the web app with `uvicorn windfingerflow.web.app:app`; CLI: `w
 
 - `data/saxophone/keys.yaml`: the key catalogue (ids like `lh.b`, `rh.side_bb`, finger, group).
 - `data/saxophone/fingering/*.yaml`: fingerings (keys pressed, pitches, category, level, validation, sources).
+- `data/saxophone/trials/<player>-<instrument>.yaml`: what each player tried (validated, level, cents, note). A player's
+  validation or measure goes here, never in the fingering files.
 - `data/saxophone/translations/<lang>.yaml`: every translatable text of the data (names, French abbreviations,
   descriptions, use / avoid). Never put names or descriptions in the key or fingering files.
 - `data/i18n/<lang>.yaml`: every user-interface text (web, chart, key page, appendix, legend); read via `i18n.ui()`.
@@ -40,10 +42,10 @@ Python 3.12+. Run the web app with `uvicorn windfingerflow.web.app:app`; CLI: `w
 ## Rules that matter
 
 **Data is the product. Never invent fingerings.**
-- Every fingering needs `sources`. If you are not sure of the keys, set `needs_confirmation: true`,
-  `validated: false` and write a source starting with `UNVERIFIED:`. Do not cite a page you did not read.
-- `level`: `beginner` < `advanced` < `expert` < `experimental`. `validated: true` only when a player has tried it
-  and said so (add the date and who in `sources`). Unvalidated fingerings are shown in orange as "to test".
+- Every fingering needs `sources`. If you are not sure of the keys, set `needs_confirmation: true`
+  and write a source starting with `UNVERIFIED:`. Do not cite a page you did not read.
+- `level`: `beginner` < `advanced` < `expert` < `experimental`. validation comes only from a player's trial file
+  (`trials/`), with the date and a note. Unvalidated fingerings are shown in orange as "to test".
 - Altissimo (above F#6) is opt-in (`Profile.allow_altissimo`), so new high-register data goes in `altissimo.yaml`.
 - Keys must exist in the catalogue; the octave key is added automatically by the register rules, do not list it.
 

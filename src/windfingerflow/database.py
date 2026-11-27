@@ -2,12 +2,21 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import yaml
 
-from windfingerflow.models import Finger, Fingering, FingeringFile, I18n, Key, KeyCatalogue
+from windfingerflow.models import (
+    Finger,
+    Fingering,
+    FingeringFile,
+    I18n,
+    Key,
+    KeyCatalogue,
+    TrialFile,
+)
+from windfingerflow.trials import apply_trials
 
 DEFAULT_DATA_DIR = Path(__file__).resolve().parents[2] / "data"
 
@@ -21,6 +30,7 @@ class Database:
     keys: dict[str, Key]
     fingerings: dict[str, Fingering]
     languages: list[str]
+    trials: list[TrialFile] = field(default_factory=list)
 
     def fingers_for(self, fingering: Fingering) -> set[Finger]:
         """Fingers used by a fingering, derived from the keys it presses."""
@@ -73,6 +83,19 @@ def load_database(family: str = "saxophone", data_dir: Path = DEFAULT_DATA_DIR) 
                 raise DataError(f"{fingering.id}: unknown keys {unknown}")
             fingerings[fingering.id] = fingering
 
+    trials = [
+        TrialFile.model_validate(_load_yaml(path))
+        for path in sorted((folder / "trials").glob("*.yaml"))
+    ]
+    for trial in trials:
+        unknown = sorted({r.fingering for r in trial.results} - set(fingerings))
+        if unknown:
+            raise DataError(
+                f"trials of {trial.player} ({trial.instrument}): unknown fingerings {unknown}"
+            )
+    for fid in list(fingerings):
+        fingerings[fid] = apply_trials(fingerings[fid], trials)
+
     translations = _load_translations(folder / "translations")
     for lang, data in translations.items():
         for section, known in (("keys", keys), ("fingerings", fingerings)):
@@ -101,4 +124,4 @@ def load_database(family: str = "saxophone", data_dir: Path = DEFAULT_DATA_DIR) 
     ]
     if missing:
         raise DataError(f"no English name for: {missing}")
-    return Database(keys=keys, fingerings=fingerings, languages=sorted(translations))
+    return Database(keys=keys, fingerings=fingerings, languages=sorted(translations), trials=trials)

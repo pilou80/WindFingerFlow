@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import datetime
 import re
 from enum import StrEnum
 from typing import Annotated
@@ -46,6 +47,9 @@ class Level(StrEnum):
     ADVANCED = "advanced"
     EXPERT = "expert"
     EXPERIMENTAL = "experimental"  # fingerings the saxophonist found unreliable or unproven
+
+
+LEVEL_RANK = {Level.BEGINNER: 0, Level.ADVANCED: 1, Level.EXPERT: 2, Level.EXPERIMENTAL: 3}
 
 
 class Intonation(StrEnum):
@@ -115,12 +119,32 @@ class Fingering(Strict):
     category: Category
     level: Level
     intonation: Intonation = Intonation.UNKNOWN
-    cents: float | None = None
+    cents: float | None = None  # computed from the trial files (mean of the measures)
     use: I18n = Field(default_factory=I18n)  # from the translation files
     avoid: I18n = Field(default_factory=I18n)
     needs_confirmation: bool = False
-    validated: bool = False  # confirmed by the saxophonist (pilou)
+    validated: bool = False  # computed from the trial files: some player confirmed it
     sources: list[Source] = Field(default_factory=list)
+
+
+class TrialResult(Strict):
+    """What one player found when trying one fingering."""
+
+    fingering: FingeringId
+    date: datetime.date | None = None
+    validated: bool = True  # the player confirmed that the fingering works
+    level: Level | None = None  # how demanding it is for this player
+    cents: float | None = None  # measured intonation against the file's tuning (+ sharp, - flat)
+    note: str = ""
+
+
+class TrialFile(Strict):
+    """Everything one player tried on one instrument (data/<family>/trials/<player>-<instrument>.yaml)."""
+
+    player: str
+    instrument: str  # for example "tenor"
+    tuning: str = ""  # for example "A=440"
+    results: list[TrialResult]
 
 
 class FingeringFile(Strict):

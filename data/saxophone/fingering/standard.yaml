@@ -8,98 +8,82 @@ fingerings:
     keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d, lh.low_bb, rh.low_c]
     category: standard
     level: beginner
-    validated: true
-    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Validated by the saxophonist (pilou), 2026-11-26" }]
+    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: b.low
     pitches: [B3]
     keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d, lh.low_b, rh.low_c]
     category: standard
     level: beginner
-    validated: true
-    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Validated by the saxophonist (pilou), 2026-11-26" }]
+    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: c.low
     pitches: [C4]
     keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d, rh.low_c]
     category: standard
     level: beginner
-    validated: true
-    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Validated by the saxophonist (pilou), 2026-11-26" }]
+    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: cs.low
     pitches: [C#4]
     keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d, lh.low_cs, rh.low_c]
     category: standard
     level: beginner
-    validated: true
-    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Validated by the saxophonist (pilou), 2026-11-26" }]
+    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: d.std
     pitches: [D4, D5]
     keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d]
     category: standard
     level: beginner
-    validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: eb.std
     pitches: [Eb4, Eb5]
     keys: [lh.b, lh.a, lh.g, rh.f, rh.e, rh.d, rh.low_eb]
     category: standard
     level: beginner
-    validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: e.std
     pitches: [E4, E5]
     keys: [lh.b, lh.a, lh.g, rh.f, rh.e]
     category: standard
     level: beginner
-    validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: f.std
     pitches: [F4, F5]
     keys: [lh.b, lh.a, lh.g, rh.f]
     category: standard
     level: beginner
-    validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: g.std
     pitches: [G4, G5]
     keys: [lh.b, lh.a, lh.g]
     category: standard
     level: beginner
-    validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: gs.std
     pitches: [G#4, G#5]
     keys: [lh.b, lh.a, lh.g, lh.gs]
     category: standard
     level: beginner
-    validated: true
-    intonation: flat
-    cents: -13
-    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }, { name: "Measured by the saxophonist (pilou), 2026-11-27, tenor tuned to A=440, on G#4 and G#5: -13 cents" }]
+    sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: a.std
     pitches: [A4, A5]
     keys: [lh.b, lh.a]
     category: standard
     level: beginner
-    validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: b.std
     pitches: [B4, B5]
     keys: [lh.b]
     category: standard
     level: beginner
-    validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: c.std
     pitches: [C5, C6]
     keys: [lh.a]
     category: standard
     level: beginner
-    validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]
   - id: cs.std
     pitches: [C#5, C#6]
     keys: []
     category: standard
     level: beginner
-    validated: true
     sources: [{ name: "Woodwind Fingering Guide (T. Reichard)", url: "https://www.wfg.woodwind.org/sax/sax_fing.html" }]

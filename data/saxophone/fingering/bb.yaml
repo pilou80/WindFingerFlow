@@ -7,19 +7,16 @@ fingerings:
     keys: [lh.b, lh.bis]
     category: standard
     level: beginner
-    validated: true
     sources: [{ name: "Dawkes, Saxophone fingerings ultimate guide (A. Penman)", url: "https://www.dawkes.co.uk/sound-room/saxophone-fingerings-ultimate-guide/" }, { name: "Corrected by the saxophonist (pilou), 2026-11-26: no A key" }]
   - id: bb.one_one
     pitches: [Bb4, Bb5]
     keys: [lh.b, rh.f]
     category: alternate
     level: advanced
-    validated: true
-    sources: [{ name: "Validated by the saxophonist (pilou), 2026-11-26: B key + F key (L1 + R1) sounds good and is easy to play; first judged bad by mistake (wrong keys tried)" }]
+    sources: [{ name: "Early design-notes draft; confirmed by playing, see the trial files" }]
   - id: bb.side
     pitches: [Bb4, Bb5]
     keys: [lh.b, lh.a, rh.side_bb]
     category: alternate
     level: beginner
-    validated: true
-    sources: [{ name: "Dawkes, Saxophone fingerings ultimate guide (A. Penman)", url: "https://www.dawkes.co.uk/sound-room/saxophone-fingerings-ultimate-guide/" }, { name: "Validated by the saxophonist (pilou), 2026-11-26: with the A key" }]
+    sources: [{ name: "Dawkes, Saxophone fingerings ultimate guide (A. Penman)", url: "https://www.dawkes.co.uk/sound-room/saxophone-fingerings-ultimate-guide/" }]

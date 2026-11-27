@@ -1,0 +1,159 @@
+# One file per player and instrument: what that player tried, and how it went.
+# validated: the player confirmed the fingering works. level: how demanding it is for this player.
+# cents: measured intonation against the tuning below (+ sharp, - flat). The fingering files hold only
+# the reference data; validation, difficulty and intonation shown to users come from these files.
+player: pilou
+instrument: tenor
+tuning: A=440
+results:
+- fingering: c.side
+  date: '2026-11-26'
+  validated: true
+  level: advanced
+- fingering: c.a_g_gs
+  date: '2026-11-27'
+  validated: true
+  level: advanced
+- fingering: f6.b_a_side_e
+  date: '2026-11-27'
+  validated: true
+  level: experimental
+  cents: -45
+  note: 'tenor tuned to A=440: -45 cents (very flat), hence experimental'
+- fingering: f6.high_fs
+  date: '2026-11-27'
+  validated: true
+  level: expert
+  cents: -13
+  note: 'tenor tuned to A=440: -13 cents, playable: expert level'
+- fingering: gs.low_cs
+  date: '2026-11-27'
+  validated: true
+  level: advanced
+  cents: -13
+  note: 'tenor tuned to A=440, on G#4 and G#5: -13 cents'
+- fingering: gs.low_b
+  date: '2026-11-27'
+  validated: true
+  level: advanced
+  cents: -13
+  note: 'tenor tuned to A=440, on G#4 and G#5: -13 cents'
+- fingering: gs.low_bb
+  date: '2026-11-27'
+  validated: true
+  level: advanced
+  cents: -13
+  note: 'tenor tuned to A=440, on G#4 and G#5: -13 cents'
+- fingering: bb.bis
+  date: '2026-11-26'
+  validated: true
+  level: beginner
+- fingering: bb.one_one
+  date: '2026-11-26'
+  validated: true
+  level: advanced
+  note: B key + F key (L1 + R1) sounds good and is easy to play; first judged bad by mistake (wrong keys tried)
+
+- fingering: bb.side
+  date: '2026-11-26'
+  validated: true
+  level: beginner
+  note: with the A key
+- fingering: fs.std
+  date: '2026-11-26'
+  validated: true
+  level: beginner
+- fingering: fs.alt
+  date: '2026-11-26'
+  validated: true
+  level: beginner
+- fingering: d6.palm
+  date: '2026-11-26'
+  validated: true
+  level: beginner
+- fingering: eb6.palm
+  date: '2026-11-26'
+  validated: true
+  level: beginner
+- fingering: e6.palm
+  date: '2026-11-26'
+  validated: true
+  level: beginner
+- fingering: f6.palm
+  date: '2026-11-27'
+  validated: true
+  level: beginner
+  cents: 13
+  note: 'tenor tuned to A=440: +13 cents'
+- fingering: fs6.palm
+  date: '2026-11-26'
+  validated: true
+  level: beginner
+- fingering: f6.front
+  date: '2026-11-27'
+  validated: true
+  level: advanced
+  cents: 4
+  note: 'tenor tuned to A=440: +4 cents, better in tune than the palm F'
+- fingering: fs6.fork
+  date: '2026-11-26'
+  validated: true
+  level: advanced
+- fingering: bb.low
+  date: '2026-11-26'
+  validated: true
+  level: beginner
+- fingering: b.low
+  date: '2026-11-26'
+  validated: true
+  level: beginner
+- fingering: c.low
+  date: '2026-11-26'
+  validated: true
+  level: beginner
+- fingering: cs.low
+  date: '2026-11-26'
+  validated: true
+  level: beginner
+- fingering: d.std
+  date: '2026-11-26'
+  validated: true
+  level: beginner
+- fingering: eb.std
+  date: '2026-11-26'
+  validated: true
+  level: beginner
+- fingering: e.std
+  date: '2026-11-26'
+  validated: true
+  level: beginner
+- fingering: f.std
+  date: '2026-11-26'
+  validated: true
+  level: beginner
+- fingering: g.std
+  date: '2026-11-26'
+  validated: true
+  level: beginner
+- fingering: gs.std
+  date: '2026-11-27'
+  validated: true
+  level: beginner
+  cents: -13
+  note: 'tenor tuned to A=440, on G#4 and G#5: -13 cents'
+- fingering: a.std
+  date: '2026-11-26'
+  validated: true
+  level: beginner
+- fingering: b.std
+  date: '2026-11-26'
+  validated: true
+  level: beginner
+- fingering: c.std
+  date: '2026-11-26'
+  validated: true
+  level: beginner
+- fingering: cs.std
+  date: '2026-11-26'
+  validated: true
+  level: beginner
