@@ -51,7 +51,7 @@ fingerings:
     validated: true
     intonation: flat
     cents: -13
-    sources: [{ name: "WFG alternate chart, code 123C#|---", url: "https://www.wfg.woodwind.org/sax/sax_alt_1.html" }, { name: "Measured by the saxophonist (pilou), 2026-11-27, tenor tuned to A=440, on G#4: -13 cents" }]
+    sources: [{ name: "WFG alternate chart, code 123C#|---", url: "https://www.wfg.woodwind.org/sax/sax_alt_1.html" }, { name: "Measured by the saxophonist (pilou), 2026-11-27, tenor tuned to A=440, on G#4 and G#5: -13 cents" }]
   - id: gs.low_b
     pitches: [G#4, G#5]
     keys: [lh.b, lh.a, lh.g, lh.low_b]
@@ -60,7 +60,7 @@ fingerings:
     validated: true
     intonation: flat
     cents: -13
-    sources: [{ name: "WFG alternate chart, code 123B|---", url: "https://www.wfg.woodwind.org/sax/sax_alt_1.html" }, { name: "Measured by the saxophonist (pilou), 2026-11-27, tenor tuned to A=440, on G#4: -13 cents" }]
+    sources: [{ name: "WFG alternate chart, code 123B|---", url: "https://www.wfg.woodwind.org/sax/sax_alt_1.html" }, { name: "Measured by the saxophonist (pilou), 2026-11-27, tenor tuned to A=440, on G#4 and G#5: -13 cents" }]
   - id: gs.low_bb
     pitches: [G#4, G#5]
     keys: [lh.b, lh.a, lh.g, lh.low_bb]
@@ -69,4 +69,4 @@ fingerings:
     validated: true
     intonation: flat
     cents: -13
-    sources: [{ name: "WFG alternate chart, code 123Bb|---", url: "https://www.wfg.woodwind.org/sax/sax_alt_1.html" }, { name: "Measured by the saxophonist (pilou), 2026-11-27, tenor tuned to A=440, on G#4: -13 cents" }]
+    sources: [{ name: "WFG alternate chart, code 123Bb|---", url: "https://www.wfg.woodwind.org/sax/sax_alt_1.html" }, { name: "Measured by the saxophonist (pilou), 2026-11-27, tenor tuned to A=440, on G#4 and G#5: -13 cents" }]
