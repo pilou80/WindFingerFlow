@@ -17,7 +17,7 @@ Starts with the saxophone; the instrument is a data definition so other woodwind
 | Score reading and transposition | [music21](https://www.music21.org/): MusicXML, MEI, kern, ABC and MIDI input, sax transposition, annotations |
 | Choice of fingerings | A dynamic-programming search (Viterbi) over the candidates of each note: key changes, finger slides, intonation, effort |
 | Score engraving | [Verovio](https://www.verovio.org/) renders the annotated score to SVG; [CairoSVG](https://cairosvg.org/) and [pypdf](https://pypdf.readthedocs.io/) build the PDF |
-| Fingering diagrams and notation | [Fiati](https://github.com/ddoo/fiati) font for the key diagrams (OFL) and [Bravura](https://github.com/steinbergmedia/bravura) (SMuFL) for the staves of the charts |
+| Fingering diagrams and notation | [Fiati](https://github.com/eduardomourar/fiati) font for the key diagrams (OFL) and [Bravura](https://github.com/steinbergmedia/bravura) (SMuFL) for the staves of the charts |
 | Data | YAML files validated with [pydantic](https://docs.pydantic.dev/) v2 (strict models), one git submodule per instrument family; player results kept apart in `trials/`; UI texts in one file per language |
 | Web | [FastAPI](https://fastapi.tiangolo.com/) + Jinja2 + [HTMX](https://htmx.org/), SVG previews in sandboxed iframes, EN/FR interface with a language selector |
 | Deployment | Docker (compose), behind a Caddy reverse proxy |
