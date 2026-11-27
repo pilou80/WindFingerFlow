@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
 <title>{{ t.keys_title }} - {{ t.title }}</title>
 <script src="https://unpkg.com/htmx.org@2.0.4"></script>
 <style>
@@ -22,7 +23,7 @@
 <body>
 <main>
 <p><a href="/">&larr; {{ t.title }}</a></p>
-<h1>{{ t.keys_title }}</h1>
+<h1><img src="/logo.svg" alt="" width="36" height="36" style="vertical-align:middle;margin-right:.5rem">{{ t.keys_title }}</h1>
 <p class="tag">{{ t.keys_tagline }}</p>
 <form hx-post="/keys" hx-target="#result" hx-indicator="#busy">
   <label for="lang">{{ t.annot_lang }}</label>

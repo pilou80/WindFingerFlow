@@ -6,6 +6,7 @@ import textwrap
 from dataclasses import dataclass, field
 from xml.sax.saxutils import escape
 
+from windfingerflow.branding import logo_markup
 from windfingerflow.chooser import effective_keys
 from windfingerflow.fiati import FONT_FAMILY, diagram_markup
 from windfingerflow.i18n import ui
@@ -106,6 +107,7 @@ def appendix_svg_pages(entries: list[Entry], lang: str = "en") -> list[str]:
                 f"{escape(ui(lang, 'appendix')['title'])}</text>"
             )
         ]
+        body.append(logo_markup(PAGE_W - MARGIN - 44, 30, 44))
         body.append(legend_svg(MARGIN, 92, lang, size=11))
         for i, entry in enumerate(entries[start : start + BLOCKS_PER_PAGE]):
             body.append(_block(entry, 110 + i * BLOCK_H, lang))

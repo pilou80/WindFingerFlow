@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from xml.sax.saxutils import escape
 
+from windfingerflow.branding import logo_markup
 from windfingerflow.buildinfo import add_watermark
 from windfingerflow.chooser import candidates, effective_keys
 from windfingerflow.database import Database
@@ -269,6 +270,7 @@ def chart_svg_pages(
         for row, box_y in page_rows:
             for col, entry in enumerate(row):
                 body.append(_cell(entry, col, box_y, row, lang, naming))
+        body.append(logo_markup(PAGE_W - MARGIN - 34, 12, 34))
         if alternates:
             body.append(legend_svg(MARGIN, PAGE_H - 36, lang))
         body.append(

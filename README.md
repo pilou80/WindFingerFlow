@@ -1,3 +1,5 @@
+<img src="src/windfingerflow/web/static/logo.svg" alt="WindFingerFlow logo" width="96" align="right">
+
 # WindFingerFlow
 
 Reads a score (MusicXML first), analyses the melodic line and **suggests alternate woodwind

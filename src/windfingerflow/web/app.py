@@ -16,6 +16,7 @@ from fastapi import FastAPI, Form, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
 
+from windfingerflow.branding import LOGO_PATH
 from windfingerflow.buildinfo import watermark_text
 from windfingerflow.chart import PAGE_H as CHART_H
 from windfingerflow.chart import PAGE_W as CHART_W
@@ -61,6 +62,12 @@ def _page(request: Request, name: str, **context):
     return templates.TemplateResponse(
         request, name, {"t": t, "languages": language_names(), **context}
     )
+
+
+@app.get("/logo.svg", include_in_schema=False)
+@app.get("/favicon.svg", include_in_schema=False)
+def logo():
+    return FileResponse(LOGO_PATH, media_type="image/svg+xml")
 
 
 @app.get("/", response_class=HTMLResponse)

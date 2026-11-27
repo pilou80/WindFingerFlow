@@ -28,7 +28,7 @@ def legend_svg(x: float, y: float, lang: str, size: float = 9) -> str:
     out = [
         f'<text x="{x:g}" y="{y:g}" font-size="{size:g}" fill="#444">{escape(t["title"])}</text>'
     ]
-    cx = x + size * 0.52 * len(t["title"]) + 8
+    cx = x + size * 0.58 * len(t["title"]) + 8
     for key in ("beginner", "advanced", "expert", "experimental", TO_TEST):
         out.append(
             f'<text x="{cx:g}" y="{y:g}" font-size="{size:g}" font-weight="bold" '

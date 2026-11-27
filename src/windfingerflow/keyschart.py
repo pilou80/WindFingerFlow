@@ -5,6 +5,7 @@ from __future__ import annotations
 import textwrap
 from xml.sax.saxutils import escape
 
+from windfingerflow.branding import logo_markup
 from windfingerflow.buildinfo import add_watermark
 from windfingerflow.database import Database
 from windfingerflow.fiati import FONT_FAMILY, diagram_markup
@@ -103,6 +104,7 @@ def keys_svg_pages(
         body = [
             f'<text x="{MARGIN}" y="42" font-size="22" font-weight="bold">{escape(t["title"])}</text>'
         ]
+        body.append(logo_markup(PAGE_W - MARGIN - 34, 12, 34))
         for row, y, height in page_rows:
             for col, key in enumerate(row):
                 body.append(_box(key, col, y, height, lang))
