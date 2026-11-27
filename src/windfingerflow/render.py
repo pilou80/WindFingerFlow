@@ -6,6 +6,7 @@ import io
 import os
 import re
 import tempfile
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from windfingerflow.buildinfo import add_watermark
@@ -77,6 +78,56 @@ _DIR_TEXT = re.compile(
 )
 
 
+_SVG_NS = "http://www.w3.org/2000/svg"
+ET.register_namespace("", _SVG_NS)
+ET.register_namespace("xlink", "http://www.w3.org/1999/xlink")
+_TRANSLATE = re.compile(r"translate\(\s*([-\d.]+)[ ,]+([-\d.]+)\s*\)")
+ANNOTATION_GAP = (
+    520  # Verovio units between the highest note (or staff line) and the annotation baseline
+)
+
+
+def _align_annotations(svg: str, gap: float = ANNOTATION_GAP) -> str:
+    """Put every text annotation of a system on one baseline above its notes.
+
+    Verovio staggers the annotations vertically as if they were horizontal, which makes the slanted
+    texts of different lengths cross each other. On a common baseline they stay parallel.
+    """
+    root = ET.fromstring(svg)
+    g_tag, text_tag, use_tag = f"{{{_SVG_NS}}}g", f"{{{_SVG_NS}}}text", f"{{{_SVG_NS}}}use"
+    changed = False
+    for system in root.iter(g_tag):
+        if system.get("class") != "system":
+            continue
+        texts = []
+        for d in system.iter(g_tag):
+            if d.get("class") != "dir":
+                continue
+            for text in d.iter(text_tag):
+                if not any(t.get("font-family") == FONT_FAMILY for t in text.iter()):
+                    texts.append(text)
+        if not texts:
+            continue
+        tops = []
+        for head in system.iter(g_tag):
+            if head.get("class") == "notehead":
+                for use in head.iter(use_tag):
+                    m = _TRANSLATE.search(use.get("transform", ""))
+                    if m:
+                        tops.append(float(m.group(2)))
+        if not tops:
+            continue
+        baseline = min(tops) - gap
+        for text in texts:
+            text.set("y", f"{baseline:.0f}")
+        changed = True
+    if not changed:
+        return svg
+    out = ET.tostring(root, encoding="unicode")
+    # keep Verovio's own root tag (attribute order matters to the code that rewrites it for the web)
+    return svg[: svg.index(">") + 1] + out[out.index(">") + 1 :]
+
+
 def _slant_annotations(svg: str, angle: float = ANNOTATION_ANGLE) -> str:
     """Rotate the text annotations around their start point (the Fiati diagrams stay upright)."""
 
@@ -132,7 +183,7 @@ def render_svg_pages(
     if not tk.loadFile(str(musicxml)):
         raise ValueError(f"Verovio could not read {musicxml}")
     pages = [
-        _slant_annotations(_tag_fiati(tk.renderToSVG(page)))
+        _slant_annotations(_align_annotations(_tag_fiati(tk.renderToSVG(page))))
         for page in range(1, tk.getPageCount() + 1)
     ]
     return [add_watermark(p, watermark) for p in pages] if watermark else pages

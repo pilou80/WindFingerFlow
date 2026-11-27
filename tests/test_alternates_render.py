@@ -47,3 +47,27 @@ def test_text_annotations_are_slanted_but_diagrams_are_not():
     out = _slant_annotations(svg)
     assert 'transform="rotate(-45 10 20)"' in out
     assert "rotate" not in out.split("Fiati")[0].split("Fa avant</tspan></text></g>")[1]
+
+
+def test_annotations_share_one_baseline_per_system():
+    import re
+
+    from windfingerflow.render import _align_annotations
+
+    svg = (
+        '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">'
+        '<g class="system">'
+        '<g class="notehead"><use xlink:href="#a" transform="translate(100, 900) scale(0.7, 0.7)"/></g>'
+        '<g class="notehead"><use xlink:href="#a" transform="translate(300, 700) scale(0.7, 0.7)"/></g>'
+        '<g id="a" class="dir"><text x="100" y="500" font-size="0px"><tspan>Short</tspan></text></g>'
+        '<g id="b" class="dir"><text x="300" y="100" font-size="0px"><tspan>A much longer name</tspan></text></g>'
+        '<g id="c" class="dir"><text x="400" y="50"><tspan font-family="Fiati">X</tspan></text></g>'
+        "</g></svg>"
+    )
+    out = _align_annotations(svg, gap=500)
+    ys = re.findall(r'<text x="(\d+)" y="(\d+)"', out)
+    assert ys == [
+        ("100", "200"),
+        ("300", "200"),
+        ("400", "50"),
+    ]  # text aligned above the highest note; diagram kept
