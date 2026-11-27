@@ -118,10 +118,3 @@ fingerings:
     needs_confirmation: true
     intonation: sharp
     sources: [{ name: "WFG alternate chart, code T f-2-|E---", url: "https://www.wfg.woodwind.org/sax/sax_alt_2.html" }, { name: "UNVERIFIED: not tried by the saxophonist; code read from a page summary" }]
-  - id: f6.high_fs
-    pitches: [F6]
-    keys: [rh.high_fs]
-    category: alternate
-    level: experimental
-    needs_confirmation: true
-    sources: [{ name: "WFG alternate chart, code T ---|f#---", url: "https://www.wfg.woodwind.org/sax/sax_alt_2.html" }, { name: "UNVERIFIED: not tried by the saxophonist; code read from a page summary" }]

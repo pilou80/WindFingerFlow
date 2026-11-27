@@ -34,3 +34,12 @@ fingerings:
     intonation: flat
     cents: -45
     sources: [{ name: "WFG alternate chart, code T 12-|E---", url: "https://www.wfg.woodwind.org/sax/sax_alt_2.html" }, { name: "Measured by the saxophonist (pilou), 2026-11-27, tenor tuned to A=440: -45 cents (very flat), hence experimental" }]
+  - id: f6.high_fs
+    pitches: [F6]
+    keys: [rh.high_fs]
+    category: alternate
+    level: expert
+    validated: true
+    intonation: flat
+    cents: -13
+    sources: [{ name: "WFG alternate chart, code T ---|f#---", url: "https://www.wfg.woodwind.org/sax/sax_alt_2.html" }, { name: "Measured by the saxophonist (pilou), 2026-11-27, tenor tuned to A=440: -13 cents, playable: expert level" }]
