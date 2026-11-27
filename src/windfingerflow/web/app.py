@@ -17,7 +17,7 @@ from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
 
 from windfingerflow.branding import LOGO_PATH
-from windfingerflow.buildinfo import watermark_text
+from windfingerflow.buildinfo import stamp_musicxml, watermark_text
 from windfingerflow.chart import PAGE_H as CHART_H
 from windfingerflow.chart import PAGE_W as CHART_W
 from windfingerflow.chart import chart_svg_pages
@@ -146,6 +146,7 @@ def process(
     folder.mkdir(parents=True)
     source = folder / f"input{suffix}"
     source.write_bytes(data)
+    (folder / "name.txt").write_text(Path(file.filename or "score").stem, encoding="utf-8")
     profile = Profile(
         level=Level(level),
         excluded_fingerings={x.strip() for x in exclude.split(",") if x.strip()},
@@ -182,6 +183,7 @@ def process(
     except Exception:
         log.exception("preview failed")
         previews = []
+    stamp_musicxml(folder / "annotated.musicxml", result.watermark)
     return _page(
         request,
         "result.html",
@@ -330,6 +332,20 @@ def keys_make(request: Request, lang: str = Form("en")):
     return _page(request, "chart_result.html", job=job, previews=previews, pdf_kind="keys")
 
 
+_UNSAFE = re.compile(r"[^\w .,()+&\'-]+")
+
+
+def _download_name(job: str, kind: str, default: str) -> str:
+    """Original file name of the score + " - WindFingerFlow annotated" for the annotated outputs."""
+    if kind not in {"pdf", "musicxml"}:
+        return default
+    stored = WORKDIR / job / "name.txt"
+    stem = stored.read_text(encoding="utf-8").strip() if stored.is_file() else "score"
+    stem = _UNSAFE.sub("_", stem).strip(" ._") or "score"
+    suffix = ".pdf" if kind == "pdf" else ".musicxml"
+    return f"{stem[:120]} - WindFingerFlow annotated{suffix}"
+
+
 @app.get("/download/{job}/{kind}")
 def download(job: str, kind: str):
     if not _ID_RE.match(job) or kind not in {"pdf", "musicxml", "chart", "keys"}:
@@ -348,4 +364,4 @@ def download(job: str, kind: str):
         if kind in {"pdf", "chart", "keys"}
         else "application/vnd.recordare.musicxml+xml"
     )
-    return FileResponse(path, media_type=media, filename=name)
+    return FileResponse(path, media_type=media, filename=_download_name(job, kind, name))

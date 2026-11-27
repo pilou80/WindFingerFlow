@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import sys
 
+from windfingerflow.buildinfo import stamp_musicxml
 from windfingerflow.instrument import SAX_OFFSET
 from windfingerflow.models import Finger, Level
 from windfingerflow.pipeline import run
@@ -50,6 +51,8 @@ def main(argv: list[str] | None = None) -> int:
         musicxml_out=args.output,
         pdf_out=args.pdf,
     )
+    if args.output:
+        stamp_musicxml(args.output, result.watermark)
     for w in result.warnings:
         print(f"warning: {w}", file=sys.stderr)
     for e, f in zip(result.events, result.chosen, strict=True):

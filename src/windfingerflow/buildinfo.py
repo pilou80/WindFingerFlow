@@ -81,3 +81,36 @@ def add_watermark(svg: str, text: str) -> str:
         f"{escape(text)}</text>"
     )
     return svg[:end] + element + svg[end:]
+
+
+_CREDIT = (
+    '<credit page="1"><credit-type>rights</credit-type>'
+    '<credit-words default-x="600" default-y="15" justify="center" valign="bottom" '
+    'font-size="7" color="#999999">{text}</credit-words></credit>'
+)
+
+
+def stamp_musicxml(path: str | Path, text: str) -> None:
+    """Record the build and options in a MusicXML file: an identification field and a small grey credit.
+
+    Call it on the file that is handed out, after the score has been rendered (the PDF and the previews
+    carry the same text as a watermark, so rendering the stamped file would print it twice).
+    """
+    p = Path(path)
+    xml = p.read_text(encoding="utf-8")
+    field = (
+        f'<miscellaneous><miscellaneous-field name="WindFingerFlow">{escape(text)}'
+        "</miscellaneous-field></miscellaneous>"
+    )
+    if "</identification>" in xml:
+        xml = xml.replace("</identification>", field + "</identification>", 1)
+    else:
+        xml = re.sub(
+            r"(<defaults>|<credit |<part-list)",
+            lambda m: f"<identification>{field}</identification>" + m.group(1),
+            xml,
+            count=1,
+        )
+    credit = _CREDIT.format(text=escape(text))
+    xml = re.sub(r"(<part-list)", lambda m: credit + m.group(1), xml, count=1)
+    p.write_text(xml, encoding="utf-8")
